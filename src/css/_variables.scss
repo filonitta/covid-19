@@ -1,0 +1,23 @@
+$colors: (
+	success: #43a047,
+	error: #d32f2f,
+	warning: #ffa000,
+	// primary: #006db3,
+	primary: #009be5,
+	info: #4fc3f7,
+	default: #E3E3E3
+);
+
+$sidebar-width: 256px;
+
+$screen: (
+	xs: 0,
+	// sm: 576px,
+	sm: 600px,
+	// md: 768px,
+	md: 960px,
+	// lg: 992px,
+	lg: 1280px,
+	// xl: 1200px
+	xl: 1920px
+);

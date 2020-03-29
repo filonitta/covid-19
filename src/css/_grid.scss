@@ -1,0 +1,131 @@
+@import './variables';
+
+.column {
+	display: flex;
+	flex-direction: column;
+	flex-basis:100%;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
+
+	&.align-center, .align-center {
+		align-items: center;
+	}
+
+	&.content-space-between, .content-space-between {
+		justify-content: space-between;
+	}
+
+	&.align-end, .align-end {
+		align-items: flex-end;
+	}
+
+	@for $i from 0 through 2 {
+		.grow-#{$i} {
+			flex-grow: #{$i};
+		}
+	}
+}
+
+.col {
+	flex: 1 1 auto;
+
+	padding: 0 15px;
+
+	&.grow-none {
+		flex-grow: 0;
+	}
+
+
+	@for $i from 1 through 12 {
+		&.col-#{$i} {
+			flex: 0 0 calc(#{$i} * 100% / 12);
+			max-width: calc(#{$i} * 100% / 12);
+		}
+	}
+
+	@for $i from 1 through 12 {
+		&.col-xs-#{$i} {
+			flex: 0 0 calc(#{$i} * 100% / 12);
+			max-width: calc(#{$i} * 100% / 12);
+		}
+	}
+
+	@for $i from 1 through 12 {
+		&.col-sm-#{$i} {
+			flex: 0 0 calc(#{$i} * 100% / 12);
+			max-width: calc(#{$i} * 100% / 12);
+		}
+	}
+
+	@for $i from 1 through 12 {
+		&.col-md-#{$i} {
+			flex: 0 0 calc(#{$i} * 100% / 12);
+			max-width: calc(#{$i} * 100% / 12);
+		}
+	}
+
+	@for $i from 1 through 12 {
+		&.col-lg-#{$i} {
+			flex: 0 0 calc(#{$i} * 100% / 12);
+			max-width: calc(#{$i} * 100% / 12);
+		}
+	}
+
+	@for $i from 1 through 12 {
+		&.col-xl-#{$i} {
+			flex: 0 0 calc(#{$i} * 100% / 12);
+			max-width: calc(#{$i} * 100% / 12);
+		}
+	}
+
+	@media screen and (max-width: map-get($screen, sm)) {
+		@for $i from 1 through 12 {
+			&.col-xs-#{$i} {
+				flex: 0 0 calc(#{$i} * 100% / 12);
+				max-width: calc(#{$i} * 100% / 12);
+			}
+		}
+	}
+
+	@media screen and (min-width: map-get($screen, sm)) {
+		@for $i from 1 through 12 {
+			&.col-sm-#{$i} {
+				flex: 0 0 calc(#{$i} * 100% / 12);
+				max-width: calc(#{$i} * 100% / 12);
+			}
+		}
+	}
+
+	@media screen and (min-width: map-get($screen, md)) {
+		@for $i from 1 through 12 {
+			&.col-md-#{$i} {
+				flex: 0 0 calc(#{$i} * 100% / 12);
+				max-width: calc(#{$i} * 100% / 12);
+			}
+		}
+	}
+
+	@media screen and (min-width: map-get($screen, lg)) {
+		@for $i from 1 through 12 {
+			&.col-lg-#{$i} {
+				flex: 0 0 calc(#{$i} * 100% / 12);
+				max-width: calc(#{$i} * 100% / 12);
+			}
+		}
+	}
+
+	@media screen and (min-width: map-get($screen, xl)) {
+		@for $i from 1 through 12 {
+			&.col-xl-#{$i} {
+				flex: 0 0 calc(#{$i} * 100% / 12);
+				max-width: calc(#{$i} * 100% / 12);
+			}
+		}
+	}
+}
