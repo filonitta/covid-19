@@ -1,12 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-
-import Notification from './../shared/Notification';
-
-const styles = {
-	
-};
 
 class Home extends React.Component {
 	static propTypes = {
@@ -15,12 +8,22 @@ class Home extends React.Component {
 
 	render() {
 		return <div className="container">
-			<h1>Homepage</h1>
-			<p>Hi there!</p>
-
-			<Notification />
+			<div className="page-header">
+				<h1>Homepage</h1>
+			</div>
+			
+			<div className="card">
+				<div className="card-header">
+					Featured
+				</div>
+				<div className="card-body">
+					<h5 className="card-title">Special title treatment</h5>
+					<p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+					<a href="#" className="btn btn-primary">Go somewhere</a>
+				</div>
+			</div>
 		</div>;
 	}
 }
 
-export default withStyles(styles)(Home);
+export default Home;
