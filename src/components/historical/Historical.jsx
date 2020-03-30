@@ -45,7 +45,7 @@ const Historical = () => {
 
 	return (
 		<>
-			<h1 className="mt-5 mb-5">COVID-19 statistics per day</h1>
+			{/* <h2 className="mt-5 mb-5">per day</h2> */}
 			<div className="row">
 				<div className="col-sm-4">
 					<div className="card">
