@@ -16,6 +16,10 @@ class API extends REST {
 	setHeaders(header, value) {
 		this.headers[header] = `Bearer ${value}`;
 	}
+
+	getCountries() {
+		return this.getQuery('historical');
+	}
 }
 
 const api = new API(`${ENV.api}`);

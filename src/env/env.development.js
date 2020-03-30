@@ -1,5 +1,5 @@
 export const ENV = {
 	production: false,
 
-	api: 'http://localhost:4000',
+	api: 'https://corona.lmao.ninja/v2',
 };
