@@ -1,0 +1,10 @@
+dl {
+	dt {
+		float: left;
+
+		&::after {
+			content: ':';
+			margin-right: 15px;
+		}
+	}
+}
