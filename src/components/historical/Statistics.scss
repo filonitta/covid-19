@@ -8,3 +8,13 @@ dl {
 		}
 	}
 }
+
+.show-case-controls {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 15px;
+	
+	> *:not(:first-child) {
+		margin-left: 15px;
+	}
+}

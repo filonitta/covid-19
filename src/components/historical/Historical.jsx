@@ -49,7 +49,7 @@ const Historical = () => {
 			<div className="row">
 				<div className="col-sm-4">
 					<div className="card">
-						<div className="card-header text-white bg-info">
+						<div className="card-header text-white bg-primary">
 							Countries
 						</div>
 						<div className="card-body">

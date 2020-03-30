@@ -15,6 +15,7 @@ const Statistics = (props) => {
 	console.log(info);
 
 	const [selectedDate, setSelectedDate] = useState(new Date);
+	const [showCase, setShowcase] = useState(1);
 
 	const currentCountry = info;
 
@@ -78,42 +79,73 @@ const Statistics = (props) => {
 		};
 	}
 
+	const onChangeCase = type => event => {
+		// console.log(event.target.checked)
+		setShowcase(type);
+	}
 
-return (
-	<div className="card card-body bg-light">
-		<DatePicker
-			selected={selectedDate}
-			onChange={onDateChange}
-			isClearable
-			maxDate={new Date}
-			minDate={new Date('01-22-2020')}
-			dateFormat="MM-dd-yyyy"
-			className="form-control"
-		/>
-		<h3 className="mt-4 mb-4">{info.country} {info.province && `(${info.province})`}</h3>
-		<dl>
-			<dt>Cases per day</dt><dd><span className={`badge ${currentCountry.perDay.cases[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.cases[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.cases[format(selectedDate)]}</span></dd>
-			<dt>Deaths per day</dt><dd><span className={`badge ${currentCountry.perDay.deaths[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.deaths[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.deaths[format(selectedDate)]}</span></dd>
-			<dt>Recovered per day</dt><dd><span className={`badge ${currentCountry.perDay.recovered[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.recovered[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.recovered[format(selectedDate)]}</span></dd>
-		</dl>
-		
-		<Line data={data({
-			label: '# of Cases',
-			labels: Object.keys(info.timeline.cases),
-			data: Object.values(info.timeline.cases),
-			rgb: '54, 162, 235'
-		})} />
+	return (
+		<div className="card card-body bg-light">
+			<DatePicker
+				selected={selectedDate}
+				onChange={onDateChange}
+				isClearable
+				maxDate={new Date}
+				minDate={new Date('01-22-2020')}
+				dateFormat="MM-dd-yyyy"
+				className="form-control"
+			/>
+			<h3 className="mt-4 mb-4">{info.country} {info.province && `(${info.province})`}</h3>
+			<dl>
+				<dt>Cases per day</dt><dd><span className={`badge ${currentCountry.perDay.cases[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.cases[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.cases[format(selectedDate)]}</span></dd>
+				<dt>Deaths per day</dt><dd><span className={`badge ${currentCountry.perDay.deaths[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.deaths[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.deaths[format(selectedDate)]}</span></dd>
+				<dt>Recovered per day</dt><dd><span className={`badge ${currentCountry.perDay.recovered[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.recovered[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.recovered[format(selectedDate)]}</span></dd>
+			</dl>
 
-		<br className="mt-4" />
+			<div className="show-case-controls">
+				<div className="custom-control custom-radio">
+					<input type="radio" className="custom-control-input" id="cases" name="show-case" onChange={onChangeCase(1)} checked={showCase === 1} />
+					<label className="custom-control-label" htmlFor="cases">Show Cases</label>
+				</div>
+				<div className="custom-control custom-radio">
+					<input type="radio" className="custom-control-input" id="deaths" name="show-case" onChange={onChangeCase(2)} checked={showCase === 2} />
+					<label className="custom-control-label" htmlFor="deaths">Show Deaths</label>
+				</div>
 
-		<Bar data={data({
-			label: '# of Deaths',
-			labels: Object.keys(info.perDay.deaths),
-			data: Object.values(info.perDay.deaths),
-			rgb: '255, 99, 132'
-		})} />
-	</div>
-);
+				<div className="custom-control custom-radio">
+					<input type="radio" className="custom-control-input" id="recovered" name="show-case" onChange={onChangeCase(3)} checked={showCase === 3} />
+					<label className="custom-control-label" htmlFor="recovered">Show Recovered</label>
+				</div>
+			</div>
+			
+			{showCase === 1 &&
+			<Line data={data({
+				label: '# of Cases',
+				labels: Object.keys(info.timeline.cases),
+				data: Object.values(info.timeline.cases),
+				rgb: '54, 162, 235'
+			})} />
+			}
+
+			{showCase === 2 &&
+			<Bar data={data({
+				label: '# of Deaths',
+				labels: Object.keys(info.perDay.deaths),
+				data: Object.values(info.perDay.deaths),
+				rgb: '255, 99, 132'
+			})} />
+			}
+
+			{showCase === 3 &&
+			<Bar data={data({
+				label: '# of Recovered',
+				labels: Object.keys(info.perDay.recovered),
+				data: Object.values(info.perDay.recovered),
+				rgb: '75, 192, 192'
+			})} />
+			}
+		</div>
+	);
 };
 
 Statistics.propTypes = {
