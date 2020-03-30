@@ -65,6 +65,9 @@ const Historical = () => {
 					</div>
 				</div>
 				<div className="col-sm-8">
+					{!selectedCountry &&
+						<div className="card card-body bg-light"><em>Select a country to see its data</em></div>
+					}
 					{selectedCountry && <Statistics info={selectedCountry} />}
 				</div>
 			</div>
