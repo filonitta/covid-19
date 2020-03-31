@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import api from '@/services/api.class';
 import CountriesList from './CountriesList';
 import SearchField from './SearchField';
+import Sorting from './Sorting';
 import Statistics from './Statistics';
 
 String.prototype.capitalize = function () {
@@ -40,7 +41,7 @@ const Historical = () => {
 	}, []);
 
 	const updateList = (list) => {
-		setCountries(list);
+		setCountries([...list]);
 	}
 
 	return (
@@ -53,6 +54,7 @@ const Historical = () => {
 							Countries
 						</div>
 						<div className="card-body">
+							<Sorting list={originalCountriesList} onSort={updateList} />
 							<SearchField list={originalCountriesList} onSearch={updateList} />
 							{!isLoading &&
 								<CountriesList

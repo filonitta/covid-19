@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import FontAwesome from 'react-fontawesome';
 
 const SearchField = (props) => {
 	const {
@@ -13,7 +14,12 @@ const SearchField = (props) => {
 	}
 
 	return (
-		<div className="form-group">
+		<div className="input-group mb-3">
+			{/* <div className="input-group-prepend">
+				<span className="input-group-text">
+					@
+				</span>
+			</div> */}
 			<input
 				type="search"
 				className="form-control"

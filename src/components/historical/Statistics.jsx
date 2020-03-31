@@ -103,18 +103,19 @@ const Statistics = (props) => {
 			</dl>
 
 			<div className="show-case-controls">
+				<strong>Show:</strong>
 				<div className="custom-control custom-radio">
 					<input type="radio" className="custom-control-input" id="cases" name="show-case" onChange={onChangeCase(1)} checked={showCase === 1} />
-					<label className="custom-control-label" htmlFor="cases">Show Cases</label>
+					<label className="custom-control-label" htmlFor="cases">Cases</label>
 				</div>
 				<div className="custom-control custom-radio">
 					<input type="radio" className="custom-control-input" id="deaths" name="show-case" onChange={onChangeCase(2)} checked={showCase === 2} />
-					<label className="custom-control-label" htmlFor="deaths">Show Deaths</label>
+					<label className="custom-control-label" htmlFor="deaths">Deaths</label>
 				</div>
 
 				<div className="custom-control custom-radio">
 					<input type="radio" className="custom-control-input" id="recovered" name="show-case" onChange={onChangeCase(3)} checked={showCase === 3} />
-					<label className="custom-control-label" htmlFor="recovered">Show Recovered</label>
+					<label className="custom-control-label" htmlFor="recovered">Recovered</label>
 				</div>
 			</div>
 			
