@@ -77,45 +77,4 @@ const Historical = () => {
 	);
 };
 
-/* class Historical extends React.Component {
-	state = {
-		countries: []
-	}
-
-	async componentDidMount() {
-		const countries = await api.getCountries();
-		this.setState({ countries });
-	}
-
-	updateList = countries => {
-		this.setState({ countries });
-	}
-
-	render() {
-		const {
-			countries
-		} = this.state;
-
-		console.log(countries)
-
-		return <>
-			<h1>COVID-19 statistics per day</h1>
-			<div className="row">
-				<div className="col-sm-4">
-					<div className="card">
-						<div className="card-header">
-							Countries
-					</div>
-						<div className="card-body">
-							<SearchField list={countries} onSearch={this.updateList} />
-							<CountriesList list={countries} />
-						</div>
-					</div>
-				</div>
-				<div className="col-sm-8"></div>
-			</div>
-		</>
-	}
-} */
-
 export default Historical;

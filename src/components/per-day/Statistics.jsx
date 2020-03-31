@@ -40,12 +40,9 @@ const Statistics = (props) => {
 		return target;
 	}
 
-	const format = (date) => {
-		return moment(date).format('M/D/YY');
-	}
+	const format = (date) => moment(date).format('M/D/YY');
 
 	const data = (options) => {
-		console.log(`rgba(${options.rgb},0.4)`)
 		return {
 			labels: options.labels || [],
 			datasets: [
