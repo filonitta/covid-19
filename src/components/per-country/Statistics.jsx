@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
+import Pagination from 'react-bootstrap/Pagination';
 import { Bar } from 'react-chartjs-2';
 import { defaults } from 'react-chartjs-2';
 
@@ -20,6 +21,8 @@ const Statistics = (props) => {
 
 	const [showCase, setShowcase] = useState(1);
 	const [selectedDate, setSelectedDate] = useState(new Date);
+	const [paginationPage, setPaginationPage] = useState(1);
+	const paginationCount = 20;
 
 	const rnd = (min, max) => {
 		min = Math.ceil(min);
@@ -31,7 +34,7 @@ const Statistics = (props) => {
 	const format = (date) => moment(date).format('M/D/YY');
 
 	const data = (list, field) => {
-		list = list.sort((a, b) => b.timeline[field][format(selectedDate)]- a.timeline[field][format(selectedDate)]);
+		list = list.sort((a, b) => b.timeline[field][format(selectedDate)] - a.timeline[field][format(selectedDate)]).slice(paginationPage - 1, paginationPage - 1 + paginationCount);
 
 		const settings = {
 			fill: false,
@@ -66,7 +69,9 @@ const Statistics = (props) => {
 		};
 	}
 
-	const onChangeCase = type => event => setShowcase(type);
+	const onChangeCase = type => () => setShowcase(type);
+
+	const setPage = page => () => setPaginationPage(page);
 
 	return (
 		<div className="card card-body bg-light">
@@ -97,19 +102,39 @@ const Statistics = (props) => {
 				</div>
 			</div>
 			
-			{list.length !== 0 && <div className="chartWrapper"><div className="chartAreaWrapper"><div className="chartAreaWrapper2">
+			{list.length !== 0 && <>
 			{showCase === 1 &&
-				<Bar data={data(list.slice(0, 20), 'cases')} />
+				<Bar data={data(list, 'cases')} />
 			}
 
 			{showCase === 2 &&
-			<Bar data={data(list.slice(0, 20), 'deaths')} />
+			<Bar data={data(list, 'deaths')} />
 			}
 
 			{showCase === 3 &&
-			<Bar data={data(list.slice(0, 20), 'recovered')} />
+			<Bar data={data(list, 'recovered')} />
 			}
-			</div></div></div>}
+			</>}
+
+			<Pagination className="mt-4">
+				<Pagination.First onClick={setPage(1)} disabled={paginationPage === 1} />
+				<Pagination.Prev onClick={setPage(paginationPage - 1)} disabled={paginationPage === 1} />
+				{new Array(Math.ceil(list.length / paginationCount)).fill(0).map((item, index) => (
+					<Pagination.Item key={index} active={paginationPage === index + 1} onClick={setPage(index + 1)}>{index + 1}</Pagination.Item>
+				))}
+				{/* <Pagination.Ellipsis />
+
+				<Pagination.Item>{10}</Pagination.Item>
+				<Pagination.Item>{11}</Pagination.Item>
+				<Pagination.Item active>{12}</Pagination.Item>
+				<Pagination.Item>{13}</Pagination.Item>
+				<Pagination.Item disabled>{14}</Pagination.Item>
+
+				<Pagination.Ellipsis />
+				<Pagination.Item>{20}</Pagination.Item> */}
+				<Pagination.Next onClick={setPage(paginationPage + 1)} disabled={paginationPage === Math.ceil(list.length / paginationCount)} />
+				<Pagination.Last onClick={setPage(Math.ceil(list.length / paginationCount))} disabled={paginationPage === Math.ceil(list.length / paginationCount)} />
+			</Pagination>
 		</div>
 	);
 };
