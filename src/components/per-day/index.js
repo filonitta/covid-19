@@ -14,7 +14,7 @@ String.prototype.capitalize = function () {
 	return `${value.substring(0, 1).toUpperCase()}${value.substring(1)}`;
 }
 
-const Historical = () => {
+const HistoricalPerDay = () => {
 	const [countries, setCountries] = useState([]);
 	const [originalCountriesList, setOriginalCountriesList] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
@@ -77,4 +77,4 @@ const Historical = () => {
 	);
 };
 
-export default Historical;
+export default HistoricalPerDay;

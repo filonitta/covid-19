@@ -6,6 +6,7 @@ import moment from 'moment';
 import { Line, Bar } from 'react-chartjs-2';
 
 import './Statistics.scss';
+import RadioGroup from '@shared/RadioGroup';
 
 const Statistics = (props) => {
 	const {
@@ -13,7 +14,7 @@ const Statistics = (props) => {
 	} = props;
 
 	const [selectedDate, setSelectedDate] = useState(new Date);
-	const [showCase, setShowcase] = useState(1);
+	const [showCase, setShowCase] = useState(1);
 
 	const currentCountry = info;
 
@@ -72,7 +73,10 @@ const Statistics = (props) => {
 		};
 	}
 
-	const onChangeCase = type => event => setShowcase(type);
+	const onChangeCase1 = type => () => {
+		console.log(type, showCase)
+		setShowCase(type)
+	}
 
 	return (
 		<div className="card card-body bg-light">
@@ -92,22 +96,7 @@ const Statistics = (props) => {
 				<dt>Recovered per day</dt><dd><span className={`badge ${currentCountry.perDay.recovered[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.recovered[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.recovered[format(selectedDate)]}</span></dd>
 			</dl>
 
-			<div className="show-case-controls">
-				<strong>Show:</strong>
-				<div className="custom-control custom-radio">
-					<input type="radio" className="custom-control-input" id="cases" name="show-case" onChange={onChangeCase(1)} checked={showCase === 1} />
-					<label className="custom-control-label" htmlFor="cases">Cases</label>
-				</div>
-				<div className="custom-control custom-radio">
-					<input type="radio" className="custom-control-input" id="deaths" name="show-case" onChange={onChangeCase(2)} checked={showCase === 2} />
-					<label className="custom-control-label" htmlFor="deaths">Deaths</label>
-				</div>
-
-				<div className="custom-control custom-radio">
-					<input type="radio" className="custom-control-input" id="recovered" name="show-case" onChange={onChangeCase(3)} checked={showCase === 3} />
-					<label className="custom-control-label" htmlFor="recovered">Recovered</label>
-				</div>
-			</div>
+			<RadioGroup onChange={setShowCase} checkedValue={showCase} />
 			
 			{showCase === 1 &&
 			<Line data={data({

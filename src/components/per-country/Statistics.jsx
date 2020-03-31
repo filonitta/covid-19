@@ -8,18 +8,16 @@ import { Bar } from 'react-chartjs-2';
 import { defaults } from 'react-chartjs-2';
 
 defaults.global.legend.display = false;
-// defaults.global.responsive = false;
 
 import './Statistics.scss';
+import RadioGroup from '@shared/RadioGroup';
 
-const Statistics = (props) => {
+const Statistics = props => {
 	const {
 		list
 	} = props;
 
-	// console.log(list);
-
-	const [showCase, setShowcase] = useState(1);
+	const [showCase, setShowCase] = useState(1);
 	const [selectedDate, setSelectedDate] = useState(new Date);
 	const [paginationPage, setPaginationPage] = useState(1);
 	const [paginationCount, setPaginationCount] = useState(20);
@@ -66,8 +64,6 @@ const Statistics = (props) => {
 		};
 	}
 
-	const onChangeCase = type => () => setShowcase(type);
-
 	const setPage = page => () => setPaginationPage(page);
 
 	return (
@@ -82,26 +78,11 @@ const Statistics = (props) => {
 				className="form-control"
 			/>
 
-			<div className="show-case-controls mt-4">
-				<strong>Show:</strong>
-				<div className="custom-control custom-radio">
-					<input type="radio" className="custom-control-input" id="cases" name="show-case" onChange={onChangeCase(1)} checked={showCase === 1} />
-					<label className="custom-control-label" htmlFor="cases">Cases</label>
-				</div>
-				<div className="custom-control custom-radio">
-					<input type="radio" className="custom-control-input" id="deaths" name="show-case" onChange={onChangeCase(2)} checked={showCase === 2} />
-					<label className="custom-control-label" htmlFor="deaths">Deaths</label>
-				</div>
-
-				<div className="custom-control custom-radio">
-					<input type="radio" className="custom-control-input" id="recovered" name="show-case" onChange={onChangeCase(3)} checked={showCase === 3} />
-					<label className="custom-control-label" htmlFor="recovered">Recovered</label>
-				</div>
-			</div>
+			<RadioGroup onChange={setShowCase} checkedValue={showCase} />
 			
 			{list.length !== 0 && <>
 			{showCase === 1 &&
-				<Bar data={data(list, 'cases')} />
+			<Bar data={data(list, 'cases')} />
 			}
 
 			{showCase === 2 &&

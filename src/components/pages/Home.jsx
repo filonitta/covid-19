@@ -16,7 +16,7 @@ const Home = () => {
 				<h1>COVID-19 statistics</h1>
 			</div>
 
-			<Tabs defaultActiveKey="country" id="uncontrolled-tab-example">
+			<Tabs defaultActiveKey="day" id="uncontrolled-tab-example">
 				<Tab eventKey="total" title="Total">
 					<Total />
 				</Tab>
@@ -26,9 +26,6 @@ const Home = () => {
 				<Tab eventKey="day" title="Historical per day">
 					<HistoricalPerDay />
 				</Tab>
-				{/* <Tab eventKey="contact" title="Contact" disabled>
-					hello 3
-				</Tab> */}
 			</Tabs>
 
 								
