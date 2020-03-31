@@ -5,7 +5,9 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
 import './Home.scss';
-import Historical from '@base/src/components/historical/Historical';
+import Total from '@base/src/components/Total';
+import HistoricalPerDay from '@base/src/components/per-day';
+import HistoricalPerCountry from '@base/src/components/per-country';
 
 const Home = () => {
 	return (
@@ -14,12 +16,15 @@ const Home = () => {
 				<h1>COVID-19 statistics</h1>
 			</div>
 
-			<Tabs defaultActiveKey="historical" id="uncontrolled-tab-example">
-				<Tab eventKey="total" title="Total" disabled>
-					No data
+			<Tabs defaultActiveKey="total" id="uncontrolled-tab-example">
+				<Tab eventKey="total" title="Total">
+					<Total />
 				</Tab>
-				<Tab eventKey="historical" title="Historical">
-					<Historical />
+				<Tab eventKey="country" title="Historical per country">
+					<HistoricalPerCountry />
+				</Tab>
+				<Tab eventKey="day" title="Historical per day">
+					<HistoricalPerDay />
 				</Tab>
 				{/* <Tab eventKey="contact" title="Contact" disabled>
 					hello 3

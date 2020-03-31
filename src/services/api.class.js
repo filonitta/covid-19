@@ -18,7 +18,13 @@ class API extends REST {
 	}
 
 	getCountries() {
+		this.server = 'https://corona.lmao.ninja/v2';
 		return this.getQuery('historical');
+	}
+	
+	getTotalInfo() {
+		this.server = 'https://corona.lmao.ninja';
+		return this.getQuery('all');
 	}
 }
 
