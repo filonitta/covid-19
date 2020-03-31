@@ -1,0 +1,9 @@
+.pagination-controls {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 40px;
+
+	> *:not(last-child) {
+		margin-right: 15px;
+	}
+}
