@@ -31,6 +31,22 @@ const Statistics = props => {
 	const onDateChange = event => setSelectedDate(event);
 	const format = (date) => moment(date).format('M/D/YY');
 
+	const chartOptions = {
+		scales: {
+			yAxes: [{
+				ticks: {
+					beginAtZero: true,
+					padding: 5
+								},
+			}],
+			xAxes: [{
+				ticks: {
+					padding: 10
+								}
+			}]
+		}
+	};
+
 	const data = (list, field) => {
 		list = list.sort((a, b) => b.timeline[field][format(selectedDate)] - a.timeline[field][format(selectedDate)]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
 		
@@ -47,9 +63,10 @@ const Statistics = props => {
 			pointHoverRadius: 3,
 			pointHoverBorderWidth: 2,
 			pointRadius: 2,
-			pointHitRadius: 10
+			pointHitRadius: 10,
 		};
 
+	
 		return {
 			labels: list.map(item => item.country),
 			// labels: list.map(item => item.country + `${item.province ? '(' + item.province + ')' : ''}`),
@@ -84,15 +101,15 @@ const Statistics = props => {
 			
 			{list.length !== 0 && <>
 			{showCase === 1 &&
-			<Bar data={data(list, 'cases')} />
+			<Bar options={chartOptions} data={data(list, 'cases')} />
 			}
 
 			{showCase === 2 &&
-			<Bar data={data(list, 'deaths')} />
+			<Bar options={chartOptions} data={data(list, 'deaths')} />
 			}
 
 			{showCase === 3 &&
-			<Bar data={data(list, 'recovered')} />
+			<Bar options={chartOptions} data={data(list, 'recovered')} />
 			}
 			</>}
 

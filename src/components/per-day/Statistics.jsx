@@ -24,6 +24,22 @@ const Statistics = (props) => {
 		recovered: processData(currentCountry.timeline.recovered),
 	};
 
+	const chartOptions = {
+		scales: {
+			yAxes: [{
+				ticks: {
+					beginAtZero: true,
+					padding: 5
+				},
+			}],
+			xAxes: [{
+				ticks: {
+					padding: 10
+				}
+			}]
+		}
+	};
+
 	const onDateChange = event => setSelectedDate(event);
 
 	function processData(source) {
@@ -67,15 +83,11 @@ const Statistics = (props) => {
 					pointHoverBorderWidth: 2,
 					pointRadius: 3,
 					pointHitRadius: 10,
-					data: options.data || []
+					data: options.data || [],
+					
 				}
 			]
 		};
-	}
-
-	const onChangeCase1 = type => () => {
-		console.log(type, showCase)
-		setShowCase(type)
 	}
 
 	return (
@@ -99,7 +111,7 @@ const Statistics = (props) => {
 			<RadioGroup onChange={setShowCase} checkedValue={showCase} />
 			
 			{showCase === 1 &&
-			<Line data={data({
+			<Line options={chartOptions} data={data({
 				label: '# of Cases',
 				labels: Object.keys(info.timeline.cases),
 				data: Object.values(info.timeline.cases),
@@ -108,7 +120,7 @@ const Statistics = (props) => {
 			}
 
 			{showCase === 2 &&
-			<Bar data={data({
+			<Bar options={chartOptions} data={data({
 				label: '# of Deaths',
 				labels: Object.keys(info.perDay.deaths),
 				data: Object.values(info.perDay.deaths),
@@ -117,7 +129,7 @@ const Statistics = (props) => {
 			}
 
 			{showCase === 3 &&
-			<Bar data={data({
+			<Bar options={chartOptions} data={data({
 				label: '# of Recovered',
 				labels: Object.keys(info.perDay.recovered),
 				data: Object.values(info.perDay.recovered),
