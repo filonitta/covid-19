@@ -1,4 +1,4 @@
-# Video
+# COVID-19
 
 ## Install dependencies
 `npm i`
