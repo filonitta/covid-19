@@ -11,6 +11,7 @@ defaults.global.legend.display = false;
 
 import './Statistics.scss';
 import RadioGroup from '@shared/RadioGroup';
+import { range } from '@utils/math';
 
 const Statistics = props => {
 	const {
@@ -21,7 +22,8 @@ const Statistics = props => {
 	const [selectedDate, setSelectedDate] = useState(new Date);
 	const [paginationPage, setPaginationPage] = useState(1);
 	const [paginationCount, setPaginationCount] = useState(20);
-	
+	const [paginationVisibleItems, setPaginationVisibleItems] = useState(10);
+
 	const rnd = (min, max) => {
 		min = Math.ceil(min);
 		max = Math.floor(max);
@@ -73,17 +75,37 @@ const Statistics = props => {
 			datasets: [{
 				...settings,
 				data: list.map(item => item.timeline[field][format(selectedDate)]),
-				backgroundColor: new Array(list.length).fill(0).map(() => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 0.4)`),
-				borderColor: new Array(list.length).fill(0).map(() => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
-				pointBorderColor: new Array(list.length).fill(0).map(() => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
-				pointHoverBackgroundColor: new Array(list.length).fill(0).map(() => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
-				pointHoverBorderColor: new Array(list.length).fill(0).map(() => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
+				backgroundColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 0.5)`),
+				// borderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
+				// pointBorderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
+				// pointHoverBackgroundColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
+				// pointHoverBorderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
 			}],
 			
 		};
 	}
 
 	const setPage = page => () => setPaginationPage(page);
+
+	const generatePaginationItems = () => {
+		const data = [];
+		range(Math.ceil(list.length / paginationCount)).forEach((item, index) => {
+			if (index < Math.round(paginationVisibleItems / 2) || index >= Math.ceil(list.length / paginationCount) - Math.round(paginationVisibleItems / 2)) {
+				data.push({
+					value: 1,
+					index
+				});
+				return;
+			}
+			
+			if (!data.find(item => item.value === 0)) data.push({
+				value: 0,
+				index
+			});
+		});
+
+		return data.map((item, index) => item.value ? <Pagination.Item key={index} active={paginationPage === item.index + 1} onClick={setPage(item.index + 1)}>{item.index + 1}</Pagination.Item> : <Pagination.Ellipsis key={index} disabled />);
+	}
 
 	return (
 		<div className="card card-body bg-light">
@@ -128,9 +150,12 @@ const Statistics = props => {
 				<Pagination>
 					<Pagination.First onClick={setPage(1)} disabled={paginationPage === 1} />
 					<Pagination.Prev onClick={setPage(paginationPage - 1)} disabled={paginationPage === 1} />
-					{new Array(Math.ceil(list.length / paginationCount)).fill(0).map((item, index) => (
+					{/* {generatePaginationItems()} */}
+
+					{range(Math.ceil(list.length / paginationCount)).map((item, index) => (
 						<Pagination.Item key={index} active={paginationPage === index + 1} onClick={setPage(index + 1)}>{index + 1}</Pagination.Item>
 					))}
+
 					{/* <Pagination.Ellipsis />
 
 					<Pagination.Item>{10}</Pagination.Item>

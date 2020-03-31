@@ -16,7 +16,7 @@ const Home = () => {
 				<h1>COVID-19 statistics</h1>
 			</div>
 
-			<Tabs defaultActiveKey="total">
+			<Tabs defaultActiveKey="country">
 				<Tab eventKey="total" title="Total">
 					<Total />
 				</Tab>
