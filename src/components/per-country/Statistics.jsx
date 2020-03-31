@@ -48,9 +48,7 @@ const Statistics = (props) => {
 			pointHoverRadius: 3,
 			pointHoverBorderWidth: 2,
 			pointRadius: 2,
-			pointHitRadius: 10,
-			// maintainAspectRatio: false,
-			// responsive: true
+			pointHitRadius: 10
 		};
 		
 		return {
@@ -115,25 +113,38 @@ const Statistics = (props) => {
 			}
 			</>}
 
-			<Pagination className="mt-4">
-				<Pagination.First onClick={setPage(1)} disabled={paginationPage === 1} />
-				<Pagination.Prev onClick={setPage(paginationPage - 1)} disabled={paginationPage === 1} />
-				{new Array(Math.ceil(list.length / paginationCount)).fill(0).map((item, index) => (
-					<Pagination.Item key={index} active={paginationPage === index + 1} onClick={setPage(index + 1)}>{index + 1}</Pagination.Item>
-				))}
-				{/* <Pagination.Ellipsis />
+			<div className="pagination-controls">
+				<select
+					className="form-control"
+					style={{ width: '100px' }}
+					onChange={event => setPaginationCount(event.target.value)}
+					defaultValue={'20'}
+			>
+					<option value="20">20</option>
+					<option value="30">30</option>
+					<option value="40">40</option>
+				</select>
 
-				<Pagination.Item>{10}</Pagination.Item>
-				<Pagination.Item>{11}</Pagination.Item>
-				<Pagination.Item active>{12}</Pagination.Item>
-				<Pagination.Item>{13}</Pagination.Item>
-				<Pagination.Item disabled>{14}</Pagination.Item>
+				<Pagination>
+					<Pagination.First onClick={setPage(1)} disabled={paginationPage === 1} />
+					<Pagination.Prev onClick={setPage(paginationPage - 1)} disabled={paginationPage === 1} />
+					{new Array(Math.ceil(list.length / paginationCount)).fill(0).map((item, index) => (
+						<Pagination.Item key={index} active={paginationPage === index + 1} onClick={setPage(index + 1)}>{index + 1}</Pagination.Item>
+					))}
+					{/* <Pagination.Ellipsis />
 
-				<Pagination.Ellipsis />
-				<Pagination.Item>{20}</Pagination.Item> */}
-				<Pagination.Next onClick={setPage(paginationPage + 1)} disabled={paginationPage === Math.ceil(list.length / paginationCount)} />
-				<Pagination.Last onClick={setPage(Math.ceil(list.length / paginationCount))} disabled={paginationPage === Math.ceil(list.length / paginationCount)} />
-			</Pagination>
+					<Pagination.Item>{10}</Pagination.Item>
+					<Pagination.Item>{11}</Pagination.Item>
+					<Pagination.Item active>{12}</Pagination.Item>
+					<Pagination.Item>{13}</Pagination.Item>
+					<Pagination.Item disabled>{14}</Pagination.Item>
+
+					<Pagination.Ellipsis />
+					<Pagination.Item>{20}</Pagination.Item> */}
+					<Pagination.Next onClick={setPage(paginationPage + 1)} disabled={paginationPage === Math.ceil(list.length / paginationCount)} />
+					<Pagination.Last onClick={setPage(Math.ceil(list.length / paginationCount))} disabled={paginationPage === Math.ceil(list.length / paginationCount)} />
+				</Pagination>
+			</div>
 		</div>
 	);
 };

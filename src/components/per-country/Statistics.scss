@@ -20,20 +20,13 @@ dl {
 	}
 }
 
-/* .chartWrapper {
-	position: relative;
+.pagination-controls {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 40px;
 
-	> canvas {
-		position: absolute;
-		left: 0;
-		top: 0;
-		pointer-events: none;
+	> *:not(last-child) {
+		margin-right: 15px;
 	}
 }
-
-.chartAreaWrapper {
-	max-width: 600px;
-	overflow-x: scroll;
-} */
-
 
