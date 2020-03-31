@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSort, faSortAmountDownAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Sorting = (props) => {
 	const {
@@ -26,9 +28,10 @@ const Sorting = (props) => {
 	return (
 		<div className="form-group">
 			<div className="input-group mb-3">
-				{/* <div className="input-group-prepend">
-					<span className="input-group-text" id="basic-addon1">@</span>
-				</div> */}
+				<div className="input-group-prepend">
+					{/* <button className="btn btn-secondary" type="button"><FontAwesomeIcon icon={faSortAmountUpAlt} /></button> */}
+					<span className="input-group-text"><FontAwesomeIcon icon={faSortAmountDownAlt} /></span>
+				</div>
 				<select className="form-control" onChange={sort} placeholder="Sort by">
 					{/* <option value="DEFAULT" disabled>-- Sort by --</option> */}
 					<option value="country">Country name</option>

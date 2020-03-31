@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import FontAwesome from 'react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const SearchField = (props) => {
 	const {
@@ -15,11 +16,11 @@ const SearchField = (props) => {
 
 	return (
 		<div className="input-group mb-3">
-			{/* <div className="input-group-prepend">
+			<div className="input-group-prepend">
 				<span className="input-group-text">
-					@
+					<FontAwesomeIcon icon={faSearch} />
 				</span>
-			</div> */}
+			</div>
 			<input
 				type="search"
 				className="form-control"

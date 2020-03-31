@@ -12,8 +12,6 @@ const Statistics = (props) => {
 		info
 	} = props;
 
-	console.log(info);
-
 	const [selectedDate, setSelectedDate] = useState(new Date);
 	const [showCase, setShowcase] = useState(1);
 
@@ -24,8 +22,6 @@ const Statistics = (props) => {
 		deaths: processData(currentCountry.timeline.deaths),
 		recovered: processData(currentCountry.timeline.recovered),
 	};
-
-	console.log(currentCountry);
 
 	const onDateChange = event => setSelectedDate(event);
 
@@ -79,10 +75,7 @@ const Statistics = (props) => {
 		};
 	}
 
-	const onChangeCase = type => event => {
-		// console.log(event.target.checked)
-		setShowcase(type);
-	}
+	const onChangeCase = type => event => setShowcase(type);
 
 	return (
 		<div className="card card-body bg-light">
