@@ -33,6 +33,7 @@ const Statistics = props => {
 
 	const data = (list, field) => {
 		list = list.sort((a, b) => b.timeline[field][format(selectedDate)] - a.timeline[field][format(selectedDate)]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
+		
 		const settings = {
 			fill: false,
 			lineTension: 0.1,
@@ -48,9 +49,10 @@ const Statistics = props => {
 			pointRadius: 2,
 			pointHitRadius: 10
 		};
-		
+
 		return {
 			labels: list.map(item => item.country),
+			// labels: list.map(item => item.country + `${item.province ? '(' + item.province + ')' : ''}`),
 			datasets: [{
 				...settings,
 				data: list.map(item => item.timeline[field][format(selectedDate)]),

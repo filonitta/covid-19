@@ -16,11 +16,11 @@ const Home = () => {
 				<h1>COVID-19 statistics</h1>
 			</div>
 
-			<Tabs defaultActiveKey="day" id="uncontrolled-tab-example">
+			<Tabs defaultActiveKey="country">
 				<Tab eventKey="total" title="Total">
 					<Total />
 				</Tab>
-				<Tab eventKey="country" title="Historical per country">
+				<Tab eventKey="country" title="Historical per countries">
 					<HistoricalPerCountry />
 				</Tab>
 				<Tab eventKey="day" title="Historical per day">
