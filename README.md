@@ -1,4 +1,6 @@
-# COVID-19
+# COVID-19 statistics
+
+[Demo](http://covid-19.filonitta.in.ua/)
 
 ## Install dependencies
 `npm i`

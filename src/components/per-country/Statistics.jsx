@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
-import Pagination from 'react-bootstrap/Pagination';
 import { Bar } from 'react-chartjs-2';
 import { defaults } from 'react-chartjs-2';
 
@@ -11,7 +10,8 @@ defaults.global.legend.display = false;
 
 import './Statistics.scss';
 import RadioGroup from '@shared/RadioGroup';
-import { range } from '@utils/math';
+import Pager from '@shared/Pager';
+import { range, rnd } from '@utils/math';
 
 const Statistics = props => {
 	const {
@@ -19,16 +19,10 @@ const Statistics = props => {
 	} = props;
 
 	const [showCase, setShowCase] = useState(1);
-	const [selectedDate, setSelectedDate] = useState(new Date);
+	const [selectedDate, setSelectedDate] = useState(new Date(moment().add(-1, 'days') ));
 	const [paginationPage, setPaginationPage] = useState(1);
 	const [paginationCount, setPaginationCount] = useState(20);
-	const [paginationVisibleItems, setPaginationVisibleItems] = useState(10);
-
-	const rnd = (min, max) => {
-		min = Math.ceil(min);
-		max = Math.floor(max);
-		return Math.floor(Math.random() * (max - Math.ceil(min) + 1)) + Math.ceil(min);
-	};
+	const [paginationVisibleItems] = useState(10);
 
 	const onDateChange = event => setSelectedDate(event);
 	const format = (date) => moment(date).format('M/D/YY');
@@ -46,7 +40,7 @@ const Statistics = props => {
 					padding: 10
 								}
 			}]
-		}
+		},
 	};
 
 	const data = (list, field) => {
@@ -71,6 +65,7 @@ const Statistics = props => {
 	
 		return {
 			labels: list.map(item => item.country),
+			// labels: list.map(item => item.country.length > 10 ? `${item.country.substring(0, 10)}...` : item.country),
 			// labels: list.map(item => item.country + `${item.province ? '(' + item.province + ')' : ''}`),
 			datasets: [{
 				...settings,
@@ -81,31 +76,10 @@ const Statistics = props => {
 				// pointHoverBackgroundColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
 				// pointHoverBorderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
 			}],
-			
 		};
 	}
 
 	const setPage = page => () => setPaginationPage(page);
-
-	const generatePaginationItems = () => {
-		const data = [];
-		range(Math.ceil(list.length / paginationCount)).forEach((item, index) => {
-			if (index < Math.round(paginationVisibleItems / 2) || index >= Math.ceil(list.length / paginationCount) - Math.round(paginationVisibleItems / 2)) {
-				data.push({
-					value: 1,
-					index
-				});
-				return;
-			}
-			
-			if (!data.find(item => item.value === 0)) data.push({
-				value: 0,
-				index
-			});
-		});
-
-		return data.map((item, index) => item.value ? <Pagination.Item key={index} active={paginationPage === item.index + 1} onClick={setPage(item.index + 1)}>{item.index + 1}</Pagination.Item> : <Pagination.Ellipsis key={index} disabled />);
-	}
 
 	return (
 		<div className="card card-body bg-light">
@@ -135,41 +109,14 @@ const Statistics = props => {
 			}
 			</>}
 
-			<div className="pagination-controls">
-				<select
-					className="form-control"
-					style={{ width: '100px' }}
-					onChange={event => setPaginationCount(event.target.value)}
-					defaultValue={'20'}
-			>
-					<option value="20">20</option>
-					<option value="30">30</option>
-					<option value="40">40</option>
-				</select>
-
-				<Pagination>
-					<Pagination.First onClick={setPage(1)} disabled={paginationPage === 1} />
-					<Pagination.Prev onClick={setPage(paginationPage - 1)} disabled={paginationPage === 1} />
-					{/* {generatePaginationItems()} */}
-
-					{range(Math.ceil(list.length / paginationCount)).map((item, index) => (
-						<Pagination.Item key={index} active={paginationPage === index + 1} onClick={setPage(index + 1)}>{index + 1}</Pagination.Item>
-					))}
-
-					{/* <Pagination.Ellipsis />
-
-					<Pagination.Item>{10}</Pagination.Item>
-					<Pagination.Item>{11}</Pagination.Item>
-					<Pagination.Item active>{12}</Pagination.Item>
-					<Pagination.Item>{13}</Pagination.Item>
-					<Pagination.Item disabled>{14}</Pagination.Item>
-
-					<Pagination.Ellipsis />
-					<Pagination.Item>{20}</Pagination.Item> */}
-					<Pagination.Next onClick={setPage(paginationPage + 1)} disabled={paginationPage === Math.ceil(list.length / paginationCount)} />
-					<Pagination.Last onClick={setPage(Math.ceil(list.length / paginationCount))} disabled={paginationPage === Math.ceil(list.length / paginationCount)} />
-				</Pagination>
-			</div>
+			<Pager
+				setPaginationCount={setPaginationCount}
+				setPage={setPage}
+				paginationPage={paginationPage}
+				paginationCount={paginationCount}
+				paginationVisibleItems={paginationVisibleItems}
+				list={list}
+			/>
 		</div>
 	);
 };
