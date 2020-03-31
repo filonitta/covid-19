@@ -22,8 +22,8 @@ const Statistics = (props) => {
 	const [showCase, setShowcase] = useState(1);
 	const [selectedDate, setSelectedDate] = useState(new Date);
 	const [paginationPage, setPaginationPage] = useState(1);
-	const paginationCount = 20;
-
+	const [paginationCount, setPaginationCount] = useState(20);
+	
 	const rnd = (min, max) => {
 		min = Math.ceil(min);
 		max = Math.floor(max);
@@ -34,8 +34,7 @@ const Statistics = (props) => {
 	const format = (date) => moment(date).format('M/D/YY');
 
 	const data = (list, field) => {
-		list = list.sort((a, b) => b.timeline[field][format(selectedDate)] - a.timeline[field][format(selectedDate)]).slice(paginationPage - 1, paginationPage - 1 + paginationCount);
-
+		list = list.sort((a, b) => b.timeline[field][format(selectedDate)] - a.timeline[field][format(selectedDate)]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
 		const settings = {
 			fill: false,
 			lineTension: 0.1,
@@ -50,8 +49,8 @@ const Statistics = (props) => {
 			pointHoverBorderWidth: 2,
 			pointRadius: 2,
 			pointHitRadius: 10,
-			maintainAspectRatio: false,
-			responsive: true
+			// maintainAspectRatio: false,
+			// responsive: true
 		};
 		
 		return {
