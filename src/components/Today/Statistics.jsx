@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
-import { Line, Bar } from 'react-chartjs-2';
 
-import './Statistics.scss';
 import NoData from '@shared/NoData';
 
 const Statistics = (props) => {
