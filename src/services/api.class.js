@@ -28,6 +28,10 @@ class API extends REST {
 	getTodayInfo() {
 		return this.getQuery('countries');
 	}
+
+	getTodayCountryInfo(countryName) {
+		return this.getQuery(`countries/${countryName}`);
+	}
 }
 
 const api = new API(`${ENV.api}`);
