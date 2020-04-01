@@ -16,7 +16,7 @@ const Total = (props) => {
 		fetchData();
 	}, {});
 
-	if (!data) return 'No data';
+	if (!data) return <div className="text-center">No data</div>;
 
 	return (
 		<div className="card">

@@ -44,9 +44,10 @@ const HistoricalPerDay = () => {
 		setCountries([...list]);
 	}
 
+	if (isLoading) return <div className="text-center">No data</div>;
+
 	return (
 		<>
-			{/* <h2 className="mt-5 mb-5">per day</h2> */}
 			<div className="row">
 				<div className="col-sm-4">
 					<div className="card">
@@ -56,13 +57,11 @@ const HistoricalPerDay = () => {
 						<div className="card-body">
 							<Sorting list={originalCountriesList} onSort={updateList} />
 							<SearchField list={originalCountriesList} onSearch={updateList} />
-							{!isLoading &&
-								<CountriesList
-									list={countries}
-									onListUpdate={setCountries}
-									onCountrySelect={setSelectedCountry}
-								/>
-							}
+							<CountriesList
+								list={countries}
+								onListUpdate={setCountries}
+								onCountrySelect={setSelectedCountry}
+							/>
 						</div>
 					</div>
 				</div>

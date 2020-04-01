@@ -79,7 +79,7 @@ const Statistics = props => {
 		};
 	}
 
-	if (!list.length) return 'No data';
+	if (!list.length) return <div className="text-center">No data</div>;
 
 	return (
 		<div className="card card-body bg-light">
