@@ -26,6 +26,7 @@ module.exports = {
 			'@': path.resolve(__dirname, 'src/'),
 			'@redux': path.resolve(__dirname, 'src/redux/'),
 			'@shared': path.resolve(__dirname, 'src/components/shared'),
+			'@utils': path.resolve(__dirname, 'src/utils'),
 			'@env': path.resolve(__dirname, 'src/env/env.production.js'),
 		}
 	},

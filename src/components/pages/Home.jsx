@@ -1,26 +1,49 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
 
-import Notification from './../shared/Notification';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 
-const styles = {
-	
-};
+import './Home.scss';
+import Total from '@base/src/components/Total';
+import Today from '@base/src/components/Today';
+import HistoricalPerDay from '@base/src/components/per-day';
+import HistoricalPerCountry from '@base/src/components/per-country';
 
-class Home extends React.Component {
-	static propTypes = {
-		classes: PropTypes.object
-	};
+const Home = () => {
+	const [activeTab, setActiveTab] = useState('total');
+	const [visitedTabs, setVisitedTabs] = useState([activeTab]);
 
-	render() {
-		return <div className="container">
-			<h1>Homepage</h1>
-			<p>Hi there!</p>
-
-			<Notification />
-		</div>;
+	const onSelectTab = tab => {
+		setActiveTab(tab);
+		if (!isVisited(tab)) setVisitedTabs([...visitedTabs, tab]);
 	}
+
+	const isVisited = (tab) => visitedTabs.includes(tab);
+
+	return (
+		<div className="container">
+			<div className="page-header mt-5 mb-5">
+				<h1>COVID-19 statistics</h1>
+			</div>
+
+			<Tabs defaultActiveKey={activeTab} onSelect={onSelectTab}>
+				<Tab eventKey="total" title="Total" disabled={activeTab === 'total'}>
+					{(activeTab === 'total' || isVisited('total')) && <Total />}
+				</Tab>
+				<Tab eventKey="today" title="Today" disabled={activeTab === 'today'}>
+					{(activeTab === 'today' || isVisited('today')) && <Today />}
+				</Tab>
+				<Tab eventKey="all" title="Historical: all countries" disabled={activeTab === 'all'}>
+					{(activeTab === 'all' || isVisited('all')) && <HistoricalPerCountry />}
+				</Tab>
+				<Tab eventKey="country" title="Historical: per country" disabled={activeTab === 'country'}>
+					{(activeTab === 'country' || isVisited('country')) && <HistoricalPerDay />}
+				</Tab>
+			</Tabs>
+
+								
+		</div>
+	)
 }
 
-export default withStyles(styles)(Home);
+export default Home;

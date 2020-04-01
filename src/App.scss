@@ -1,5 +1,10 @@
-@import './../node_modules/normalize.css/normalize.css';
-@import './../node_modules/bootstrap-4-grid/scss/grid.scss';
+dl {
+	dt {
+		float: left;
 
-@import './css/variables';
-@import './css/base';
+		&::after {
+			content: ':';
+			margin-right: 15px;
+		}
+	}
+}

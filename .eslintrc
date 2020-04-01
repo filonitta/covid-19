@@ -19,7 +19,8 @@
 		"store": "writable"
 	},
 	"rules": {
-		"no-console": "off"
+		"no-console": "off",
+		"no-unused-vars": "off"
 	},
 	"settings": {
 		"react": {
