@@ -9,8 +9,6 @@ import Statistics from './Statistics';
 import NoData from '@shared/NoData';
 
 String.prototype.capitalize = function () {
-	// const value = this.valueOf().split(' ');
-	// return value.map(str => `${str.substring(0, 1).toUpperCase()}${str.substring(1)}`).join(' ');
 	const value = this.valueOf();
 	return `${value.substring(0, 1).toUpperCase()}${value.substring(1)}`;
 }
@@ -24,14 +22,10 @@ const Today = () => {
 	useEffect(() => {
 		async function fetchInfo() {
 			setIsLoading(true);
-			const countries = await api.getTodayInfo();
+			let countries = await api.getTodayInfo();
 
-			countries.sort((a, b) => (a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0).forEach(item => {
-				item.country = item.country.capitalize();
-				if (item.province) {
-					item.province = item.province.capitalize();
-				}
-			});
+			// countries = countries.sort((a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0);
+			countries = countries.sort((a, b) => b.cases - a.cases);
 
 			setCountries(countries);
 			setOriginalCountriesList(countries);

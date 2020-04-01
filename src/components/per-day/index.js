@@ -26,7 +26,7 @@ const HistoricalPerDay = () => {
 			setIsLoading(true);
 			const countries = await api.getCountries();
 
-			countries.sort((a, b) => (a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0).forEach(item => {
+			countries.sort((a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0).forEach(item => {
 				item.country = item.country.capitalize();
 				if (item.province) {
 					item.province = item.province.capitalize();
