@@ -19,6 +19,8 @@ const Pager = (props) => {
 	const [currentIndex, setCurrentIndex] = useState(activePage);
 	const [currentVisibleItems, setCurrentVisibleItems] = useState(maxVisibleItems);
 
+	console.log(paginationPage)
+
 	const onClick = page => () => {
 		// console.log(page)
 		// console.log(page, currentIndex)
@@ -74,7 +76,7 @@ const Pager = (props) => {
 				{/* {generatePaginationItems()} */}
 
 				{range(Math.ceil(itemsCount / paginationCount)).map((item, index) => (
-					<Pagination.Item key={index} active={paginationPage === index + 1} onClick={setPage(index + 1)}>{index + 1}</Pagination.Item>
+					<Pagination.Item key={index} active={paginationPage === index + 1} onClick={onClick(index + 1)}>{index + 1}</Pagination.Item>
 				))}
 
 				<Pagination.Next onClick={onClick(paginationPage + 1)} disabled={paginationPage === Math.ceil(itemsCount / paginationCount)} />
