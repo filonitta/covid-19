@@ -54,6 +54,7 @@ const Today = () => {
 							Countries
 						</div>
 						<div className="card-body">
+							<SearchField list={originalCountriesList} onSearch={updateList} />
 							<CountriesList
 								list={countries}
 								onListUpdate={setCountries}
