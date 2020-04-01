@@ -79,7 +79,7 @@ const Statistics = props => {
 		};
 	}
 
-	const setPage = page => () => setPaginationPage(page);
+	if (!list.length) return 'No data';
 
 	return (
 		<div className="card card-body bg-light">
@@ -95,7 +95,6 @@ const Statistics = props => {
 
 			<RadioGroup onChange={setShowCase} checkedValue={showCase} />
 			
-			{list.length !== 0 && <>
 			{showCase === 1 &&
 			<Bar options={chartOptions} data={data(list, 'cases')} />
 			}
@@ -107,15 +106,15 @@ const Statistics = props => {
 			{showCase === 3 &&
 			<Bar options={chartOptions} data={data(list, 'recovered')} />
 			}
-			</>}
 
 			<Pager
 				setPaginationCount={setPaginationCount}
-				setPage={setPage}
+				setPage={setPaginationPage}
 				paginationPage={paginationPage}
 				paginationCount={paginationCount}
-				paginationVisibleItems={paginationVisibleItems}
-				list={list}
+				maxVisibleItems={paginationVisibleItems}
+				itemsCount={list.length}
+				activePage={paginationPage}
 			/>
 		</div>
 	);
