@@ -5,6 +5,7 @@ import Tab from 'react-bootstrap/Tab';
 
 import './Home.scss';
 import Total from '@base/src/components/Total';
+import Today from '@base/src/components/Today';
 import HistoricalPerDay from '@base/src/components/per-day';
 import HistoricalPerCountry from '@base/src/components/per-country';
 
@@ -28,6 +29,9 @@ const Home = () => {
 			<Tabs defaultActiveKey={activeTab} onSelect={onSelectTab}>
 				<Tab eventKey="total" title="Total" disabled={activeTab === 'total'}>
 					{(activeTab === 'total' || isVisited('total')) && <Total />}
+				</Tab>
+				<Tab eventKey="today" title="Today" disabled={activeTab === 'today'}>
+					{(activeTab === 'today' || isVisited('today')) && <Today />}
 				</Tab>
 				<Tab eventKey="all" title="Historical: all countries" disabled={activeTab === 'all'}>
 					{(activeTab === 'all' || isVisited('all')) && <HistoricalPerCountry />}

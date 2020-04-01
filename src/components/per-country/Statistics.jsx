@@ -12,6 +12,7 @@ import './Statistics.scss';
 import RadioGroup from '@shared/RadioGroup';
 import Pager from '@shared/Pager';
 import { range, rnd } from '@utils/math';
+import NoData from '@shared/NoData';
 
 const Statistics = props => {
 	const {
@@ -79,7 +80,7 @@ const Statistics = props => {
 		};
 	}
 
-	if (!list.length) return <div className="text-center">No data</div>;
+	if (!list.length) return <NoData />;
 
 	return (
 		<div className="card card-body bg-light">

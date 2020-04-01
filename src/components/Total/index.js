@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import api from '@/services/api.class';
+import NoData from '@shared/NoData';
 
 const Total = (props) => {
 	const [data, setData] = useState(null);
@@ -16,7 +17,7 @@ const Total = (props) => {
 		fetchData();
 	}, {});
 
-	if (!data) return <div className="text-center">No data</div>;
+	if (!data) return <NoData />;
 
 	return (
 		<div className="card">

@@ -24,6 +24,10 @@ class API extends REST {
 	getTotalInfo() {
 		return this.getQuery('all');
 	}
+	
+	getTodayInfo() {
+		return this.getQuery('countries');
+	}
 }
 
 const api = new API(`${ENV.api}`);

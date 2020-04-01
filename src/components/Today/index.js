@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import api from '@/services/api.class';
 import CountriesList from '@shared/CountriesList';
 import SearchField from './SearchField';
-import Sorting from './Sorting';
+// import Sorting from './Sorting';
 import Statistics from './Statistics';
 import NoData from '@shared/NoData';
 
@@ -15,16 +15,16 @@ String.prototype.capitalize = function () {
 	return `${value.substring(0, 1).toUpperCase()}${value.substring(1)}`;
 }
 
-const HistoricalPerDay = () => {
+const Today = () => {
 	const [countries, setCountries] = useState([]);
 	const [originalCountriesList, setOriginalCountriesList] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [selectedCountry, setSelectedCountry] = useState(null);
 
 	useEffect(() => {
-		async function fetchCountries() {
+		async function fetchInfo() {
 			setIsLoading(true);
-			const countries = await api.getCountries();
+			const countries = await api.getTodayInfo();
 
 			countries.sort((a, b) => (a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0).forEach(item => {
 				item.country = item.country.capitalize();
@@ -38,7 +38,7 @@ const HistoricalPerDay = () => {
 			setIsLoading(false);
 		}
 
-		fetchCountries();
+		fetchInfo();
 	}, []);
 
 	const updateList = (list) => {
@@ -56,7 +56,7 @@ const HistoricalPerDay = () => {
 							Countries
 						</div>
 						<div className="card-body">
-							<Sorting list={originalCountriesList} onSort={updateList} />
+							{/* <Sorting list={originalCountriesList} onSort={updateList} /> */}
 							<SearchField list={originalCountriesList} onSearch={updateList} />
 							<CountriesList
 								list={countries}
@@ -77,4 +77,4 @@ const HistoricalPerDay = () => {
 	);
 };
 
-export default HistoricalPerDay;
+export default Today;
