@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import api from '@/services/api.class';
 import CountriesList from '@shared/CountriesList';
-import SearchField from './SearchField';
+import SearchField from '@shared/SearchField';
 // import Sorting from './Sorting';
 import Statistics from './Statistics';
 import NoData from '@shared/NoData';
