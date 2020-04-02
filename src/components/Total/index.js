@@ -20,9 +20,9 @@ const Total = (props) => {
 	if (!data) return <NoData />;
 
 	return (
-		<div className="card">
+		<div className="card bg-light">
 			<div className="card-header">
-				<h4>Total statistics</h4>
+				<h4 className="mb-0">Total statistics</h4>
 			</div>
 			<div className="card-body">
 				<dl>

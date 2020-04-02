@@ -5,7 +5,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import { Line, Bar } from 'react-chartjs-2';
 
-import './Statistics.scss';
 import RadioGroup from '@shared/RadioGroup';
 
 const Statistics = (props) => {

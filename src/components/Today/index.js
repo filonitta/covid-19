@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import api from '@/services/api.class';
 import CountriesList from '@shared/CountriesList';
 import SearchField from '@shared/SearchField';
-// import Sorting from './Sorting';
 import Statistics from './Statistics';
 import NoData from '@shared/NoData';
 
@@ -55,7 +54,6 @@ const Today = () => {
 							Countries
 						</div>
 						<div className="card-body">
-							{/* <Sorting list={originalCountriesList} onSort={updateList} /> */}
 							<SearchField list={originalCountriesList} onSearch={updateList} />
 							<CountriesList
 								list={countries}
