@@ -21,7 +21,7 @@ const Statistics = (props) => {
 				<dl>
 					<dt>Total Cases</dt><dd><span className="badge badge-secondary">{info.cases}</span></dd>
 					<dt>Today Cases</dt><dd><span className="badge badge-secondary">{info.todayCases}</span></dd>
-					<dt>Total Deaths</dt><dd><span className="badge badge-secondary">{info.todayDeaths}</span></dd>
+					<dt>Total Deaths</dt><dd><span className="badge badge-secondary">{info.deaths}</span></dd>
 					<dt>Today Deaths</dt><dd><span className="badge badge-secondary">{info.todayDeaths}</span></dd>
 					<dt>Recovered</dt><dd><span className="badge badge-secondary">{info.recovered}</span></dd>
 					<dt>Active</dt><dd><span className="badge badge-secondary">{info.active}</span></dd>
