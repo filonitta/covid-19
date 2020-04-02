@@ -19,7 +19,7 @@ const Pager = (props) => {
 	const [currentIndex, setCurrentIndex] = useState(activePage);
 	const [currentVisibleItems, setCurrentVisibleItems] = useState(maxVisibleItems);
 
-	console.log(paginationPage)
+	// console.log(paginationPage)
 
 	const onClick = page => () => {
 		// console.log(page)
