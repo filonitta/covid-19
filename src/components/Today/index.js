@@ -58,7 +58,7 @@ const Today = () => {
 							<CountriesList
 								list={countries}
 								onListUpdate={setCountries}
-								onCountrySelect={getCountryInfo}
+								onCountrySelect={setSelectedCountry}
 							/>
 						</div>
 					</div>

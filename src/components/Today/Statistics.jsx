@@ -20,7 +20,7 @@ const Statistics = (props) => {
 					<img src={info.countryInfo.flag} style={{ position: 'absolute', right: '1.25rem' }} alt=""/>
 				<dl>
 					<dt>Total Cases</dt><dd><span className="badge badge-secondary">{info.cases}</span></dd>
-					<dt>Today cases</dt><dd><span className="badge badge-secondary">{info.todayCases}</span></dd>
+					<dt>Today Cases</dt><dd><span className="badge badge-secondary">{info.todayCases}</span></dd>
 					<dt>Total Deaths</dt><dd><span className="badge badge-secondary">{info.todayDeaths}</span></dd>
 					<dt>Today Deaths</dt><dd><span className="badge badge-secondary">{info.todayDeaths}</span></dd>
 					<dt>Recovered</dt><dd><span className="badge badge-secondary">{info.recovered}</span></dd>
