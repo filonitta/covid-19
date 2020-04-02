@@ -129,7 +129,9 @@ module.exports = {
 					test: /[\\/]node_modules[\\/]((?!react).*)[\\/]/,
 					name: 'vendors',
 					chunks: 'all',
-					priority: -10
+					priority: -10,
+					minSize: 3e+5,
+					maxSize: 5e+5,
 				},
 				default: {
 					minChunks: 2,
