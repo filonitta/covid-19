@@ -33,7 +33,7 @@ const Total = (props) => {
 				</dl>
 			</div>
 			<div className="card-footer">
-				<span className="badge badge-light">Date updated: {moment(data.updated).format('MM-DD-YYYY')}</span>
+				<span className="badge">Date updated: {moment(data.updated).format('MMM DD, YYYY hh:MM a')}</span>
 			</div>
 		</div>
 	);
