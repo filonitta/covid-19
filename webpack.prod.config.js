@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WebpackClearConsole = require('webpack-clear-console').WebpackClearConsole;
 
 module.exports = {
 	devtool: 'cheap-eval-source-map',
@@ -119,6 +120,7 @@ module.exports = {
 			filename: '[name].[chunkhash].css',
 			ignoreOrder: false,
 		}),
+		new WebpackClearConsole()
 	],
 	optimization: {
 		splitChunks: {
