@@ -20,7 +20,7 @@ const Statistics = props => {
 	} = props;
 
 	const [showCase, setShowCase] = useState(1);
-	const [selectedDate, setSelectedDate] = useState(new Date(moment().add(-1, 'days') ));
+	const [selectedDate, setSelectedDate] = useState(new Date(moment().add(-1, 'days')));
 	const [paginationPage, setPaginationPage] = useState(1);
 	const [paginationCount, setPaginationCount] = useState(20);
 
@@ -33,19 +33,33 @@ const Statistics = props => {
 				ticks: {
 					beginAtZero: true,
 					padding: 5
-								},
+				},
 			}],
 			xAxes: [{
 				ticks: {
 					padding: 10
-								}
+				}
 			}]
 		},
+		tooltips: {
+			enabled: true,
+			callbacks: {
+				title(tooltipItems, data) {
+					const [tooltipItem] = tooltipItems;
+					return data.tooltips[tooltipItem.index];
+				},
+				label(tooltipItem, data) {
+					let label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+					return label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString(navigator.language);
+				}
+			}
+		}
 	};
 
 	const data = (list, field) => {
 		list = list.sort((a, b) => b.timeline[field][format(selectedDate)] - a.timeline[field][format(selectedDate)]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
-		
+
 		const settings = {
 			fill: false,
 			lineTension: 0.1,
@@ -63,11 +77,10 @@ const Statistics = props => {
 		};
 
 		const range = (count, callback) => new Array(count).fill(0).map($ => callback ? callback($) : $);
-	
 		return {
-			labels: list.map(item => item.country),
-			// labels: list.map(item => item.country.length > 10 ? `${item.country.substring(0, 10)}...` : item.country),
-			// labels: list.map(item => item.country + `${item.province ? '(' + item.province + ')' : ''}`),
+			// labels: list.map(item => item.country),
+			tooltips: list.map(item => item.country + `${item.province ? ' (' + item.province + ')' : ''}`),
+			labels: list.map(item => item.country + `${item.province ? ' (' + item.province + ')' : ''}`).map(item => item.length > 10 ? `${item.substring(0, 10)}...` : item),
 			datasets: [{
 				...settings,
 				data: list.map(item => item.timeline[field][format(selectedDate)]),
@@ -95,17 +108,17 @@ const Statistics = props => {
 			/>
 
 			<RadioGroup onChange={setShowCase} checkedValue={showCase} />
-			
+
 			{showCase === 1 &&
-			<Bar options={chartOptions} data={data(list, 'cases')} />
+				<Bar options={chartOptions} data={data(list, 'cases')} />
 			}
 
 			{showCase === 2 &&
-			<Bar options={chartOptions} data={data(list, 'deaths')} />
+				<Bar options={chartOptions} data={data(list, 'deaths')} />
 			}
 
 			{showCase === 3 &&
-			<Bar options={chartOptions} data={data(list, 'recovered')} />
+				<Bar options={chartOptions} data={data(list, 'recovered')} />
 			}
 
 			<Pager

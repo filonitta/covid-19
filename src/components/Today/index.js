@@ -38,11 +38,6 @@ const Today = () => {
 		setCountries([...list]);
 	}
 
-	const getCountryInfo = async item => {
-		const data = await api.getTodayCountryInfo(item.country);
-		setSelectedCountry(data);
-	}
-
 	if (isLoading) return <NoData />;
 
 	return (
@@ -58,7 +53,7 @@ const Today = () => {
 							<CountriesList
 								list={countries}
 								onListUpdate={setCountries}
-								onCountrySelect={getCountryInfo}
+								onCountrySelect={setSelectedCountry}
 							/>
 						</div>
 					</div>
