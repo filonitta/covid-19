@@ -38,11 +38,6 @@ const Today = () => {
 		setCountries([...list]);
 	}
 
-	const getCountryInfo = async item => {
-		const data = await api.getTodayCountryInfo(item.country);
-		setSelectedCountry(data);
-	}
-
 	if (isLoading) return <NoData />;
 
 	return (
