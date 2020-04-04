@@ -11,7 +11,7 @@ defaults.global.legend.display = false;
 import './Statistics.scss';
 import RadioGroup from '@shared/RadioGroup';
 import Pager from '@shared/Pager';
-import { range, rnd } from '@utils/math';
+import { rnd } from '@utils/math';
 import NoData from '@shared/NoData';
 
 const Statistics = props => {
@@ -23,7 +23,6 @@ const Statistics = props => {
 	const [selectedDate, setSelectedDate] = useState(new Date(moment().add(-1, 'days') ));
 	const [paginationPage, setPaginationPage] = useState(1);
 	const [paginationCount, setPaginationCount] = useState(20);
-	const [paginationVisibleItems] = useState(10);
 
 	const onDateChange = event => setSelectedDate(event);
 	const format = (date) => moment(date).format('M/D/YY');
@@ -63,6 +62,7 @@ const Statistics = props => {
 			pointHitRadius: 10,
 		};
 
+		const range = (count, callback) => new Array(count).fill(0).map($ => callback ? callback($) : $);
 	
 		return {
 			labels: list.map(item => item.country),
@@ -109,13 +109,12 @@ const Statistics = props => {
 			}
 
 			<Pager
-				setPaginationCount={setPaginationCount}
-				setPage={setPaginationPage}
-				paginationPage={paginationPage}
-				paginationCount={paginationCount}
-				maxVisibleItems={paginationVisibleItems}
-				itemsCount={list.length}
-				activePage={paginationPage}
+				onPageChange={setPaginationPage}
+				onPageSizeChange={setPaginationCount}
+				totalPages={9}
+				totalRecords={list.length}
+				pageSize={paginationCount}
+				startPage={1}
 			/>
 		</div>
 	);

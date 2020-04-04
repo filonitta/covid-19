@@ -102,9 +102,9 @@ const Statistics = (props) => {
 			/>
 			<h3 className="mt-4 mb-4">{info.country} {info.province && `(${info.province})`}</h3>
 			<dl>
-				<dt>Cases per day</dt><dd><span className={`badge ${currentCountry.perDay.cases[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.cases[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.cases[format(selectedDate)]}</span></dd>
-				<dt>Deaths per day</dt><dd><span className={`badge ${currentCountry.perDay.deaths[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.deaths[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.deaths[format(selectedDate)]}</span></dd>
-				<dt>Recovered per day</dt><dd><span className={`badge ${currentCountry.perDay.recovered[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.recovered[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.recovered[format(selectedDate)]}</span></dd>
+				<dt>Cases per day</dt><dd><span className={`badge ${currentCountry.perDay.cases[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.cases[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.cases[format(selectedDate)].toLocaleString(navigator.language)}</span></dd>
+				<dt>Deaths per day</dt><dd><span className={`badge ${currentCountry.perDay.deaths[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.deaths[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.deaths[format(selectedDate)].toLocaleString(navigator.language)}</span></dd>
+				<dt>Recovered per day</dt><dd><span className={`badge ${currentCountry.perDay.recovered[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.recovered[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.recovered[format(selectedDate)].toLocaleString(navigator.language)}</span></dd>
 			</dl>
 
 			<RadioGroup onChange={setShowCase} checkedValue={showCase} />
@@ -117,6 +117,12 @@ const Statistics = (props) => {
 				rgb: '54, 162, 235'
 			})} />
 			}
+			{/* <Bar options={chartOptions} data={data({
+				label: '# of Cases',
+				labels: Object.keys(info.perDay.cases),
+				data: Object.values(info.perDay.cases),
+				rgb: '54, 162, 235'
+			})} /> */}
 
 			{showCase === 2 &&
 			<Bar options={chartOptions} data={data({

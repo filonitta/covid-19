@@ -26,10 +26,10 @@ const Total = (props) => {
 			</div>
 			<div className="card-body">
 				<dl>
-					<dt>Cases</dt><dd><span className="badge badge-secondary">{data.cases.toLocaleString('ru')}</span></dd>
-					<dt>Deaths</dt><dd><span className="badge badge-secondary">{data.deaths.toLocaleString('ru')}</span></dd>
-					<dt>Recovered</dt><dd><span className="badge badge-secondary">{data.recovered.toLocaleString('ru')}</span></dd>
-					<dt>Active</dt><dd><span className="badge badge-secondary">{data.active.toLocaleString('ru')}</span></dd>
+					<dt>Cases</dt><dd><span className="badge badge-secondary">{data.cases.toLocaleString(navigator.language)}</span></dd>
+					<dt>Deaths</dt><dd><span className="badge badge-secondary">{data.deaths.toLocaleString(navigator.language)}</span></dd>
+					<dt>Recovered</dt><dd><span className="badge badge-secondary">{data.recovered.toLocaleString(navigator.language)}</span></dd>
+					<dt>Active</dt><dd><span className="badge badge-secondary">{data.active.toLocaleString(navigator.language)}</span></dd>
 				</dl>
 			</div>
 			<div className="card-footer">

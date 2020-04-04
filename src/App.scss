@@ -8,3 +8,9 @@ dl {
 		}
 	}
 }
+
+a {
+	&:focus {
+		outline: none;
+	}
+}
