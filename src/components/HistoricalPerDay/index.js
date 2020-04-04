@@ -52,7 +52,7 @@ const HistoricalPerDay = () => {
 			<div className="row">
 				<div className="col-sm-4">
 					<div className="card">
-						<div className="card-header text-white bg-primary">
+						<div className="card-header text-white bg-secondary">
 							Countries
 						</div>
 						<div className="card-body">
@@ -67,10 +67,12 @@ const HistoricalPerDay = () => {
 					</div>
 				</div>
 				<div className="col-sm-8">
-					{!selectedCountry &&
-						<div className="card card-body bg-light"><em>Select a country to see its data</em></div>
-					}
-					{selectedCountry && <Statistics info={selectedCountry} />}
+					<div className="mt-4 mt-md-0">
+						{!selectedCountry &&
+							<div className="card card-body bg-light"><em>Select a country to see its data</em></div>
+						}
+						{selectedCountry && <Statistics info={selectedCountry} />}
+					</div>
 				</div>
 			</div>
 		</>

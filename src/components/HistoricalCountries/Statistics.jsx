@@ -108,7 +108,7 @@ const Statistics = props => {
 				className="form-control"
 			/>
 
-			<RadioGroup onChange={setShowCase} checkedValue={showCase} />
+			<RadioGroup onChange={setShowCase} checkedValue={showCase} className="mt-4" />
 
 			{showCase === 1 &&
 				<Bar options={chartOptions} data={data(list, 'cases')} />

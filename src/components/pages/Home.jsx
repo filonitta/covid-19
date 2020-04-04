@@ -21,22 +21,22 @@ const Home = () => {
 	const isVisited = (tab) => visitedTabs.includes(tab);
 
 	return (
-		<div className="container">
+		<div className="container mb-4">
 			<div className="page-header mt-5 mb-5">
 				<h1>COVID-19 statistics</h1>
 			</div>
 
-			<Tabs defaultActiveKey={activeTab} onSelect={onSelectTab}>
-				<Tab eventKey="total" title="Total" disabled={activeTab === 'total'}>
+			<Tabs defaultActiveKey={activeTab} onSelect={onSelectTab} variant="pills">
+				<Tab eventKey="total" title="Total" disabled={activeTab === 'total'} unmountOnExit={false}>
 					{(activeTab === 'total' || isVisited('total')) && <Total />}
 				</Tab>
-				<Tab eventKey="today" title="Today" disabled={activeTab === 'today'}>
+				<Tab eventKey="today" title="Today" disabled={activeTab === 'today'} unmountOnExit={false}>
 					{(activeTab === 'today' || isVisited('today')) && <Today />}
 				</Tab>
-				<Tab eventKey="all" title="Historical: all countries" disabled={activeTab === 'all'}>
+				<Tab eventKey="all" title="Historical: all countries" disabled={activeTab === 'all'} unmountOnExit={false}>
 					{(activeTab === 'all' || isVisited('all')) && <HistoricalCountries />}
 				</Tab>
-				<Tab eventKey="day" title="Historical: per day" disabled={activeTab === 'day'}>
+				<Tab eventKey="day" title="Historical: per day" disabled={activeTab === 'day'} unmountOnExit={false}>
 					{(activeTab === 'day' || isVisited('day')) && <HistoricalPerDay />}
 				</Tab>
 			</Tabs>

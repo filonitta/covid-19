@@ -1,9 +1,21 @@
+@import './../../css/variables';
+
 .pagination-controls {
 	display: flex;
 	justify-content: space-between;
 	margin-top: 40px;
-
+	
 	> *:not(last-child) {
 		margin-right: 15px;
 	}
+
+	@media (max-width: $breakpoint-tablet) {
+		flex-direction: column;
+	}
+
+	/* .pagination {
+		@media (max-width: $breakpoint-tablet) {
+			flex-direction: column;
+		}
+	} */
 }

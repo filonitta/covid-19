@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+import './Statistics.scss';
+
 import NoData from '@shared/NoData';
 
 const Statistics = (props) => {
@@ -17,7 +19,7 @@ const Statistics = (props) => {
 				<h4 className="mb-0">{info.country}</h4>
 			</div>
 			<div className="card-body">
-					<img src={info.countryInfo.flag} style={{ position: 'absolute', right: '1.25rem', opacity: 0.7 }} alt=""/>
+				<img className="country-flag" src={info.countryInfo.flag} alt=""/>
 				<dl>
 					<dt>Total Cases</dt><dd><span className="badge badge-secondary">{info.cases.toLocaleString(navigator.language)}</span></dd>
 					<dt>Today Cases</dt><dd><span className="badge badge-secondary">{info.todayCases.toLocaleString(navigator.language)}</span></dd>

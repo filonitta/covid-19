@@ -1,3 +1,11 @@
+@import './../../css/variables';
+
 .tab-content {
 	padding-top: 15px;
+}
+
+.nav {
+	@media (max-width: $breakpoint-tablet) {
+		flex-direction: column;
+	}
 }
