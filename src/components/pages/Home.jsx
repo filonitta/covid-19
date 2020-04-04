@@ -36,8 +36,8 @@ const Home = () => {
 				<Tab eventKey="all" title="Historical: all countries" disabled={activeTab === 'all'}>
 					{(activeTab === 'all' || isVisited('all')) && <HistoricalCountries />}
 				</Tab>
-				<Tab eventKey="country" title="Historical: per country" disabled={activeTab === 'country'}>
-					{(activeTab === 'country' || isVisited('country')) && <HistoricalPerDay />}
+				<Tab eventKey="day" title="Historical: per day" disabled={activeTab === 'day'}>
+					{(activeTab === 'day' || isVisited('day')) && <HistoricalPerDay />}
 				</Tab>
 			</Tabs>
 

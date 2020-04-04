@@ -1,59 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Pagination from 'react-bootstrap/Pagination';
 
 import './Pager.scss';
-import { range2, range } from '@utils/math';
+import { range } from '@utils/math';
 
 const Pager = (props) => {
 	const {
-		setPaginationCount,
-		setPage,
-		paginationPage,
-		paginationCount,
-		maxVisibleItems,
-		itemsCount,
-		activePage
+		onPageChange,
+		onPageSizeChange,
+		pageSize,
+		totalPages,
+		totalRecords,
+		startPage
 	} = props;
 
-	const [currentIndex, setCurrentIndex] = useState(activePage);
-	const [currentVisibleItems, setCurrentVisibleItems] = useState(maxVisibleItems);
-
-	// console.log(paginationPage)
-
+	const initialCenter = Math.ceil(totalPages / 2);
+	const pagesCount = Math.ceil(totalRecords / pageSize);
+	const [currentPage, setCurrentPage] = useState(startPage);
+	const [currentIndex, setCurrentIndex] = useState(currentPage);
+	let [currentCenter, setCurrentCenter] = useState(initialCenter);
+	
 	const onClick = page => () => {
-		// console.log(page)
-		// console.log(page, currentIndex)
-		if (page + currentIndex > maxVisibleItems / 2) {
-			setCurrentIndex(Math.round(page / 2));
-			setCurrentVisibleItems(currentVisibleItems + maxVisibleItems);
+		if (page <= initialCenter) {
+			setCurrentIndex(1);
+			setCurrentCenter(initialCenter);
+		} else {
+			setCurrentIndex(currentIndex + (page - currentCenter));
+			setCurrentCenter(page);
 		}
-		setPage(page);
+		
+		onPageChange(page);
+		setCurrentPage(page);
 	}
 
 	const generatePaginationItems = () => {
-		const pages = range2(itemsCount);
+		const pages = range(pagesCount, 1);
+		const theEndIsReached = pagesCount - (totalPages + currentIndex - 1) < 0;
 
-		// console.log(activePage, maxVisibleItems)
-
-		const slice = {
-			from: currentIndex === 1 ? currentIndex - 1 : currentVisibleItems - maxVisibleItems,
-			// to: currentIndex === 1 ? maxVisibleItems : maxVisibleItems * currentIndex - maxVisibleItems 
-			to: currentIndex === 1 ? maxVisibleItems : maxVisibleItems * currentIndex - maxVisibleItems 
+		const index = {
+			start: theEndIsReached ? pagesCount - totalPages : currentIndex - 1,
+			end: totalPages + currentIndex - 1
 		};
 
-		console.log(slice);
-		console.log(pages);
-		console.log(pages.slice(slice.from, slice.to));
-
-		return pages.slice(slice.from, slice.to).map((item, index) => (
+		return pages.slice(index.start, index.end).map((value, index) => (
 			<Pagination.Item
 				key={index}
-				active={activePage === index + currentIndex}
-				onClick={onClick(index + currentIndex)}>
-					{index + currentIndex}
+				active={currentPage === value}
+				onClick={onClick(value)}>
+				{value}
 			</Pagination.Item>
 		));
+	}
+
+	const onChangePaginationCount = (event) => {
+		onPageSizeChange(+event.target.value);
+		onPageChange(startPage);
+		setCurrentPage(startPage);
+		setCurrentIndex(startPage);
+		setCurrentCenter(initialCenter);
 	}
 
 	return (
@@ -61,40 +66,41 @@ const Pager = (props) => {
 			<select
 				className="form-control"
 				style={{ width: '100px' }}
-				onChange={event => setPaginationCount(+event.target.value)}
+				onChange={onChangePaginationCount}
 				defaultValue={'20'}
 			>
+				<option value="10">10</option>
 				<option value="20">20</option>
 				<option value="30">30</option>
-				<option value="40">40</option>
 			</select>
-
+			
 			<Pagination>
-				<Pagination.First onClick={onClick(1)} disabled={paginationPage === 1} />
-				<Pagination.Prev onClick={onClick(paginationPage - 1)} disabled={paginationPage === 1} />
+				<Pagination.First onClick={onClick(1)} disabled={currentCenter <= initialCenter} />
+				<Pagination.Prev onClick={onClick(currentPage - 1)} disabled={currentPage === 1} />
+				{currentCenter > initialCenter && <Pagination.Ellipsis disabled />}
 
-				{/* {generatePaginationItems()} */}
+				{generatePaginationItems()}
 
-				{range(Math.ceil(itemsCount / paginationCount)).map((item, index) => (
-					<Pagination.Item key={index} active={paginationPage === index + 1} onClick={onClick(index + 1)}>{index + 1}</Pagination.Item>
-				))}
-
-				<Pagination.Next onClick={onClick(paginationPage + 1)} disabled={paginationPage === Math.ceil(itemsCount / paginationCount)} />
-				<Pagination.Last onClick={onClick(Math.ceil(itemsCount / paginationCount))} disabled={paginationPage === Math.ceil(itemsCount / paginationCount)} />
+				{(pagesCount - currentPage >= initialCenter) && pagesCount !== totalPages && <Pagination.Ellipsis disabled />}
+				<Pagination.Next onClick={onClick(currentPage + 1)} disabled={currentPage === pagesCount} />
+				<Pagination.Last onClick={onClick(pagesCount)} disabled={(pagesCount - currentPage < initialCenter) || pagesCount === totalPages} />
 			</Pagination>
 		</div>
 	);
 };
 
 Pager.propTypes = {
-	setPaginationCount: PropTypes.func,
-	setPage: PropTypes.func,
-	paginationPage: PropTypes.number,
-	paginationCount: PropTypes.number,
-	maxVisibleItems: PropTypes.number,
-	
-	itemsCount: PropTypes.number,
-	activePage: PropTypes.number,
+	onPageSizeChange: PropTypes.func,
+	onPageChange: PropTypes.func,
+	pageSize: PropTypes.number,
+	totalPages: PropTypes.number,
+	totalRecords: PropTypes.number,
+	startPage: PropTypes.number,
+};
+
+Pager.defaultProps = {
+	totalPages: 10,
+	startPage: 1
 };
 
 export default Pager;
