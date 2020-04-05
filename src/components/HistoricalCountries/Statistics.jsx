@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Bar } from 'react-chartjs-2';
-import { defaults } from 'react-chartjs-2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
+import { defaults } from 'react-chartjs-2';
 defaults.global.legend.display = false;
 defaults.global.tooltips.titleMarginBottom = 15;
 defaults.global.tooltips.footerMarginTop = 10;
@@ -16,12 +20,12 @@ import { format } from '@utils/date';
 const Statistics = props => {
 	const {
 		list,
-		selectedDate,
 	} = props;
 
 	const [showCase, setShowCase] = useState(1);
 	const [paginationPage, setPaginationPage] = useState(1);
 	const [paginationCount, setPaginationCount] = useState(20);
+	const [selectedDate, setSelectedDate] = useState(new Date(moment().add(-1, 'days')));
 
 	const chartOptions = {
 		scales: {
@@ -58,8 +62,8 @@ const Statistics = props => {
 	};
 
 	const data = (list, field) => {
-		list = list.sort((a, b) => b.timeline[field][selectedDate] - a.timeline[field][selectedDate]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
-
+		list = list.sort((a, b) => b.timeline[field][format(selectedDate, 'M/D/YY')] - a.timeline[field][format(selectedDate, 'M/D/YY')]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
+		
 		const settings = {
 			fill: false,
 			lineTension: 0.1,
@@ -80,13 +84,13 @@ const Statistics = props => {
 		const colors = range(list.length, () => `${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}`);
 
 		return {
-			cases: list.map(item => item.timeline.cases[selectedDate]),
-			deaths: list.map(item => item.timeline.deaths[selectedDate]),
+			cases: list.map(item => item.timeline.cases[format(selectedDate, 'M/D/YY')]),
+			deaths: list.map(item => item.timeline.deaths[format(selectedDate, 'M/D/YY')]),
 			countries: list.map(item => item.country + `${item.province ? ' (' + item.province + ')' : ''}`),
 			labels: list.map(item => item.country + `${item.province ? ' (' + item.province + ')' : ''}`).map(item => item.length > 10 ? `${item.substring(0, 10)}...` : item),
 			datasets: [{
 				...settings,
-				data: list.map(item => item.timeline[field][selectedDate]),
+				data: list.map(item => item.timeline[field][format(selectedDate, 'M/D/YY')]),
 				backgroundColor: colors.map(value => `rgba(${value}, 0.5)`),
 				hoverBackgroundColor: colors.map(value => `rgba(${value}, 0.7)`),
 				// borderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
@@ -97,10 +101,33 @@ const Statistics = props => {
 		};
 	};
 
-	// if (!list.length) return <NoData />;
+	const getMinDate = () => {
+		const [info] = list;
+		const [firstDate] = Object.keys(info.timeline.cases);
+		return new Date(format(firstDate));
+	};
+
+	const onDateChange = event => setSelectedDate(event);
 
 	return (
-		<div>
+		<>
+			<div className="input-group">
+				<div className="input-group-prepend">
+					<span className="input-group-text">
+						<FontAwesomeIcon icon={faCalendarAlt} />
+					</span>
+				</div>
+				<DatePicker
+					selected={selectedDate}
+					onChange={onDateChange}
+					isClearable={false}
+					maxDate={new Date}
+					minDate={getMinDate()}
+					dateFormat="MM-dd-yyyy"
+					className="form-control"
+				/>
+			</div>
+
 			<RadioGroup onChange={setShowCase} checkedValue={showCase} className="mt-4" />
 
 			{showCase === 1 &&
@@ -123,13 +150,12 @@ const Statistics = props => {
 				pageSize={paginationCount}
 				startPage={1}
 			/>
-		</div>
+		</>
 	);
 };
 
 Statistics.propTypes = {
 	list: PropTypes.array,
-	selectedDate: PropTypes.string,
 };
 
 export default Statistics;

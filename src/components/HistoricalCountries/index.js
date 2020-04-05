@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-import moment from 'moment';
-import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -21,7 +17,6 @@ const HistoricalCountries = () => {
 	const [countries, setCountries] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	// const [period, setPeriod] = useState(30);
-	const [selectedDate, setSelectedDate] = useState(new Date(moment().add(-1, 'days')));	
 
 	useEffect(() => {
 		async function fetchCountries() {
@@ -42,34 +37,11 @@ const HistoricalCountries = () => {
 		fetchCountries();
 	}, []);
 
-	const getMinDate = () => {
-		const [info] = countries;
-		const [firstDate] = Object.keys(info.timeline.cases);
-		return new Date(format(firstDate));
-	};
-
-	const onDateChange = event => setSelectedDate(event);
-
 	return (
 		<>{!countries.length ? <Spinner className="loader" animation="border" variant="primary" /> : (
 			<div className="card card-body bg-light statistics">
-				<div className="input-group">
-					<div className="input-group-prepend">
-						<span className="input-group-text">
-							<FontAwesomeIcon icon={faCalendarAlt} />
-						</span>
-					</div>
-					<DatePicker
-						selected={selectedDate}
-						onChange={onDateChange}
-						isClearable={false}
-						maxDate={new Date}
-						minDate={getMinDate()}
-						dateFormat="MM-dd-yyyy"
-						className="form-control"
-					/>
-				</div>
-				<Statistics list={countries} selectedDate={format(selectedDate, 'M/D/YY')} />
+				
+				<Statistics list={countries} />
 			</div>
 		) }
 		</>
