@@ -17,8 +17,8 @@ class API extends REST {
 		this.headers[header] = `Bearer ${value}`;
 	}
 
-	getCountries() {
-		return this.getQuery('v2/historical');
+	getCountries(count = 30) {
+		return this.getQuery(`v2/historical?lastdays=${count}`);
 	}
 	
 	getTotalInfo() {

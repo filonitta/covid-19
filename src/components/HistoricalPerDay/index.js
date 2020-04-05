@@ -6,6 +6,7 @@ import api from '@/services/api.class';
 import CountriesList from '@shared/CountriesList';
 import SearchField from '@shared/SearchField';
 import Sorting from './Sorting';
+import Period from '@shared/Period';
 import Statistics from './Statistics';
 // import NoData from '@shared/NoData';
 
@@ -20,36 +21,45 @@ const HistoricalPerDay = () => {
 	const [countries, setCountries] = useState([]);
 	const [originalCountriesList, setOriginalCountriesList] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [randomKey, setRandomKey] = useState(Math.random());
 	const [selectedCountry, setSelectedCountry] = useState(null);
+	const [period, setPeriod] = useState(30);
 
 	useEffect(() => {
 		async function fetchCountries() {
 			setIsLoading(true);
-			const countries = await api.getCountries();
+			const data = await api.getCountries(period);
 
-			countries.sort((a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0).forEach(item => {
+			data.sort((a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0).forEach(item => {
 				item.country = item.country.capitalize();
 				if (item.province) {
 					item.province = item.province.capitalize();
 				}
 			});
 
-			setCountries(countries);
-			setOriginalCountriesList(countries);
+			setCountries(data);
+
+			setOriginalCountriesList(data);
 			setIsLoading(false);
+
+			// selectedCountry && setSelectedCountry(data.find(item => item.country === selectedCountry.country) );
 		}
 
 		fetchCountries();
-	}, []);
+	}, [period]);
+
+	useEffect(() => {
+		setRandomKey(Math.random());
+		setSelectedCountry(null);
+	}, [period]);
 
 	const updateList = (list) => {
 		setCountries([...list]);
 	}
 
-	if (isLoading) return <Spinner className="loader" animation="border" variant="primary" />;
-
 	return (
 		<>
+			{isLoading && <Spinner className="loader" animation="border" variant="primary" />}
 			<div className="row">
 				<div className="col-sm-4">
 					<div className="card">
@@ -57,8 +67,9 @@ const HistoricalPerDay = () => {
 							Countries
 						</div>
 						<div className="card-body">
-							<Sorting list={originalCountriesList} onSort={updateList} />
-							<SearchField list={originalCountriesList} onSearch={updateList} />
+							<Period onChange={setPeriod} />
+							<Sorting key={randomKey + 'sorting'} list={originalCountriesList} onSort={updateList} />
+							<SearchField key={randomKey + 'searching'} list={originalCountriesList} onSearch={updateList} />
 							<CountriesList
 								list={countries}
 								onListUpdate={setCountries}

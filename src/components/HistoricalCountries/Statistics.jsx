@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
-import DatePicker from 'react-datepicker';
 import { Bar } from 'react-chartjs-2';
 import { defaults } from 'react-chartjs-2';
 
@@ -14,20 +11,17 @@ import './Statistics.scss';
 import RadioGroup from '@shared/RadioGroup';
 import Pager from '@shared/Pager';
 import { rnd } from '@utils/math';
-import NoData from '@shared/NoData';
+import { format } from '@utils/date';
 
 const Statistics = props => {
 	const {
-		list
+		list,
+		selectedDate,
 	} = props;
 
 	const [showCase, setShowCase] = useState(1);
-	const [selectedDate, setSelectedDate] = useState(new Date(moment().add(-1, 'days')));
 	const [paginationPage, setPaginationPage] = useState(1);
 	const [paginationCount, setPaginationCount] = useState(20);
-
-	const onDateChange = event => setSelectedDate(event);
-	const format = (date) => moment(date).format('M/D/YY');
 
 	const chartOptions = {
 		scales: {
@@ -64,7 +58,7 @@ const Statistics = props => {
 	};
 
 	const data = (list, field) => {
-		list = list.sort((a, b) => b.timeline[field][format(selectedDate)] - a.timeline[field][format(selectedDate)]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
+		list = list.sort((a, b) => b.timeline[field][selectedDate] - a.timeline[field][selectedDate]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
 
 		const settings = {
 			fill: false,
@@ -86,13 +80,13 @@ const Statistics = props => {
 		const colors = range(list.length, () => `${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}`);
 
 		return {
-			cases: list.map(item => item.timeline.cases[format(selectedDate)]),
-			deaths: list.map(item => item.timeline.deaths[format(selectedDate)]),
+			cases: list.map(item => item.timeline.cases[selectedDate]),
+			deaths: list.map(item => item.timeline.deaths[selectedDate]),
 			countries: list.map(item => item.country + `${item.province ? ' (' + item.province + ')' : ''}`),
 			labels: list.map(item => item.country + `${item.province ? ' (' + item.province + ')' : ''}`).map(item => item.length > 10 ? `${item.substring(0, 10)}...` : item),
 			datasets: [{
 				...settings,
-				data: list.map(item => item.timeline[field][format(selectedDate)]),
+				data: list.map(item => item.timeline[field][selectedDate]),
 				backgroundColor: colors.map(value => `rgba(${value}, 0.5)`),
 				hoverBackgroundColor: colors.map(value => `rgba(${value}, 0.7)`),
 				// borderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
@@ -101,22 +95,12 @@ const Statistics = props => {
 				// pointHoverBorderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
 			}],
 		};
-	}
+	};
 
-	if (!list.length) return <NoData />;
+	// if (!list.length) return <NoData />;
 
 	return (
-		<div className="card card-body bg-light">
-			<DatePicker
-				selected={selectedDate}
-				onChange={onDateChange}
-				isClearable
-				maxDate={new Date}
-				minDate={new Date('01-22-2020')}
-				dateFormat="MM-dd-yyyy"
-				className="form-control"
-			/>
-
+		<div>
 			<RadioGroup onChange={setShowCase} checkedValue={showCase} className="mt-4" />
 
 			{showCase === 1 &&
@@ -144,7 +128,8 @@ const Statistics = props => {
 };
 
 Statistics.propTypes = {
-	list: PropTypes.array
+	list: PropTypes.array,
+	selectedDate: PropTypes.string,
 };
 
 export default Statistics;
