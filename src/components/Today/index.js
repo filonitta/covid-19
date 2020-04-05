@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import PropTypes from 'prop-types';
+import Spinner from 'react-bootstrap/Spinner';
 
 import api from '@/services/api.class';
 import CountriesList from '@shared/CountriesList';
@@ -38,7 +39,7 @@ const Today = () => {
 		setCountries([...list]);
 	}
 
-	if (isLoading) return <NoData />;
+	if (isLoading) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (
 		<>
