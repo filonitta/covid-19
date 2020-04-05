@@ -7,7 +7,7 @@ import CountriesList from '@shared/CountriesList';
 import SearchField from '@shared/SearchField';
 import Sorting from './Sorting';
 import Statistics from './Statistics';
-import NoData from '@shared/NoData';
+// import NoData from '@shared/NoData';
 
 String.prototype.capitalize = function () {
 	// const value = this.valueOf().split(' ');

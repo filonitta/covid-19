@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort, faSortAmountDownAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSortAmountDownAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Sorting = (props) => {
 	const {
