@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import './RadioGroup.scss';
 
 const RadioGroup = (props) => {
 	const {
 		checkedValue,
-		onChange
+		onChange,
+		className
 	} = props;
 
 	const name = Math.random().toString(32).substring(2);
@@ -14,7 +16,7 @@ const RadioGroup = (props) => {
 	const onInputChange = event => onChange(+event.target.value);
 
 	return (
-		<div className="show-case-controls mt-4">
+		<div className={classnames('show-case-controls', className)}>
 			<strong>Show:</strong>
 			<div className="custom-control custom-radio">
 				<input type="radio" className="custom-control-input" id={`${name}cases`} name={name} onChange={onInputChange} value={1} checked={checkedValue === 1} />
@@ -34,8 +36,9 @@ const RadioGroup = (props) => {
 };
 
 RadioGroup.propTypes = {
-	checkedValue: PropTypes.number,
-	onChange: PropTypes.func,
+	checkedValue: PropTypes.number.isRequired,
+	onChange: PropTypes.func.isRequired,
+	className: PropTypes.string,
 };
 
 export default RadioGroup;

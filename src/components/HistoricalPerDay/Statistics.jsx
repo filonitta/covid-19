@@ -107,7 +107,7 @@ const Statistics = (props) => {
 				<dt>Recovered per day</dt><dd><span className={`badge ${currentCountry.perDay.recovered[format(selectedDate)] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.recovered[format(selectedDate)] === undefined ? '—' : currentCountry.perDay.recovered[format(selectedDate)].toLocaleString(navigator.language)}</span></dd>
 			</dl>
 
-			<RadioGroup onChange={setShowCase} checkedValue={showCase} />
+			<RadioGroup onChange={setShowCase} checkedValue={showCase} className="mb-2" />
 			
 			{showCase === 1 &&
 			<Line options={chartOptions} data={data({

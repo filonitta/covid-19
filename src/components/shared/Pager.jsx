@@ -74,7 +74,7 @@ const Pager = (props) => {
 				<option value="30">30</option>
 			</select>
 			
-			<Pagination>
+			<Pagination className="mt-2 mt-md-0">
 				<Pagination.First onClick={onClick(1)} disabled={currentCenter <= initialCenter} />
 				<Pagination.Prev onClick={onClick(currentPage - 1)} disabled={currentPage === 1} />
 				{currentCenter > initialCenter && <Pagination.Ellipsis disabled />}
