@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import moment from 'moment';
+import Spinner from 'react-bootstrap/Spinner';
 
 import api from '@/services/api.class';
-import NoData from '@shared/NoData';
+// import NoData from '@shared/NoData';
 
-const Total = (props) => {
+const Total = () => {
 	const [data, setData] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		async function fetchData() {
+			setIsLoading(true);
 			const data = await api.getTotalInfo();
 			setData(data);
+			setIsLoading(false);
 		}
 
 		fetchData();
-	}, {});
+	}, []);
 
-	if (!data) return <NoData />;
+	if (isLoading || !data) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (
 		<div className="card bg-light">

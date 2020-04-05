@@ -83,6 +83,7 @@ const Statistics = props => {
 		};
 
 		const range = (count, callback) => new Array(count).fill(0).map($ => callback ? callback($) : $);
+		const colors = range(list.length, () => `${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}`);
 
 		return {
 			cases: list.map(item => item.timeline.cases[format(selectedDate)]),
@@ -92,7 +93,8 @@ const Statistics = props => {
 			datasets: [{
 				...settings,
 				data: list.map(item => item.timeline[field][format(selectedDate)]),
-				backgroundColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 0.5)`),
+				backgroundColor: colors.map(value => `rgba(${value}, 0.5)`),
+				hoverBackgroundColor: colors.map(value => `rgba(${value}, 0.7)`),
 				// borderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
 				// pointBorderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
 				// pointHoverBackgroundColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
