@@ -21,9 +21,10 @@ const HistoricalPerDay = () => {
 	const [countries, setCountries] = useState([]);
 	const [originalCountriesList, setOriginalCountriesList] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [randomKey, setRandomKey] = useState(Math.random());
 	const [selectedCountry, setSelectedCountry] = useState(null);
 	const [period, setPeriod] = useState(30);
+	const [searchValue, setSearchValue] = useState('');
+	const [sortField, setSortField] = useState('country');
 
 	useEffect(() => {
 		async function fetchCountries() {
@@ -41,21 +42,26 @@ const HistoricalPerDay = () => {
 
 			setOriginalCountriesList(data);
 			setIsLoading(false);
-
-			// selectedCountry && setSelectedCountry(data.find(item => item.country === selectedCountry.country) );
 		}
 
 		fetchCountries();
 	}, [period]);
 
 	useEffect(() => {
-		setRandomKey(Math.random());
-		setSelectedCountry(null);
-	}, [period]);
+		selectedCountry && setSelectedCountry(countries.find(item => item.country === selectedCountry.country));
+	}, [countries, selectedCountry]);
 
-	const updateList = (list) => {
+	const handleSearch = (data, value) => {
+		setSearchValue(value);
+		setCountries([...data]);
+	};
+
+	// const getFilteredData = () => originalCountriesList.filter(item => item.country.toLowerCase().startsWith(searchValue));
+
+	const handleSort = (list, field) => {
+		// setSortField(field);
 		setCountries([...list]);
-	}
+	};
 
 	return (
 		<>
@@ -68,8 +74,8 @@ const HistoricalPerDay = () => {
 						</div>
 						<div className="card-body">
 							<Period onChange={setPeriod} />
-							<Sorting key={randomKey + 'sorting'} list={originalCountriesList} onSort={updateList} />
-							<SearchField key={randomKey + 'searching'} list={originalCountriesList} onSearch={updateList} />
+							<Sorting sortField={sortField} list={countries} onSort={handleSort} />
+							<SearchField value={searchValue} list={countries} onSearch={handleSearch} />
 							<CountriesList
 								list={countries}
 								onListUpdate={setCountries}
