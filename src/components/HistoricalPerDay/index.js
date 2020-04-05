@@ -6,7 +6,7 @@ import api from '@/services/api.class';
 import CountriesList from '@shared/CountriesList';
 import SearchField from '@shared/SearchField';
 import Sorting from './Sorting';
-import Period from './Period';
+import Period from '@shared/Period';
 import Statistics from './Statistics';
 // import NoData from '@shared/NoData';
 
@@ -57,10 +57,9 @@ const HistoricalPerDay = () => {
 		setCountries([...list]);
 	}
 
-	if (!countries.length) return <Spinner className="loader" animation="border" variant="primary" />;
-	
 	return (
 		<>
+			{isLoading && <Spinner className="loader" animation="border" variant="primary" />}
 			<div className="row">
 				<div className="col-sm-4">
 					<div className="card">
