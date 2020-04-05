@@ -15,7 +15,7 @@ const Total = (props) => {
 		}
 
 		fetchData();
-	}, {});
+	}, []);
 
 	if (!data) return <NoData />;
 
