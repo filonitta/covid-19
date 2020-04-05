@@ -7,6 +7,8 @@ import { Bar } from 'react-chartjs-2';
 import { defaults } from 'react-chartjs-2';
 
 defaults.global.legend.display = false;
+defaults.global.tooltips.titleMarginBottom = 15;
+defaults.global.tooltips.footerMarginTop = 10;
 
 import './Statistics.scss';
 import RadioGroup from '@shared/RadioGroup';
@@ -46,13 +48,17 @@ const Statistics = props => {
 			callbacks: {
 				title(tooltipItems, data) {
 					const [tooltipItem] = tooltipItems;
-					return data.tooltips[tooltipItem.index];
+					return data.countries[tooltipItem.index];
 				},
 				label(tooltipItem, data) {
 					let label = data.datasets[tooltipItem.datasetIndex].label || '';
-
 					return label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString(navigator.language);
-				}
+				},
+				afterBody() {},
+				footer(tooltipItems, data) {
+					const [tooltipItem] = tooltipItems;
+					return [`Lethality: ${(data.deaths[tooltipItem.index] * 100 / data.cases[tooltipItem.index]).toFixed(2)}%`];
+				},
 			}
 		}
 	};
@@ -79,8 +85,9 @@ const Statistics = props => {
 		const range = (count, callback) => new Array(count).fill(0).map($ => callback ? callback($) : $);
 
 		return {
-			// labels: list.map(item => item.country),
-			tooltips: list.map(item => item.country + `${item.province ? ' (' + item.province + ')' : ''}`),
+			cases: list.map(item => item.timeline.cases[format(selectedDate)]),
+			deaths: list.map(item => item.timeline.deaths[format(selectedDate)]),
+			countries: list.map(item => item.country + `${item.province ? ' (' + item.province + ')' : ''}`),
 			labels: list.map(item => item.country + `${item.province ? ' (' + item.province + ')' : ''}`).map(item => item.length > 10 ? `${item.substring(0, 10)}...` : item),
 			datasets: [{
 				...settings,
