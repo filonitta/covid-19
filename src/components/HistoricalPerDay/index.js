@@ -19,7 +19,7 @@ String.prototype.capitalize = function () {
 
 const HistoricalPerDay = () => {
 	const [countries, setCountries] = useState([]);
-	const [originalCountriesList, setOriginalCountriesList] = useState([]);
+	// const [originalCountriesList, setOriginalCountriesList] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [selectedCountry, setSelectedCountry] = useState(null);
 	const [period, setPeriod] = useState(30);
@@ -40,7 +40,7 @@ const HistoricalPerDay = () => {
 
 			setCountries(data);
 
-			setOriginalCountriesList(data);
+			// setOriginalCountriesList(data);
 			setIsLoading(false);
 		}
 
@@ -56,10 +56,8 @@ const HistoricalPerDay = () => {
 		setCountries([...data]);
 	};
 
-	// const getFilteredData = () => originalCountriesList.filter(item => item.country.toLowerCase().startsWith(searchValue));
-
 	const handleSort = (list, field) => {
-		// setSortField(field);
+		setSortField(field);
 		setCountries([...list]);
 	};
 
