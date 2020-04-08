@@ -1,0 +1,12 @@
+.controls {
+	display: flex;
+	// flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
+
+	.chart-type-controls {
+		display: flex;
+		align-items: center;
+		margin-left: 15px;
+	}
+}

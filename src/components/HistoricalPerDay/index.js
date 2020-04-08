@@ -11,19 +11,18 @@ import Statistics from './Statistics';
 // import NoData from '@shared/NoData';
 
 String.prototype.capitalize = function () {
-	// const value = this.valueOf().split(' ');
-	// return value.map(str => `${str.substring(0, 1).toUpperCase()}${str.substring(1)}`).join(' ');
 	const value = this.valueOf();
 	return `${value.substring(0, 1).toUpperCase()}${value.substring(1)}`;
 }
 
 const HistoricalPerDay = () => {
 	const [countries, setCountries] = useState([]);
-	const [originalCountriesList, setOriginalCountriesList] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [randomKey, setRandomKey] = useState(Math.random());
 	const [selectedCountry, setSelectedCountry] = useState(null);
 	const [period, setPeriod] = useState(30);
+	const [searchValue, setSearchValue] = useState('');
+	const [sortField, setSortField] = useState('country');
 
 	useEffect(() => {
 		async function fetchCountries() {
@@ -39,23 +38,24 @@ const HistoricalPerDay = () => {
 
 			setCountries(data);
 
-			setOriginalCountriesList(data);
 			setIsLoading(false);
-
-			// selectedCountry && setSelectedCountry(data.find(item => item.country === selectedCountry.country) );
 		}
 
 		fetchCountries();
 	}, [period]);
 
 	useEffect(() => {
-		setRandomKey(Math.random());
-		setSelectedCountry(null);
-	}, [period]);
+		selectedCountry && setSelectedCountry(countries.find(item => item.country === selectedCountry.country));
+	}, [countries, selectedCountry]);
 
-	const updateList = (list) => {
-		setCountries([...list]);
-	}
+	const handleSearch = (data) => {
+		setCountries(data);
+	};
+
+	const handleSort = (list, field) => {
+		setSortField(field);
+		setCountries(list);
+	};
 
 	return (
 		<>
@@ -68,8 +68,8 @@ const HistoricalPerDay = () => {
 						</div>
 						<div className="card-body">
 							<Period onChange={setPeriod} />
-							<Sorting key={randomKey + 'sorting'} list={originalCountriesList} onSort={updateList} />
-							<SearchField key={randomKey + 'searching'} list={originalCountriesList} onSearch={updateList} />
+							<Sorting sortField={sortField} list={countries} onSort={handleSort} />
+							<SearchField initialValue={searchValue} list={countries} onSearch={handleSearch} />
 							<CountriesList
 								list={countries}
 								onListUpdate={setCountries}

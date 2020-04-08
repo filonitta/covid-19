@@ -1,39 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountDownAlt } from '@fortawesome/free-solid-svg-icons';
 
+import { arraysEqual } from '@utils/array';
+
 const Sorting = (props) => {
 	const {
 		list,
-		onSort
+		onSort,
+		sortField
 	} = props;
 
-	const sort = event => {
-		const value = event.target.value;
-		
-		if (value === 'country') {
-			const sorted = list.sort((a, b) => b[value] > a[value] ? -1 : b[value] < a[value] ? 1 : 0);
-			onSort(sorted);
+	const [currentSortField, setCurrentSortField] = useState(sortField);
+	const [currentList, setCurrentList] = useState(list);
+
+	useEffect(() => {
+		setCurrentList(list);
+	}, [list]);
+
+	useEffect(() => {
+		if (list.length && (currentSortField !== sortField || !arraysEqual(list, currentList))) {
+			// console.log({ list, currentList })
+			onSortHandler();
+		}
+	}, [onSortHandler, currentSortField, onGetSortedHandler, list, sortField, currentList]);
+
+	const onSortHandler = useCallback(() => {
+		onSort(onGetSortedHandler(), currentSortField);
+	}, [onSort, onGetSortedHandler, currentSortField]);
+
+	const onGetSortedHandler = useCallback(() => {
+		let sorted = [];
+
+		if (currentSortField === 'country') {
+			sorted = list.sort((a, b) => b[currentSortField] > a[currentSortField] ? -1 : b[currentSortField] < a[currentSortField] ? 1 : 0);
 		} else {
-			const items = Object.keys(list[0].timeline[value]);
+			const items = Object.keys(list[0].timeline[currentSortField]);
 			const lastDate = items[items.length - 1];
-	
-			const sorted = list.sort((a, b) => b.timeline[value][lastDate] - a.timeline[value][lastDate]);
-			onSort(sorted);
+
+			sorted = list.sort((a, b) => b.timeline[currentSortField][lastDate] - a.timeline[currentSortField][lastDate]);
 		}
 
-	}
+		return sorted;
+	}, [list, currentSortField]);
+
+	const handleChange = event => {
+		const value = event.target.value;
+		setCurrentSortField(value);
+	};
 
 	return (
 		<div className="form-group">
 			<div className="input-group mb-3">
 				<div className="input-group-prepend">
-					{/* <button className="btn btn-secondary" type="button"><FontAwesomeIcon icon={faSortAmountUpAlt} /></button> */}
 					<span className="input-group-text"><FontAwesomeIcon icon={faSortAmountDownAlt} /></span>
 				</div>
-				<select className="form-control" onChange={sort} placeholder="Sort by">
-					{/* <option value="DEFAULT" disabled>-- Sort by --</option> */}
+				<select className="form-control" onChange={handleChange} placeholder="Sort by" defaultValue={currentSortField}>
 					<option value="country">Country name</option>
 					<option value="cases">Cases</option>
 					<option value="deaths">Deaths</option>
@@ -46,7 +69,8 @@ const Sorting = (props) => {
 
 Sorting.propTypes = {
 	list: PropTypes.array,
-	onSort: PropTypes.func
+	onSort: PropTypes.func,
+	sortField: PropTypes.string
 };
 
 export default Sorting;

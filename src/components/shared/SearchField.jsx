@@ -1,17 +1,63 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
+import { arraysEqual } from '@utils/array';
+
 const SearchField = (props) => {
 	const {
 		list,
-		onSearch
+		onSearch,
+		initialValue,
 	} = props;
 
-	const filter = event => {
+	const [currentValue, setCurrentValue] = useState(null);
+	const [fullList, setFullList] = useState([]);
+	const [currentList, setCurrentList] = useState(list);
+	const [listIsChanged, setListIsChanged] = useState(false);
+
+	useEffect(() => {
+		setCurrentList(list);
+	}, [list]);
+
+	useEffect(() => {
+		if (currentValue) {
+			if (list.length === fullList.length && !arraysEqual(list, currentList) && !arraysEqual(fullList, currentList) && !arraysEqual(fullList, list)) {
+				// console.info('--- the original list was changed ---')
+				setFullList(list);
+				setListIsChanged(true);
+			}
+		}
+	}, [list, currentList, currentValue, onSearch, fullList, onSearchHandler]);
+	
+	useEffect(() => {
+		if (!fullList.length) {
+			// console.info('-- set full list --');
+			setFullList(list);
+		} else if (listIsChanged) {
+			onSearchHandler(currentValue);
+			setListIsChanged(false);
+		}
+	}, [list, fullList, currentValue, listIsChanged, onSearchHandler]);
+
+	useEffect(() => {
+		if (!currentValue && initialValue && fullList.length) {
+			// console.info('-- filter if there is initial value --');
+			onSearchHandler(initialValue);
+			setCurrentValue(initialValue);
+		}
+	}, [initialValue, fullList, onSearchHandler, currentValue]);
+
+	const onSearchHandler = useCallback((value) => {
+		onSearch(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
+	}, [fullList, onSearch]);
+	
+	const onFilter = event => {
 		const value = event.target.value.toLowerCase();
-		onSearch(list.filter(item => item.country.toLowerCase().startsWith(value)) )
+		setCurrentValue(value);
+
+		onSearch(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
 	}
 
 	return (
@@ -25,8 +71,9 @@ const SearchField = (props) => {
 				type="search"
 				className="form-control"
 				placeholder="Filter by country name"
-				onInput={filter}
-				ref={input => input && input.addEventListener('search', filter)}
+				onInput={onFilter}
+				defaultValue={initialValue}
+				ref={input => input && input.addEventListener('search', onFilter)}
 			/>
 		</div>
 	);
@@ -34,7 +81,8 @@ const SearchField = (props) => {
 
 SearchField.propTypes = {
 	list: PropTypes.array,
-	onSearch: PropTypes.func
+	onSearch: PropTypes.func,
+	initialValue: PropTypes.string,
 };
 
 export default SearchField;
