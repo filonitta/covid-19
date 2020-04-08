@@ -99,7 +99,7 @@ const Statistics = (props) => {
 
 	const onChangeChartType = event => {
 		setChartType(+event.target.value);
-	}
+	};
 
 	return (
 		<div className="card card-body bg-light">

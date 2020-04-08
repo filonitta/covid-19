@@ -18,11 +18,11 @@ String.prototype.capitalize = function () {
 const HistoricalPerDay = () => {
 	const [countries, setCountries] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [randomKey, setRandomKey] = useState(Math.random());
 	const [selectedCountry, setSelectedCountry] = useState(null);
 	const [period, setPeriod] = useState(30);
 	const [searchValue, setSearchValue] = useState('');
 	const [sortField, setSortField] = useState('country');
-	const [listIsUpdated, setListIsUpdated] = useState(false);
 
 	useEffect(() => {
 		async function fetchCountries() {
@@ -56,7 +56,6 @@ const HistoricalPerDay = () => {
 		setSortField(field);
 		setCountries(list);
 	};
-
 
 	return (
 		<>

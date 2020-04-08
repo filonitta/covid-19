@@ -5,8 +5,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import api from '@/services/api.class';
 import Statistics from './Statistics';
-// import { format } from '@utils/date';
-// import Period from '@shared/Period';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -16,7 +14,6 @@ String.prototype.capitalize = function () {
 const HistoricalCountries = () => {
 	const [countries, setCountries] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	// const [period, setPeriod] = useState(30);
 
 	useEffect(() => {
 		async function fetchCountries() {
