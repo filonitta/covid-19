@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
+import { arraysEqual } from '@utils/array';
+
 const SearchField = (props) => {
 	const {
 		list,
@@ -10,29 +12,52 @@ const SearchField = (props) => {
 		initialValue,
 	} = props;
 
-	const [currentValue, setCurrentValue] = useState('');
-	const [originalList, setOriginalList] = useState([]);
-	
-	useEffect(() => {
-		!originalList.length && setOriginalList(list);
-	}, [originalList, list]);
-	
-	useEffect(() => {
-		if (currentValue !== initialValue) {
-			setOriginalList(list);
+	const [currentValue, setCurrentValue] = useState(null);
+	const [fullList, setFullList] = useState([]);
+	const [currentList, setCurrentList] = useState(list);
+	const [listIsChanged, setListIsChanged] = useState(false);
 
-			onSearch(list.filter(item => item.country.toLowerCase().startsWith(currentValue)), currentValue);
+	useEffect(() => {
+		setCurrentList(list);
+	}, [list]);
+
+	useEffect(() => {
+		if (currentValue) {
+			if (list.length === fullList.length && !arraysEqual(list, currentList) && !arraysEqual(fullList, currentList) && !arraysEqual(fullList, list)) {
+				// console.info('--- the original list was changed ---')
+				setFullList(list);
+				setListIsChanged(true);
+			}
 		}
-	}, [list, originalList, currentValue, initialValue, onSearch]);
-
-	/* const onSearchHandler = useCallback(() => {
-		return originalList.filter(item => item.country.toLowerCase().startsWith(currentValue));
-	}, [currentValue, originalList]); */
+	}, [list, currentList, currentValue, onSearch, fullList, onSearchHandler]);
 	
-	const filter = event => {
+	useEffect(() => {
+		if (!fullList.length) {
+			// console.info('-- set full list --');
+			setFullList(list);
+		} else if (listIsChanged) {
+			onSearchHandler(currentValue);
+			setListIsChanged(false);
+		}
+	}, [list, fullList, currentValue, listIsChanged, onSearchHandler]);
+
+	useEffect(() => {
+		if (!currentValue && initialValue && fullList.length) {
+			// console.info('-- filter if there is initial value --');
+			onSearchHandler(initialValue);
+			setCurrentValue(initialValue);
+		}
+	}, [initialValue, fullList, onSearchHandler, currentValue]);
+
+	const onSearchHandler = useCallback((value) => {
+		onSearch(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
+	}, [fullList, onSearch]);
+	
+	const onFilter = event => {
 		const value = event.target.value.toLowerCase();
 		setCurrentValue(value);
-		onSearch(originalList.filter(item => item.country.toLowerCase().startsWith(value)), value);
+
+		onSearch(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
 	}
 
 	return (
@@ -46,8 +71,9 @@ const SearchField = (props) => {
 				type="search"
 				className="form-control"
 				placeholder="Filter by country name"
-				onInput={filter}
-				ref={input => input && input.addEventListener('search', filter)}
+				onInput={onFilter}
+				defaultValue={initialValue}
+				ref={input => input && input.addEventListener('search', onFilter)}
 			/>
 		</div>
 	);

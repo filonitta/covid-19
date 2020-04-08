@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountDownAlt } from '@fortawesome/free-solid-svg-icons';
 
+import { arraysEqual } from '@utils/array';
+
 const Sorting = (props) => {
 	const {
 		list,
@@ -18,13 +20,8 @@ const Sorting = (props) => {
 	}, [list]);
 
 	useEffect(() => {
-		const arraysMatch = (arr1, arr2) => {
-			if (arr1.length !== arr2.length) return false;
-	
-			return JSON.stringify(arr1) === JSON.stringify(arr2);
-		};
-
-		if (list.length && (currentSortField !== sortField || !arraysMatch(list, currentList))) {
+		if (list.length && (currentSortField !== sortField || !arraysEqual(list, currentList))) {
+			// console.log({ list, currentList })
 			onSortHandler();
 		}
 	}, [onSortHandler, currentSortField, onGetSortedHandler, list, sortField, currentList]);

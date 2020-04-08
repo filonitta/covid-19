@@ -11,8 +11,6 @@ import Statistics from './Statistics';
 // import NoData from '@shared/NoData';
 
 String.prototype.capitalize = function () {
-	// const value = this.valueOf().split(' ');
-	// return value.map(str => `${str.substring(0, 1).toUpperCase()}${str.substring(1)}`).join(' ');
 	const value = this.valueOf();
 	return `${value.substring(0, 1).toUpperCase()}${value.substring(1)}`;
 }
@@ -24,6 +22,7 @@ const HistoricalPerDay = () => {
 	const [period, setPeriod] = useState(30);
 	const [searchValue, setSearchValue] = useState('');
 	const [sortField, setSortField] = useState('country');
+	const [listIsUpdated, setListIsUpdated] = useState(false);
 
 	useEffect(() => {
 		async function fetchCountries() {
@@ -40,7 +39,6 @@ const HistoricalPerDay = () => {
 			setCountries(data);
 
 			setIsLoading(false);
-			setSearchValue('');
 		}
 
 		fetchCountries();
@@ -50,14 +48,13 @@ const HistoricalPerDay = () => {
 		selectedCountry && setSelectedCountry(countries.find(item => item.country === selectedCountry.country));
 	}, [countries, selectedCountry]);
 
-	const handleSearch = (data, value) => {
-		setSearchValue(value);
+	const handleSearch = (data) => {
 		setCountries(data);
 	};
 
 	const handleSort = (list, field) => {
 		setSortField(field);
-		setCountries([...list]);
+		setCountries(list);
 	};
 
 
