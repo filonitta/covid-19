@@ -126,7 +126,7 @@ const Statistics = (props) => {
 				<dt>Recovered per day</dt><dd><span className={`badge ${info.perDay.recovered[format(selectedDate, 'M/D/YY')] !== undefined && 'badge-secondary'}`}>{info.perDay.recovered[format(selectedDate, 'M/D/YY')] === undefined ? '—' : info.perDay.recovered[format(selectedDate, 'M/D/YY')].toLocaleString(navigator.language)}</span></dd>
 			</dl>
 
-			<div className="controls mb-2">
+			<div className="controls mb-3 mb-md-2">
 				<RadioGroup onChange={setShowCase} checkedValue={showCase} />
 				<div className="chart-type-controls">
 					<select className="form-control" defaultValue={chartType} onChange={onChangeChartType}>

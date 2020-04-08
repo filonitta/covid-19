@@ -1,12 +1,23 @@
+@import './../../css/variables';
+
 .controls {
 	display: flex;
 	// flex-direction: column;
 	justify-content: flex-end;
 	align-items: center;
 
+	@media (max-width: $breakpoint-tablet) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
 	.chart-type-controls {
 		display: flex;
 		align-items: center;
 		margin-left: 15px;
+
+		@media (max-width: $breakpoint-tablet) {
+			margin-left: 0;
+		}
 	}
 }
