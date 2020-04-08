@@ -19,7 +19,6 @@ String.prototype.capitalize = function () {
 
 const HistoricalPerDay = () => {
 	const [countries, setCountries] = useState([]);
-	// const [originalCountriesList, setOriginalCountriesList] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [selectedCountry, setSelectedCountry] = useState(null);
 	const [period, setPeriod] = useState(30);
@@ -40,8 +39,8 @@ const HistoricalPerDay = () => {
 
 			setCountries(data);
 
-			// setOriginalCountriesList(data);
 			setIsLoading(false);
+			setSearchValue('');
 		}
 
 		fetchCountries();
@@ -53,13 +52,14 @@ const HistoricalPerDay = () => {
 
 	const handleSearch = (data, value) => {
 		setSearchValue(value);
-		setCountries([...data]);
+		setCountries(data);
 	};
 
 	const handleSort = (list, field) => {
 		setSortField(field);
 		setCountries([...list]);
 	};
+
 
 	return (
 		<>
@@ -73,7 +73,7 @@ const HistoricalPerDay = () => {
 						<div className="card-body">
 							<Period onChange={setPeriod} />
 							<Sorting sortField={sortField} list={countries} onSort={handleSort} />
-							<SearchField value={searchValue} list={countries} onSearch={handleSearch} />
+							<SearchField initialValue={searchValue} list={countries} onSearch={handleSearch} />
 							<CountriesList
 								list={countries}
 								onListUpdate={setCountries}

@@ -19,12 +19,10 @@ const Statistics = (props) => {
 	const [showCase, setShowCase] = useState(1);
 	const [chartType, setChartType] = useState(1);
 
-	const currentCountry = info;
-
-	currentCountry.perDay = {
-		cases: processData(currentCountry.timeline.cases),
-		deaths: processData(currentCountry.timeline.deaths),
-		recovered: processData(currentCountry.timeline.recovered),
+	info.perDay = {
+		cases: processData(info.timeline.cases),
+		deaths: processData(info.timeline.deaths),
+		recovered: processData(info.timeline.recovered),
 	};
 
 	const chartOptions = {
@@ -91,6 +89,8 @@ const Statistics = (props) => {
 		};
 	};
 
+	// console.log(info)
+
 	const getMinDate = () => {
 		// new Date('01-22-2020')
 		const [firstDate] = Object.keys(info.timeline.cases);
@@ -121,9 +121,9 @@ const Statistics = (props) => {
 			</div>
 			<h3 className="mt-4 mb-4">{info.country} {info.province && `(${info.province})`}</h3>
 			<dl>
-				<dt>Cases per day</dt><dd><span className={`badge ${currentCountry.perDay.cases[format(selectedDate, 'M/D/YY')] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.cases[format(selectedDate, 'M/D/YY')] === undefined ? '—' : currentCountry.perDay.cases[format(selectedDate, 'M/D/YY')].toLocaleString(navigator.language)}</span></dd>
-				<dt>Deaths per day</dt><dd><span className={`badge ${currentCountry.perDay.deaths[format(selectedDate, 'M/D/YY')] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.deaths[format(selectedDate, 'M/D/YY')] === undefined ? '—' : currentCountry.perDay.deaths[format(selectedDate, 'M/D/YY')].toLocaleString(navigator.language)}</span></dd>
-				<dt>Recovered per day</dt><dd><span className={`badge ${currentCountry.perDay.recovered[format(selectedDate, 'M/D/YY')] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.recovered[format(selectedDate, 'M/D/YY')] === undefined ? '—' : currentCountry.perDay.recovered[format(selectedDate, 'M/D/YY')].toLocaleString(navigator.language)}</span></dd>
+				<dt>Cases per day</dt><dd><span className={`badge ${info.perDay.cases[format(selectedDate, 'M/D/YY')] !== undefined && 'badge-secondary'}`}>{info.perDay.cases[format(selectedDate, 'M/D/YY')] === undefined ? '—' : info.perDay.cases[format(selectedDate, 'M/D/YY')].toLocaleString(navigator.language)}</span></dd>
+				<dt>Deaths per day</dt><dd><span className={`badge ${info.perDay.deaths[format(selectedDate, 'M/D/YY')] !== undefined && 'badge-secondary'}`}>{info.perDay.deaths[format(selectedDate, 'M/D/YY')] === undefined ? '—' : info.perDay.deaths[format(selectedDate, 'M/D/YY')].toLocaleString(navigator.language)}</span></dd>
+				<dt>Recovered per day</dt><dd><span className={`badge ${info.perDay.recovered[format(selectedDate, 'M/D/YY')] !== undefined && 'badge-secondary'}`}>{info.perDay.recovered[format(selectedDate, 'M/D/YY')] === undefined ? '—' : info.perDay.recovered[format(selectedDate, 'M/D/YY')].toLocaleString(navigator.language)}</span></dd>
 			</dl>
 
 			<div className="controls mb-2">

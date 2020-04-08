@@ -13,8 +13,6 @@ const Sorting = (props) => {
 	const [currentSortField, setCurrentSortField] = useState(sortField);
 	const [currentList, setCurrentList] = useState(list);
 
-	const value = 10;
-
 	useEffect(() => {
 		setCurrentList(list);
 	}, [list]);

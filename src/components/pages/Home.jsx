@@ -22,7 +22,7 @@ const Home = () => {
 
 	return (
 		<div className="container mb-4">
-			<div className="page-header mt-5 mb-5">
+			<div className="page-header mt-4 mb-5">
 				<h1>COVID-19 statistics</h1>
 			</div>
 

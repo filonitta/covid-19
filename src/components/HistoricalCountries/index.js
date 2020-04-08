@@ -5,8 +5,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import api from '@/services/api.class';
 import Statistics from './Statistics';
-import { format } from '@utils/date';
-import Period from '@shared/Period';
+// import { format } from '@utils/date';
+// import Period from '@shared/Period';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -38,12 +38,13 @@ const HistoricalCountries = () => {
 	}, []);
 
 	return (
-		<>{!countries.length ? <Spinner className="loader" animation="border" variant="primary" /> : (
-			<div className="card card-body bg-light statistics">
-				
-				<Statistics list={countries} />
-			</div>
-		) }
+		<>
+			{!countries.length ? <Spinner className="loader" animation="border" variant="primary" /> : (
+				<div className="card card-body bg-light statistics">
+					
+					<Statistics list={countries} />
+				</div>
+			)}
 		</>
 	)
 };
