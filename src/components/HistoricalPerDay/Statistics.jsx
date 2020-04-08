@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Line, Bar } from 'react-chartjs-2';
 
+import './Statistics.scss';
 import RadioGroup from '@shared/RadioGroup';
 import { format } from '@utils/date';
 
@@ -16,6 +17,7 @@ const Statistics = (props) => {
 
 	const [selectedDate, setSelectedDate] = useState(new Date);
 	const [showCase, setShowCase] = useState(1);
+	const [chartType, setChartType] = useState(1);
 
 	const currentCountry = info;
 
@@ -87,25 +89,20 @@ const Statistics = (props) => {
 				}
 			]
 		};
-	}
+	};
 
 	const getMinDate = () => {
 		// new Date('01-22-2020')
 		const [firstDate] = Object.keys(info.timeline.cases);
 		return new Date(format(firstDate));
+	};
+
+	const onChangeChartType = event => {
+		setChartType(+event.target.value);
 	}
 
 	return (
 		<div className="card card-body bg-light">
-			{/* <DatePicker
-				selected={selectedDate}
-				onChange={onDateChange}
-				isClearable={false}
-				maxDate={new Date}
-				minDate={getMinDate()}
-				dateFormat="MM-dd-yyyy"
-				className="form-control"
-			/> */}
 			<div className="input-group">
 				<div className="input-group-prepend">
 					<span className="input-group-text">
@@ -129,40 +126,76 @@ const Statistics = (props) => {
 				<dt>Recovered per day</dt><dd><span className={`badge ${currentCountry.perDay.recovered[format(selectedDate, 'M/D/YY')] !== undefined && 'badge-secondary'}`}>{currentCountry.perDay.recovered[format(selectedDate, 'M/D/YY')] === undefined ? '—' : currentCountry.perDay.recovered[format(selectedDate, 'M/D/YY')].toLocaleString(navigator.language)}</span></dd>
 			</dl>
 
-			<RadioGroup onChange={setShowCase} checkedValue={showCase} className="mb-2" />
-			
-			{showCase === 1 &&
-			<Line options={chartOptions} data={data({
-				label: '# of Cases',
-				labels: Object.keys(info.timeline.cases),
-				data: Object.values(info.timeline.cases),
-				rgb: '54, 162, 235'
-			})} />
-			}
-			{/* <Bar options={chartOptions} data={data({
-				label: '# of Cases',
-				labels: Object.keys(info.perDay.cases),
-				data: Object.values(info.perDay.cases),
-				rgb: '54, 162, 235'
-			})} /> */}
+			<div className="controls mb-2">
+				<RadioGroup onChange={setShowCase} checkedValue={showCase} />
+				<div className="chart-type-controls">
+					<select className="form-control" defaultValue={chartType} onChange={onChangeChartType}>
+						<option value="1">Progress</option>
+						<option value="2">Per day</option>
+					</select>
+				</div>
+				
+			</div>
 
-			{showCase === 2 &&
-			<Bar options={chartOptions} data={data({
-				label: '# of Deaths',
-				labels: Object.keys(info.perDay.deaths),
-				data: Object.values(info.perDay.deaths),
-				rgb: '255, 99, 132'
-			})} />
-			}
 
-			{showCase === 3 &&
-			<Bar options={chartOptions} data={data({
-				label: '# of Recovered',
-				labels: Object.keys(info.perDay.recovered),
-				data: Object.values(info.perDay.recovered),
-				rgb: '75, 192, 192'
-			})} />
-			}
+			{chartType === 1 && <>
+				{showCase === 1 &&
+					<Line options={chartOptions} data={data({
+						label: '# of Cases',
+						labels: Object.keys(info.timeline.cases),
+						data: Object.values(info.timeline.cases),
+						rgb: '54, 162, 235'
+					})} />
+				}
+
+				{showCase === 2 &&
+					<Line options={chartOptions} data={data({
+						label: '# of Deaths',
+						labels: Object.keys(info.timeline.deaths),
+						data: Object.values(info.timeline.deaths),
+						rgb: '255, 99, 132'
+					})} />
+				}
+
+				{showCase === 3 &&
+					<Line options={chartOptions} data={data({
+						label: '# of Recovered',
+						labels: Object.keys(info.timeline.recovered),
+						data: Object.values(info.timeline.recovered),
+						rgb: '75, 192, 192'
+					})} />
+				}
+			</>}
+
+			{chartType === 2 && <>
+				{showCase === 1 &&
+				<Bar options={chartOptions} data={data({
+					label: '# of Cases',
+					labels: Object.keys(info.perDay.cases),
+					data: Object.values(info.perDay.cases),
+					rgb: '54, 162, 235'
+				})} />
+				}
+
+				{showCase === 2 &&
+				<Bar options={chartOptions} data={data({
+					label: '# of Deaths',
+					labels: Object.keys(info.perDay.deaths),
+					data: Object.values(info.perDay.deaths),
+					rgb: '255, 99, 132'
+				})} />
+				}
+
+				{showCase === 3 &&
+				<Bar options={chartOptions} data={data({
+					label: '# of Recovered',
+					labels: Object.keys(info.perDay.recovered),
+					data: Object.values(info.perDay.recovered),
+					rgb: '75, 192, 192'
+				})} />
+				}
+			</>}
+
 		</div>
 	);
 };
