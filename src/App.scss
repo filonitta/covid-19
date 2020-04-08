@@ -23,6 +23,8 @@ a {
 }
 
 .input-group {
+	flex-wrap: nowrap;
+	
 	.react-datepicker-wrapper {
 		flex-grow: 1;
 	}
