@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 // import PropTypes from 'prop-types';
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -18,10 +18,9 @@ String.prototype.capitalize = function () {
 const HistoricalPerDay = () => {
 	const [countries, setCountries] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [randomKey, setRandomKey] = useState(Math.random());
 	const [selectedCountry, setSelectedCountry] = useState(null);
 	const [period, setPeriod] = useState(30);
-	const [searchValue, setSearchValue] = useState('');
+	const [searchValue] = useState('');
 	const [sortField, setSortField] = useState('country');
 
 	useEffect(() => {
@@ -39,16 +38,19 @@ const HistoricalPerDay = () => {
 			setCountries(data);
 
 			setIsLoading(false);
+
+			setCurrentCountryHandler(data);
 		}
-
+		
 		fetchCountries();
-	}, [period]);
-
-	useEffect(() => {
-		selectedCountry && setSelectedCountry(countries.find(item => item.country === selectedCountry.country));
-	}, [countries, selectedCountry]);
+	}, [period, setCurrentCountryHandler]);
+	
+	const setCurrentCountryHandler = useCallback((countries) => {
+		countries.length && selectedCountry && setSelectedCountry(countries.find(item => item.country === selectedCountry.country));
+	}, [selectedCountry]);
 
 	const handleSearch = (data) => {
+		// console.count('---')
 		setCountries(data);
 	};
 
