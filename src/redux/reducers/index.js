@@ -1,23 +1,14 @@
 import {
-	ADD_NOTIFICATION,
-	DELETE_NOTIFICATION
+	SET_TOTAL_DATA,
 } from '@redux/constants/action-types';
 
-let initialState = {
-	notification: {
-		message: '',
-		type: 'info',
-		show: false
-	},
-};
-
-function rootReducer(state = initialState, action) {
-	switch (action.type) {
-		case ADD_NOTIFICATION: return Object.assign({}, state, { notification: {...action.payload, show: true }});
-		case DELETE_NOTIFICATION: return Object.assign({}, state, { notification: {...state.notification, ...action.payload, show: false} });
-	}
-
-	return state;
+export const initialState = {
+	totalData: null,
 }
 
-export default rootReducer;
+export const reducer = (state, action) => {
+	switch (action.type) {
+		case SET_TOTAL_DATA: return Object.assign({}, state, { totalData: { ...action.payload } });
+		default: return state;
+	}
+}

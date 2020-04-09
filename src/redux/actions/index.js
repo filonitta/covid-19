@@ -1,12 +1,7 @@
 import {
-	ADD_NOTIFICATION,
-	DELETE_NOTIFICATION
+	SET_TOTAL_DATA,
 } from '@redux/constants/action-types';
 
-export function addNotification(payload) {
-	return { type: ADD_NOTIFICATION, payload };
-}
-
-export function deleteNotification(payload) {
-	return { type: DELETE_NOTIFICATION, payload };
+export function setTotalData(payload) {
+	return { type: SET_TOTAL_DATA, payload };
 }

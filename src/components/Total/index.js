@@ -1,27 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 // import PropTypes from 'prop-types';
 import moment from 'moment';
 import Spinner from 'react-bootstrap/Spinner';
 
 import api from '@/services/api.class';
-// import NoData from '@shared/NoData';
+
+import Context from '@redux/store';
 
 const Total = () => {
-	const [data, setData] = useState(null);
-	const [isLoading, setIsLoading] = useState(false);
+	const { store, dispatch } = useContext(Context);
+
+	// const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		async function fetchData() {
-			setIsLoading(true);
+			// setIsLoading(true);
 			const data = await api.getTotalInfo();
-			setData(data);
-			setIsLoading(false);
+			dispatch({ type: 'SET_TOTAL_DATA', payload: data });
+			// setIsLoading(false);
 		}
 
 		fetchData();
-	}, []);
+	}, [dispatch]);
 
-	if (isLoading || !data) return <Spinner className="loader" animation="border" variant="primary" />;
+	const { totalData } = store;
+
+	if (!totalData) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (
 		<div className="card bg-light">
@@ -30,20 +34,19 @@ const Total = () => {
 			</div>
 			<div className="card-body">
 				<dl>
-					<dt>Cases</dt><dd><span className="badge badge-secondary">{data.cases.toLocaleString(navigator.language)}</span></dd>
-					<dt>Deaths</dt><dd><span className="badge badge-secondary">{data.deaths.toLocaleString(navigator.language)}</span></dd>
-					<dt>Recovered</dt><dd><span className="badge badge-secondary">{data.recovered.toLocaleString(navigator.language)}</span></dd>
-					<dt>Active</dt><dd><span className="badge badge-secondary">{data.active.toLocaleString(navigator.language)}</span></dd>
+					<dt>Cases</dt><dd><span className="badge badge-secondary">{totalData.cases.toLocaleString(navigator.language)}</span></dd>
+					<dt>Deaths</dt><dd><span className="badge badge-secondary">{totalData.deaths.toLocaleString(navigator.language)}</span></dd>
+					<dt>Recovered</dt><dd><span className="badge badge-secondary">{totalData.recovered.toLocaleString(navigator.language)}</span></dd>
+					<dt>Active</dt><dd><span className="badge badge-secondary">{totalData.active.toLocaleString(navigator.language)}</span></dd>
 				</dl>
 			</div>
 			<div className="card-footer">
-				<span className="badge">Date updated: {moment(data.updated).format('MMM DD, YYYY hh:MM a')}</span>
+				<span className="badge">Date updated: {moment(totalData.updated).format('MMM DD, YYYY hh:MM a')}</span>
 			</div>
 		</div>
 	);
 };
 
-Total.propTypes = {
-};
+Total.propTypes = {};
 
 export default Total;

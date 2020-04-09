@@ -27,8 +27,8 @@ const Home = () => {
 			</div>
 
 			<Tabs defaultActiveKey={activeTab} onSelect={onSelectTab} variant="pills">
-				<Tab eventKey="total" title="Total" disabled={activeTab === 'total'} unmountOnExit={false}>
-					{(activeTab === 'total' || isVisited('total')) && <Total />}
+				<Tab eventKey="total" title="Total" disabled={activeTab === 'total'} unmountOnExit={true}>
+					<Total />
 				</Tab>
 				<Tab eventKey="today" title="Today" disabled={activeTab === 'today'} unmountOnExit={false}>
 					{(activeTab === 'today' || isVisited('today')) && <Today />}
