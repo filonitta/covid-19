@@ -45,7 +45,7 @@ const HistoricalPerDay = () => {
 	}, [period]);
 
 	useEffect(() => {
-		selectedCountry && setSelectedCountry(countries.find(item => item.country === selectedCountry.country));
+		// selectedCountry && setSelectedCountry(countries.find(item => item.country === selectedCountry.country));
 	}, [countries, selectedCountry]);
 
 	const handleSearch = (data) => {

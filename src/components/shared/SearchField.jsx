@@ -22,12 +22,17 @@ const SearchField = (props) => {
 	}, [list]);
 
 	useEffect(() => {
-		if (currentValue) {
-			if (list.length === fullList.length && !arraysEqual(list, currentList) && !arraysEqual(fullList, currentList) && !arraysEqual(fullList, list)) {
-				// console.info('--- the original list was changed ---')
-				setFullList(list);
-				setListIsChanged(true);
-			}
+		const shouldUpdate = list.length &&
+							currentValue && 
+							list.length === fullList.length && 
+							!arraysEqual(list, currentList) && 
+							!arraysEqual(fullList, currentList) && 
+							!arraysEqual(fullList, list);
+
+		if (shouldUpdate) {
+			// console.info('--- the original list was changed ---')
+			setFullList(list);
+			setListIsChanged(true);
 		}
 	}, [list, currentList, currentValue, onSearch, fullList, onSearchHandler]);
 	
@@ -42,7 +47,11 @@ const SearchField = (props) => {
 	}, [list, fullList, currentValue, listIsChanged, onSearchHandler]);
 
 	useEffect(() => {
-		if (!currentValue && initialValue && fullList.length) {
+		const shouldUpdate = !currentValue &&
+							initialValue &&
+							fullList.length;
+		
+		if (shouldUpdate) {
 			// console.info('-- filter if there is initial value --');
 			onSearchHandler(initialValue);
 			setCurrentValue(initialValue);
