@@ -23,10 +23,10 @@ const SearchField = (props) => {
 
 	useEffect(() => {
 		const shouldUpdate = list.length &&
-							currentValue && 
+							currentValue !== initialValue && 
 							list.length === fullList.length && 
 							!arraysEqual(list, currentList) && 
-							!arraysEqual(fullList, currentList) && 
+							// !arraysEqual(fullList, currentList) && 
 							!arraysEqual(fullList, list);
 
 		if (shouldUpdate) {
@@ -34,7 +34,7 @@ const SearchField = (props) => {
 			setFullList(list);
 			setListIsChanged(true);
 		}
-	}, [list, currentList, currentValue, onSearch, fullList, onSearchHandler]);
+	}, [list, currentList, currentValue, onSearch, fullList, initialValue, onSearchHandler]);
 	
 	useEffect(() => {
 		if (!fullList.length) {
