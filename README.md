@@ -2,6 +2,8 @@
 
 [Demo](http://covid-19.filonitta.in.ua/)
 
+Used public API: [https://corona.lmao.ninja](https://corona.lmao.ninja)
+
 ## Install dependencies
 `npm i`
 
