@@ -27,11 +27,11 @@ const Home = () => {
 			</div>
 
 			<Tabs defaultActiveKey={activeTab} onSelect={onSelectTab} variant="pills">
-				<Tab eventKey="total" title="Total" disabled={activeTab === 'total'} unmountOnExit={true}>
+				<Tab eventKey="total" title="Total" disabled={activeTab === 'total'} unmountOnExit>
 					<Total />
 				</Tab>
-				<Tab eventKey="today" title="Today" disabled={activeTab === 'today'} unmountOnExit={false}>
-					{(activeTab === 'today' || isVisited('today')) && <Today />}
+				<Tab eventKey="today" title="Today" disabled={activeTab === 'today'} unmountOnExit>
+					<Today />
 				</Tab>
 				<Tab eventKey="all" title="Historical: all countries" disabled={activeTab === 'all'} unmountOnExit={false}>
 					{(activeTab === 'all' || isVisited('all')) && <HistoricalCountries />}

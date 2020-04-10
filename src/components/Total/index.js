@@ -1,23 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react';
-// import PropTypes from 'prop-types';
+import React, { useEffect, useContext } from 'react';
 import moment from 'moment';
 import Spinner from 'react-bootstrap/Spinner';
 
 import api from '@/services/api.class';
 
 import Context from '@redux/store';
+import { totalDataAction } from '@redux/actions';
 
 const Total = () => {
 	const { store, dispatch } = useContext(Context);
 
-	// const [isLoading, setIsLoading] = useState(false);
-
 	useEffect(() => {
 		async function fetchData() {
-			// setIsLoading(true);
 			const data = await api.getTotalInfo();
-			dispatch({ type: 'SET_TOTAL_DATA', payload: data });
-			// setIsLoading(false);
+			dispatch( totalDataAction(data) );
 		}
 
 		fetchData();
