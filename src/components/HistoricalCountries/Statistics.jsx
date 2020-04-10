@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Bar } from 'react-chartjs-2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,16 +16,33 @@ import RadioGroup from '@shared/RadioGroup';
 import Pager from '@shared/Pager';
 import { rnd } from '@utils/math';
 import { format } from '@utils/date';
+import Context from '@redux/store';
+import { allMetaAction } from '@redux/actions';
 
 const Statistics = props => {
+	const { store, dispatch } = useContext(Context);
+	const {
+		all: {
+			// list,
+			meta,
+		}
+	} = store;
+	
 	const {
 		list,
 	} = props;
 
+	const {
+		selectedDate
+	} = meta;
+
 	const [showCase, setShowCase] = useState(1);
 	const [paginationPage, setPaginationPage] = useState(1);
 	const [paginationCount, setPaginationCount] = useState(20);
-	const [selectedDate, setSelectedDate] = useState(new Date(moment().add(-1, 'days')));
+
+	useEffect(() => {
+		!selectedDate && dispatch( allMetaAction({ selectedDate: new Date(moment().add(-1, 'days')) }) );
+	}, [dispatch]);
 
 	const chartOptions = {
 		scales: {
@@ -61,7 +78,15 @@ const Statistics = props => {
 		}
 	};
 
-	const data = (list, field) => {
+	useEffect(() => {
+		if (!meta.colors.length) {
+			const range = (count, callback) => new Array(count).fill(0).map($ => callback ? callback($) : $);
+			const colors = range(list.length, () => `${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}`);
+			dispatch(allMetaAction({ colors }));
+		}
+	}, [dispatch, list, meta.colors.length]);
+
+	const data = useCallback((list, field) => {
 		list = list.sort((a, b) => b.timeline[field][format(selectedDate, 'M/D/YY')] - a.timeline[field][format(selectedDate, 'M/D/YY')]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
 		
 		const settings = {
@@ -80,8 +105,7 @@ const Statistics = props => {
 			pointHitRadius: 10,
 		};
 
-		const range = (count, callback) => new Array(count).fill(0).map($ => callback ? callback($) : $);
-		const colors = range(list.length, () => `${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}`);
+		const colors = meta.colors.slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
 
 		return {
 			cases: list.map(item => item.timeline.cases[format(selectedDate, 'M/D/YY')]),
@@ -99,7 +123,7 @@ const Statistics = props => {
 				// pointHoverBorderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
 			}],
 		};
-	};
+	}, [meta.colors, paginationPage, paginationCount, selectedDate]);
 
 	const getMinDate = () => {
 		const [info] = list;
@@ -107,7 +131,7 @@ const Statistics = props => {
 		return new Date(format(firstDate));
 	};
 
-	const onDateChange = event => setSelectedDate(event);
+	const onDateChange = event => dispatch( allMetaAction({ selectedDate: event }) );
 
 	return (
 		<>

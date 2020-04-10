@@ -19,9 +19,9 @@ const Total = () => {
 		fetchData();
 	}, [dispatch]);
 
-	const { totalData } = store;
+	const { total: { data } } = store;
 
-	if (!totalData) return <Spinner className="loader" animation="border" variant="primary" />;
+	if (!data) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (
 		<div className="card bg-light">
@@ -30,14 +30,14 @@ const Total = () => {
 			</div>
 			<div className="card-body">
 				<dl>
-					<dt>Cases</dt><dd><span className="badge badge-secondary">{totalData.cases.toLocaleString(navigator.language)}</span></dd>
-					<dt>Deaths</dt><dd><span className="badge badge-secondary">{totalData.deaths.toLocaleString(navigator.language)}</span></dd>
-					<dt>Recovered</dt><dd><span className="badge badge-secondary">{totalData.recovered.toLocaleString(navigator.language)}</span></dd>
-					<dt>Active</dt><dd><span className="badge badge-secondary">{totalData.active.toLocaleString(navigator.language)}</span></dd>
+					<dt>Cases</dt><dd><span className="badge badge-secondary">{data.cases.toLocaleString(navigator.language)}</span></dd>
+					<dt>Deaths</dt><dd><span className="badge badge-secondary">{data.deaths.toLocaleString(navigator.language)}</span></dd>
+					<dt>Recovered</dt><dd><span className="badge badge-secondary">{data.recovered.toLocaleString(navigator.language)}</span></dd>
+					<dt>Active</dt><dd><span className="badge badge-secondary">{data.active.toLocaleString(navigator.language)}</span></dd>
 				</dl>
 			</div>
 			<div className="card-footer">
-				<span className="badge">Date updated: {moment(totalData.updated).format('MMM DD, YYYY hh:MM a')}</span>
+				<span className="badge">Date updated: {moment(data.updated).format('MMM DD, YYYY hh:MM a')}</span>
 			</div>
 		</div>
 	);

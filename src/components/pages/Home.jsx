@@ -33,8 +33,8 @@ const Home = () => {
 				<Tab eventKey="today" title="Today" disabled={activeTab === 'today'} unmountOnExit>
 					<Today />
 				</Tab>
-				<Tab eventKey="all" title="Historical: all countries" disabled={activeTab === 'all'} unmountOnExit={false}>
-					{(activeTab === 'all' || isVisited('all')) && <HistoricalCountries />}
+				<Tab eventKey="all" title="Historical: all countries" disabled={activeTab === 'all'} unmountOnExit>
+					<HistoricalCountries />
 				</Tab>
 				<Tab eventKey="day" title="Historical: per day" disabled={activeTab === 'day'} unmountOnExit={false}>
 					{(activeTab === 'day' || isVisited('day')) && <HistoricalPerDay />}

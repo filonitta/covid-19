@@ -16,7 +16,6 @@ String.prototype.capitalize = function () {
 const Today = () => {
 	const { store, dispatch } = useContext(Context);
 	const [isLoading, setIsLoading] = useState(false);
-	// const [selectedCountry, setSelectedCountry] = useState(null);
 	const {
 		today: {
 			list: countries,
