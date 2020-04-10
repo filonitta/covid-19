@@ -21,7 +21,7 @@ const Home = () => {
 	const isVisited = (tab) => visitedTabs.includes(tab);
 
 	return (
-		<div className="container mb-4">
+		<div className="container">
 			<div className="page-header mt-4 mb-5">
 				<h1>COVID-19 statistics</h1>
 			</div>
@@ -41,7 +41,9 @@ const Home = () => {
 				</Tab>
 			</Tabs>
 
-								
+			<footer className="bg-light p-2 text-right mt-5">
+				<small>Used public API: <a href="https://corona.lmao.ninja" target="_blank" rel="noopener noreferrer">https://corona.lmao.ninja</a></small>
+			</footer>								
 		</div>
 	)
 }
