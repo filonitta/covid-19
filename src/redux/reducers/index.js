@@ -12,7 +12,10 @@ export const initialState = {
 		list: [],
 		meta: {
 			colors: [],
-			selectedDate: null
+			selectedDate: null,
+			paginationCount: 20,
+			showCase: 1,
+			paginationPage: 1
 		}
 	}
 }
@@ -38,7 +41,7 @@ export const reducer = (state, action) => {
 		case types.SET_ALL_META: {
 			let { all } = state;
 			all.meta = { ...all.meta, ...action.payload };
-			console.log(all.meta)
+			console.log(all.meta);
 			return Object.assign({}, state, all);
 		}
 		default: return state;

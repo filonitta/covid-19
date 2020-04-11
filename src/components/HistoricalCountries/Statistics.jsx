@@ -21,6 +21,7 @@ import { allMetaAction } from '@redux/actions';
 
 const Statistics = props => {
 	const { store, dispatch } = useContext(Context);
+
 	const {
 		all: {
 			// list,
@@ -33,16 +34,19 @@ const Statistics = props => {
 	} = props;
 
 	const {
-		selectedDate
+		selectedDate,
+		paginationCount,
+		showCase,
+		paginationPage
 	} = meta;
 
-	const [showCase, setShowCase] = useState(1);
-	const [paginationPage, setPaginationPage] = useState(1);
-	const [paginationCount, setPaginationCount] = useState(20);
+	// const [showCase, setShowCase] = useState(1);
+	// const [paginationPage, setPaginationPage] = useState(1);
+	// const [paginationCount, setPaginationCount] = useState(20);
 
 	useEffect(() => {
 		!selectedDate && dispatch( allMetaAction({ selectedDate: new Date(moment().add(-1, 'days')) }) );
-	}, [dispatch]);
+	}, [dispatch, selectedDate]);
 
 	const chartOptions = {
 		scales: {
@@ -132,6 +136,9 @@ const Statistics = props => {
 	};
 
 	const onDateChange = event => dispatch( allMetaAction({ selectedDate: event }) );
+	const onSetPaginationCount = event => dispatch( allMetaAction({ paginationCount: event }) );
+	const onSetShowCase = event => dispatch( allMetaAction({ showCase: event }) );
+	const onSetPaginationPage = event => dispatch( allMetaAction({ paginationPage: event }) );
 
 	return (
 		<>
@@ -152,7 +159,7 @@ const Statistics = props => {
 				/>
 			</div>
 
-			<RadioGroup onChange={setShowCase} checkedValue={showCase} className="mt-4" />
+			<RadioGroup onChange={onSetShowCase} checkedValue={showCase} className="mt-4" />
 
 			{showCase === 1 &&
 				<Bar options={chartOptions} data={data(list, 'cases')} />
@@ -167,12 +174,12 @@ const Statistics = props => {
 			}
 
 			<Pager
-				onPageChange={setPaginationPage}
-				onPageSizeChange={setPaginationCount}
+				onPageChange={onSetPaginationPage}
+				onPageSizeChange={onSetPaginationCount}
 				totalPages={9}
 				totalRecords={list.length}
 				pageSize={paginationCount}
-				startPage={1}
+				startPage={paginationPage}
 			/>
 		</>
 	);
