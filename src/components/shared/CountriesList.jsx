@@ -12,7 +12,6 @@ const CountriesList = (props) => {
 
 	const onCountryClick = item => event => {
 		event.preventDefault();
-
 		onCountrySelect(item);
 	}
 

@@ -9,25 +9,52 @@ const SearchField = (props) => {
 	const {
 		list,
 		onSearch,
-		initialValue,
+		value: initialValue,
 	} = props;
 
-	const [currentValue, setCurrentValue] = useState(null);
+	const [currentValue, setCurrentValue] = useState('');
 	const [fullList, setFullList] = useState([]);
 	const [currentList, setCurrentList] = useState(list);
 	const [listIsChanged, setListIsChanged] = useState(false);
 
 	useEffect(() => {
+		// console.log('list[0]', list[0])
 		setCurrentList(list);
 	}, [list]);
 
 	useEffect(() => {
+		// console.log(initialValue, fullList.length)
+		if (initialValue && fullList.length) {
+			// console.log(initialValue)
+			onSearchHandler(initialValue);
+			setCurrentValue(initialValue);
+		}
+	}, [initialValue, onSearchHandler, fullList.length]);
+
+	useEffect(() => {
+		!currentValue && initialValue !== currentValue && setCurrentValue(initialValue);
+	}, [initialValue, currentValue]);
+
+	useEffect(() => {
 		const shouldUpdate = list.length &&
-							currentValue !== initialValue && 
+							// currentValue &&
+							// currentValue !== initialValue && 
 							list.length === fullList.length && 
-							!arraysEqual(list, currentList) && 
+							// !arraysEqual(list, currentList) && 
 							// !arraysEqual(fullList, currentList) && 
 							!arraysEqual(fullList, list);
+
+		/* console.log('shouldUpdate', (!!shouldUpdate).toString().toUpperCase())
+		console.log(
+			list.length,
+			// currentValue,
+			// currentValue !== initialValue,
+			list.length === fullList.length,
+			// !arraysEqual(list, currentList),
+			// !arraysEqual(fullList, currentList), 
+			!arraysEqual(fullList, list),
+			[fullList[0], list[0] ]
+		); */
 
 		if (shouldUpdate) {
 			// console.info('--- the original list was changed ---')
@@ -81,7 +108,7 @@ const SearchField = (props) => {
 				className="form-control"
 				placeholder="Filter by country name"
 				onInput={onFilter}
-				defaultValue={initialValue}
+				defaultValue={currentValue}
 				ref={input => input && input.addEventListener('search', onFilter)}
 			/>
 		</div>
@@ -91,7 +118,7 @@ const SearchField = (props) => {
 SearchField.propTypes = {
 	list: PropTypes.array,
 	onSearch: PropTypes.func,
-	initialValue: PropTypes.string,
+	value: PropTypes.string,
 };
 
 export default SearchField;

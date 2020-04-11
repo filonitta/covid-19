@@ -11,14 +11,10 @@ import HistoricalCountries from '@base/src/components/HistoricalCountries';
 
 const Home = () => {
 	const [activeTab, setActiveTab] = useState('total');
-	const [visitedTabs, setVisitedTabs] = useState([activeTab]);
 
 	const onSelectTab = tab => {
 		setActiveTab(tab);
-		if (!isVisited(tab)) setVisitedTabs([...visitedTabs, tab]);
 	}
-
-	const isVisited = (tab) => visitedTabs.includes(tab);
 
 	return (
 		<div className="container">
@@ -36,8 +32,8 @@ const Home = () => {
 				<Tab eventKey="all" title="Historical: all countries" disabled={activeTab === 'all'} unmountOnExit>
 					<HistoricalCountries />
 				</Tab>
-				<Tab eventKey="day" title="Historical: per day" disabled={activeTab === 'day'} unmountOnExit={false}>
-					{(activeTab === 'day' || isVisited('day')) && <HistoricalPerDay />}
+				<Tab eventKey="day" title="Historical: per day" disabled={activeTab === 'day'} unmountOnExit>
+					<HistoricalPerDay />
 				</Tab>
 			</Tabs>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 // import PropTypes from 'prop-types';
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -8,7 +8,8 @@ import SearchField from '@shared/SearchField';
 import Sorting from './Sorting';
 import Period from '@shared/Period';
 import Statistics from './Statistics';
-// import NoData from '@shared/NoData';
+import Context from '@redux/store';
+import { dayListAction, dayMetaAction, daySelectedAction } from '@redux/actions';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -16,14 +17,31 @@ String.prototype.capitalize = function () {
 }
 
 const HistoricalPerDay = () => {
-	const [countries, setCountries] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
-	const [selectedCountry, setSelectedCountry] = useState(null);
-	const [period, setPeriod] = useState(30);
-	const [searchValue] = useState('');
-	const [sortField, setSortField] = useState('country');
+	const { store, dispatch } = useContext(Context);
+	const {
+		day: {
+			list: countries,
+			selectedItem: selectedCountry,
+			meta
+		}
+	} = store;
 
+	const {
+		period,
+		sortField,
+		searchValue
+	} = meta;
+
+	// console.log(store)
+	// const [countries, setCountries] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	// const [selectedCountry, setSelectedCountry] = useState(null);
+	// const [period, setPeriod] = useState(30);
+	// const [searchValue] = useState('');
+	// const [sortField, setSortField] = useState('country');
+	
 	useEffect(() => {
+		// console.log(period)
 		async function fetchCountries() {
 			setIsLoading(true);
 			const data = await api.getCountries(period);
@@ -35,7 +53,8 @@ const HistoricalPerDay = () => {
 				}
 			});
 
-			setCountries(data);
+			// setCountries(data);
+			dispatch( dayListAction(data) );
 
 			setIsLoading(false);
 
@@ -43,21 +62,34 @@ const HistoricalPerDay = () => {
 		}
 		
 		fetchCountries();
-	}, [period, setCurrentCountryHandler]);
+	}, [period, setCurrentCountryHandler, dispatch]);
 	
 	const setCurrentCountryHandler = useCallback((countries) => {
-		countries.length && selectedCountry && setSelectedCountry(countries.find(item => item.country === selectedCountry.country));
-	}, [selectedCountry]);
+		countries.length && selectedCountry && onSetSelectedCountry(countries.find(item => item.country === selectedCountry.country));
+	}, [selectedCountry, onSetSelectedCountry]);
 
-	const handleSearch = (data) => {
-		// console.count('---')
-		setCountries(data);
+	const handleSearch = (data, field) => {
+		// console.count('handleSearch');
+		// console.log(data)
+		// setCountries(data);
+		dispatch(dayMetaAction({ searchValue: field }));
+		onSetCountries(data);
 	};
 
 	const handleSort = (list, field) => {
-		setSortField(field);
-		setCountries(list);
+		// onSetSortField(field);
+		// setCountries(list);
+		dispatch(dayMetaAction({ sortField: field }));
+		onSetCountries(list);
 	};
+	
+	const onSetCountries = data => dispatch( dayListAction(data) );
+	const onSetPeriod = data => dispatch( dayMetaAction({ period: data }) );
+	// const onSetSortField = data => dispatch( dayMetaAction({ sortField: data }) );
+	const onSetSelectedCountry = useCallback(data => {
+		// console.log(data)
+		dispatch( daySelectedAction(data) );
+	}, [dispatch]);
 
 	return (
 		<>
@@ -69,13 +101,13 @@ const HistoricalPerDay = () => {
 							Countries
 						</div>
 						<div className="card-body">
-							<Period onChange={setPeriod} />
+							<Period onChange={onSetPeriod} value={period} />
 							<Sorting sortField={sortField} list={countries} onSort={handleSort} />
-							<SearchField initialValue={searchValue} list={countries} onSearch={handleSearch} />
+							<SearchField value={searchValue} list={countries} onSearch={handleSearch} />
 							<CountriesList
 								list={countries}
-								onListUpdate={setCountries}
-								onCountrySelect={setSelectedCountry}
+								onListUpdate={onSetCountries}
+								onCountrySelect={onSetSelectedCountry}
 							/>
 						</div>
 					</div>
