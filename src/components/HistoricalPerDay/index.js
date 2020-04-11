@@ -54,6 +54,7 @@ const HistoricalPerDay = () => {
 			});
 
 			// setCountries(data);
+			// console.log(data)
 			dispatch( dayListAction(data) );
 
 			setIsLoading(false);
@@ -62,6 +63,10 @@ const HistoricalPerDay = () => {
 		}
 		
 		fetchCountries();
+
+		return () => {
+			dispatch(dayListAction([]));
+		};
 	}, [period, setCurrentCountryHandler, dispatch]);
 	
 	const setCurrentCountryHandler = useCallback((countries) => {
@@ -70,7 +75,8 @@ const HistoricalPerDay = () => {
 
 	const handleSearch = (data, field) => {
 		// console.count('handleSearch');
-		// console.log(data)
+		// console.log('countries', countries)
+		// console.log('data', data)
 		// setCountries(data);
 		dispatch(dayMetaAction({ searchValue: field }));
 		onSetCountries(data);

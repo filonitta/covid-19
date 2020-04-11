@@ -23,7 +23,6 @@ const SearchField = (props) => {
 	}, [list]);
 
 	useEffect(() => {
-		// console.log(initialValue, fullList.length)
 		if (initialValue && fullList.length) {
 			// console.log(initialValue)
 			onSearchHandler(initialValue);
