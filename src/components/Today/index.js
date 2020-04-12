@@ -42,7 +42,6 @@ const Today = () => {
 	}, [dispatch]);
 
 	const updateList = (list, searchValue) => {
-		console.log(list)
 		dispatch(todayListAction(list));
 		dispatch(todayMetaAction({ searchValue }));
 	};

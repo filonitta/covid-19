@@ -77,7 +77,6 @@ const HistoricalPerDay = () => {
 
 	const handleSearch = (data, searchValue) => {
 		console.count('handleSearch');
-		// console.log('countries', countries)
 		// console.log('data', data)
 		// setCountries(data);
 		dispatch(dayMetaAction({ searchValue }));
