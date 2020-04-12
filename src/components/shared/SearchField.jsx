@@ -9,54 +9,36 @@ const SearchField = (props) => {
 	const {
 		list,
 		onSearch,
-		initialValue,
+		value: initialValue,
 	} = props;
 
 	const [currentValue, setCurrentValue] = useState(null);
 	const [fullList, setFullList] = useState([]);
-	const [currentList, setCurrentList] = useState(list);
-	const [listIsChanged, setListIsChanged] = useState(false);
 
-	useEffect(() => {
-		setCurrentList(list);
-	}, [list]);
-
-	useEffect(() => {
-		const shouldUpdate = list.length &&
-							currentValue !== initialValue && 
-							list.length === fullList.length && 
-							!arraysEqual(list, currentList) && 
-							// !arraysEqual(fullList, currentList) && 
-							!arraysEqual(fullList, list);
-
-		if (shouldUpdate) {
-			// console.info('--- the original list was changed ---')
-			setFullList(list);
-			setListIsChanged(true);
-		}
-	}, [list, currentList, currentValue, onSearch, fullList, initialValue, onSearchHandler]);
-	
 	useEffect(() => {
 		if (!fullList.length) {
 			// console.info('-- set full list --');
 			setFullList(list);
-		} else if (listIsChanged) {
-			onSearchHandler(currentValue);
-			setListIsChanged(false);
 		}
-	}, [list, fullList, currentValue, listIsChanged, onSearchHandler]);
+	}, [fullList, list]);
 
 	useEffect(() => {
-		const shouldUpdate = !currentValue &&
-							initialValue &&
-							fullList.length;
-		
-		if (shouldUpdate) {
-			// console.info('-- filter if there is initial value --');
+		if (initialValue && fullList.length === list.length) {
+			// console.log('-- filter on init --');
 			onSearchHandler(initialValue);
-			setCurrentValue(initialValue);
 		}
-	}, [initialValue, fullList, onSearchHandler, currentValue]);
+	}, [initialValue, fullList.length, list.length, onSearchHandler]);
+
+	useEffect(() => {
+		if (list.length && fullList.length === list.length) {
+			// console.info('-- update full list --');
+			setFullList(list);
+
+			if (currentValue) {
+				onSearchHandler(currentValue);
+			}
+		}
+	}, [fullList, list, currentValue, onSearchHandler]);
 
 	const onSearchHandler = useCallback((value) => {
 		onSearch(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
@@ -65,8 +47,7 @@ const SearchField = (props) => {
 	const onFilter = event => {
 		const value = event.target.value.toLowerCase();
 		setCurrentValue(value);
-
-		onSearch(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
+		onSearchHandler(value);
 	}
 
 	return (
@@ -91,7 +72,7 @@ const SearchField = (props) => {
 SearchField.propTypes = {
 	list: PropTypes.array,
 	onSearch: PropTypes.func,
-	initialValue: PropTypes.string,
+	value: PropTypes.string,
 };
 
 export default SearchField;

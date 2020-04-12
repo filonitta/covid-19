@@ -18,6 +18,7 @@ const Today = () => {
 	const [originalCountriesList, setOriginalCountriesList] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [selectedCountry, setSelectedCountry] = useState(null);
+	const [searchValue] = useState('');
 
 	useEffect(() => {
 		async function fetchInfo() {
@@ -35,8 +36,8 @@ const Today = () => {
 		fetchInfo();
 	}, []);
 
-	const updateList = (list) => {
-		setCountries([...list]);
+	const updateList = (list, searchValue) => {
+		setCountries(list);
 	}
 
 	if (isLoading) return <Spinner className="loader" animation="border" variant="primary" />;
@@ -50,7 +51,7 @@ const Today = () => {
 							Countries
 						</div>
 						<div className="card-body">
-							<SearchField list={originalCountriesList} onSearch={updateList} />
+							<SearchField value={searchValue} list={originalCountriesList} onSearch={updateList} />
 							<CountriesList
 								list={countries}
 								onListUpdate={setCountries}
