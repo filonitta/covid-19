@@ -12,53 +12,44 @@ const SearchField = (props) => {
 		value: initialValue,
 	} = props;
 
-	// const [currentValue, setCurrentValue] = useState(initialValue);
+	const [currentValue, setCurrentValue] = useState(initialValue);
 	const [fullList, setFullList] = useState([]);
-	const [isSet, setIsSet] = useState(false);
-	const [isReset, setIsReset] = useState(false);
-	const [isFiltered, setIsFiltered] = useState(false);
 
-	const onFilter = event => {
-		const value = event.target.value.toLowerCase();
-		// setCurrentValue(value);
-		onSearchHandler(value);
-	};
-
-	// - init full list
 	useEffect(() => {
-		if (list.length > fullList.length && !isSet) {
-			console.log('0', list.length, fullList.length)
-			console.info('-- init full list --');
-			setFullList(list); // set fullList equal to list
-			setIsSet(true);
-			// setIsReset(true);
+		if (!fullList.length) {
+			// console.info('-- set full list --');
+			setFullList(list);
 		}
-	}, [list, fullList.length, isSet]);
-
-	// filter on load
-	useEffect(() => {
-		if (initialValue && fullList.length && fullList.length === list.length) {
-			console.log('1', list.length, fullList.length)
-			console.log('-- filter on load --');
-			onSearchHandler(initialValue); // filter list
-		}
-	}, [fullList, list, initialValue, onSearchHandler]);
+	}, [fullList, list]);
 
 	// filter on next list update
 	useEffect(() => {
-		console.log('2', isSet, list.length, fullList.length)
-		if (isSet && fullList.length && list.length === fullList.length) {
-			console.info('-- filter on next list update --');
-			setFullList(list);
-			setIsReset(true);
-			// onSearchHandler(currentValue); // filter list
+		if (initialValue && fullList.length === list.length) {
+			// console.log('-- filter on init --');
+			onSearchHandler(initialValue);
 		}
-	}, [list, fullList.length, onSearchHandler, isSet]);
+	}, [initialValue, fullList.length, list.length, onSearchHandler]);
+
+	useEffect(() => {
+		if (list.length && fullList.length === list.length) {
+			// console.info('-- update full list --');
+			setFullList(list);
+
+			if (currentValue) {
+				onSearchHandler(currentValue);
+			}
+		}
+	}, [fullList, list, currentValue, onSearchHandler]);
 
 	const onSearchHandler = useCallback((value) => {
 		onSearch(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
-		setIsFiltered(true);
 	}, [fullList, onSearch]);
+	
+	const onFilter = event => {
+		const value = event.target.value.toLowerCase();
+		setCurrentValue(value);
+		onSearchHandler(value);
+	}
 
 	return (
 		<div className="input-group mb-3">
