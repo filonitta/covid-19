@@ -23,21 +23,21 @@ const SearchField = (props) => {
 
 	useEffect(() => {
 		if (list.length > fullList.length) {
-			console.info('-- set full list --');
+			// console.info('-- set full list --');
 			setFullList(list);
 		}
 	}, [fullList, list]);
 
 	useEffect(() => {
 		if (fullList.length && initialValue && fullList.length === list.length) {
-			console.info('-- filter on init --');
+			// console.info('-- filter on init --');
 			onSearchHandler(initialValue);
 		}
 	}, [initialValue, fullList.length, list.length, onSearchHandler]);
 
 	useEffect(() => {
 		if ( list.length && fullList.length === list.length && !arraysEqual(fullList, list) ) {
-			console.info('-- update full list --');
+			// console.info('-- update full list --');
 
 			setFullList(list);
 

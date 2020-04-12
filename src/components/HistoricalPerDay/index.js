@@ -32,17 +32,11 @@ const HistoricalPerDay = () => {
 		searchValue
 	} = meta;
 
-	// console.log(store)
-	// const [countries, setCountries] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isLoadingNext, setIsLoadingNext] = useState(false);
 	const [resetSearchList, setResetSearchList] = useState(false);
-	// const [selectedCountry, setSelectedCountry] = useState(null);
-	// const [period, setPeriod] = useState(30);
-	// const [searchValue] = useState('');
-	// const [sortField, setSortField] = useState('country');
 	
 	useEffect(() => {
-		// console.log(period)
 		async function fetchCountries() {
 			setIsLoading(true);
 			const data = await api.getCountries(period);
@@ -54,21 +48,16 @@ const HistoricalPerDay = () => {
 				}
 			});
 
-			// setCountries(data);
-			// console.log(data)
 			dispatch( dayListAction(data) );
 
 			setIsLoading(false);
+			setIsLoadingNext(false);
 
 			setCurrentCountryHandler(data);
 			setResetSearchList(true);
 		}
 		
 		fetchCountries();
-
-		/* return () => {
-			dispatch(dayListAction([]));
-		}; */
 	}, [period, setCurrentCountryHandler, dispatch]);
 	
 	const setCurrentCountryHandler = useCallback((countries) => {
@@ -76,33 +65,30 @@ const HistoricalPerDay = () => {
 	}, [selectedCountry, onSetSelectedCountry]);
 
 	const handleSearch = (data, searchValue) => {
-		console.count('handleSearch');
+		// console.count('handleSearch');
 		// console.log('data', data)
-		// setCountries(data);
 		dispatch(dayMetaAction({ searchValue }));
 		onSetCountries(data);
 	};
 
 	const handleSort = (list, sortField) => {
-		// onSetSortField(field);
-		// setCountries(list);
 		dispatch(dayMetaAction({ sortField }));
 		onSetCountries(list);
 	};
+
+	const handleSetPeriod = data => {
+		setIsLoadingNext(true);
+		dispatch(dayMetaAction({ period: data }));
+	};
 	
 	const onSetCountries = data => dispatch( dayListAction(data) );
-	const onSetPeriod = data => dispatch( dayMetaAction({ period: data }) );
-	// const onSetSortField = data => dispatch( dayMetaAction({ sortField: data }) );
-	const onSetSelectedCountry = useCallback(data => {
-		// console.log(data)
-		dispatch( daySelectedAction(data) );
-	}, [dispatch]);
+	const onSetSelectedCountry = useCallback(data => dispatch( daySelectedAction(data) ), [dispatch]);
 
 	if (isLoading && !countries.length) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (
 		<>
-			{isLoading && <Spinner className="loader" animation="border" variant="primary" />}
+			{isLoadingNext && <Spinner className="loader" animation="border" variant="primary" />}
 			<div className="row">
 				<div className="col-sm-4">
 					<div className="card">
@@ -110,7 +96,7 @@ const HistoricalPerDay = () => {
 							Countries
 						</div>
 						<div className="card-body">
-							<Period onChange={onSetPeriod} value={period} />
+							<Period onChange={handleSetPeriod} value={period} />
 							<Sorting sortField={sortField} list={countries} onSort={handleSort} />
 							<SearchField value={searchValue} list={countries} onSearch={handleSearch} reset={resetSearchList} />
 							<CountriesList
