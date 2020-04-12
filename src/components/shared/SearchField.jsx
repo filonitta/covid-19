@@ -12,88 +12,53 @@ const SearchField = (props) => {
 		value: initialValue,
 	} = props;
 
-	const [currentValue, setCurrentValue] = useState('');
+	// const [currentValue, setCurrentValue] = useState(initialValue);
 	const [fullList, setFullList] = useState([]);
-	const [currentList, setCurrentList] = useState(list);
-	const [listIsChanged, setListIsChanged] = useState(false);
+	const [isSet, setIsSet] = useState(false);
+	const [isReset, setIsReset] = useState(false);
+	const [isFiltered, setIsFiltered] = useState(false);
 
-	useEffect(() => {
-		// console.log('list[0]', list[0])
-		setCurrentList(list);
-	}, [list]);
+	const onFilter = event => {
+		const value = event.target.value.toLowerCase();
+		// setCurrentValue(value);
+		onSearchHandler(value);
+	};
 
+	// - init full list
 	useEffect(() => {
-		if (initialValue && fullList.length) {
-			// console.log(initialValue)
-			onSearchHandler(initialValue);
-			setCurrentValue(initialValue);
+		if (list.length > fullList.length && !isSet) {
+			console.log('0', list.length, fullList.length)
+			console.info('-- init full list --');
+			setFullList(list); // set fullList equal to list
+			setIsSet(true);
+			// setIsReset(true);
 		}
-	}, [initialValue, onSearchHandler, fullList.length]);
+	}, [list, fullList.length, isSet]);
 
+	// filter on load
 	useEffect(() => {
-		!currentValue && initialValue !== currentValue && setCurrentValue(initialValue);
-	}, [initialValue, currentValue]);
+		if (initialValue && fullList.length && fullList.length === list.length) {
+			console.log('1', list.length, fullList.length)
+			console.log('-- filter on load --');
+			onSearchHandler(initialValue); // filter list
+		}
+	}, [fullList, list, initialValue, onSearchHandler]);
 
+	// filter on next list update
 	useEffect(() => {
-		const shouldUpdate = list.length &&
-							// currentValue &&
-							// currentValue !== initialValue && 
-							list.length === fullList.length && 
-							// !arraysEqual(list, currentList) && 
-							// !arraysEqual(fullList, currentList) && 
-							!arraysEqual(fullList, list);
-
-		/* console.log('shouldUpdate', (!!shouldUpdate).toString().toUpperCase())
-		console.log(
-			list.length,
-			// currentValue,
-			// currentValue !== initialValue,
-			list.length === fullList.length,
-			// !arraysEqual(list, currentList),
-			// !arraysEqual(fullList, currentList), 
-			!arraysEqual(fullList, list),
-			[fullList[0], list[0] ]
-		); */
-
-		if (shouldUpdate) {
-			// console.info('--- the original list was changed ---')
+		console.log('2', isSet, list.length, fullList.length)
+		if (isSet && fullList.length && list.length === fullList.length) {
+			console.info('-- filter on next list update --');
 			setFullList(list);
-			setListIsChanged(true);
+			setIsReset(true);
+			// onSearchHandler(currentValue); // filter list
 		}
-	}, [list, currentList, currentValue, onSearch, fullList, initialValue, onSearchHandler]);
-	
-	useEffect(() => {
-		if (!fullList.length) {
-			// console.info('-- set full list --');
-			setFullList(list);
-		} else if (listIsChanged) {
-			onSearchHandler(currentValue);
-			setListIsChanged(false);
-		}
-	}, [list, fullList, currentValue, listIsChanged, onSearchHandler]);
-
-	useEffect(() => {
-		const shouldUpdate = !currentValue &&
-							initialValue &&
-							fullList.length;
-		
-		if (shouldUpdate) {
-			// console.info('-- filter if there is initial value --');
-			onSearchHandler(initialValue);
-			setCurrentValue(initialValue);
-		}
-	}, [initialValue, fullList, onSearchHandler, currentValue]);
+	}, [list, fullList.length, onSearchHandler, isSet]);
 
 	const onSearchHandler = useCallback((value) => {
 		onSearch(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
+		setIsFiltered(true);
 	}, [fullList, onSearch]);
-	
-	const onFilter = event => {
-		const value = event.target.value.toLowerCase();
-		setCurrentValue(value);
-
-		onSearch(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
-	}
 
 	return (
 		<div className="input-group mb-3">
@@ -107,7 +72,7 @@ const SearchField = (props) => {
 				className="form-control"
 				placeholder="Filter by country name"
 				onInput={onFilter}
-				defaultValue={currentValue}
+				defaultValue={initialValue}
 				ref={input => input && input.addEventListener('search', onFilter)}
 			/>
 		</div>

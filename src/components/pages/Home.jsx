@@ -10,7 +10,7 @@ import HistoricalPerDay from '@base/src/components/HistoricalPerDay';
 import HistoricalCountries from '@base/src/components/HistoricalCountries';
 
 const Home = () => {
-	const [activeTab, setActiveTab] = useState('total');
+	const [activeTab, setActiveTab] = useState('day');
 
 	const onSelectTab = tab => {
 		setActiveTab(tab);

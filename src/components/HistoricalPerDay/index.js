@@ -35,6 +35,7 @@ const HistoricalPerDay = () => {
 	// console.log(store)
 	// const [countries, setCountries] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [resetSearchList, setResetSearchList] = useState(false);
 	// const [selectedCountry, setSelectedCountry] = useState(null);
 	// const [period, setPeriod] = useState(30);
 	// const [searchValue] = useState('');
@@ -60,32 +61,33 @@ const HistoricalPerDay = () => {
 			setIsLoading(false);
 
 			setCurrentCountryHandler(data);
+			setResetSearchList(true);
 		}
 		
 		fetchCountries();
 
-		return () => {
+		/* return () => {
 			dispatch(dayListAction([]));
-		};
+		}; */
 	}, [period, setCurrentCountryHandler, dispatch]);
 	
 	const setCurrentCountryHandler = useCallback((countries) => {
 		countries.length && selectedCountry && onSetSelectedCountry(countries.find(item => item.country === selectedCountry.country));
 	}, [selectedCountry, onSetSelectedCountry]);
 
-	const handleSearch = (data, field) => {
-		// console.count('handleSearch');
+	const handleSearch = (data, searchValue) => {
+		console.count('handleSearch');
 		// console.log('countries', countries)
 		// console.log('data', data)
 		// setCountries(data);
-		dispatch(dayMetaAction({ searchValue: field }));
+		dispatch(dayMetaAction({ searchValue }));
 		onSetCountries(data);
 	};
 
-	const handleSort = (list, field) => {
+	const handleSort = (list, sortField) => {
 		// onSetSortField(field);
 		// setCountries(list);
-		dispatch(dayMetaAction({ sortField: field }));
+		dispatch(dayMetaAction({ sortField }));
 		onSetCountries(list);
 	};
 	
@@ -96,6 +98,8 @@ const HistoricalPerDay = () => {
 		// console.log(data)
 		dispatch( daySelectedAction(data) );
 	}, [dispatch]);
+
+	if (isLoading && !countries.length) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (
 		<>
@@ -109,7 +113,7 @@ const HistoricalPerDay = () => {
 						<div className="card-body">
 							<Period onChange={onSetPeriod} value={period} />
 							<Sorting sortField={sortField} list={countries} onSort={handleSort} />
-							<SearchField value={searchValue} list={countries} onSearch={handleSearch} />
+							<SearchField value={searchValue} list={countries} onSearch={handleSearch} reset={resetSearchList} />
 							<CountriesList
 								list={countries}
 								onListUpdate={onSetCountries}

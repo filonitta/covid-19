@@ -6,7 +6,7 @@ import CountriesList from '@shared/CountriesList';
 import SearchField from '@shared/SearchField';
 import Statistics from './Statistics';
 import Context from '@redux/store';
-import { todayListAction, todaySelectedAction } from '@redux/actions';
+import { todayListAction, todaySelectedAction, todayMetaAction } from '@redux/actions';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -19,7 +19,10 @@ const Today = () => {
 	const {
 		today: {
 			list: countries,
-			selectedItem: selectedCountry
+			selectedItem: selectedCountry,
+			meta: {
+				searchValue
+			}
 		}
 	} = store;
 
@@ -38,7 +41,12 @@ const Today = () => {
 		fetchInfo();
 	}, [dispatch]);
 
-	const updateList = (list) => dispatch(todayListAction(list));
+	const updateList = (list, searchValue) => {
+		console.log(list)
+		dispatch(todayListAction(list));
+		dispatch(todayMetaAction({ searchValue }));
+	};
+
 	const setSelectedCountry = (data) => dispatch(todaySelectedAction(data));
 
 	if (isLoading && !countries.length) return <Spinner className="loader" animation="border" variant="primary" />;
@@ -52,7 +60,7 @@ const Today = () => {
 							Countries
 						</div>
 						<div className="card-body">
-							<SearchField list={countries} onSearch={updateList} />
+							<SearchField value={searchValue} list={countries} onSearch={updateList} />
 							<CountriesList
 								list={countries}
 								onListUpdate={updateList}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -9,15 +9,34 @@ import { Line, Bar } from 'react-chartjs-2';
 import './Statistics.scss';
 import RadioGroup from '@shared/RadioGroup';
 import { format } from '@utils/date';
+import Context from '@redux/store';
+import { dayMetaAction } from '@redux/actions';
 
 const Statistics = (props) => {
 	const {
 		info
 	} = props;
 
-	const [selectedDate, setSelectedDate] = useState(new Date);
-	const [showCase, setShowCase] = useState(1);
-	const [chartType, setChartType] = useState(1);
+	const { store, dispatch } = useContext(Context);
+	const {
+		day: {
+			meta
+		}
+	} = store;
+
+	const {
+		selectedDate,
+		showCase,
+		chartType
+	} = meta;
+
+	useEffect(() => {
+		!selectedDate && dispatch(dayMetaAction({ selectedDate: new Date }));
+	}, [dispatch, selectedDate]);
+
+	// const [selectedDate, setSelectedDate] = useState(new Date);
+	// const [showCase, setShowCase] = useState(1);
+	// const [chartType, setChartType] = useState(1);
 
 	info.perDay = {
 		cases: processData(info.timeline.cases),
@@ -41,7 +60,8 @@ const Statistics = (props) => {
 		}
 	};
 
-	const onDateChange = event => setSelectedDate(event);
+	// const onDateChange = event => setSelectedDate(event);
+	const onDateChange = event => dispatch( dayMetaAction({ selectedDate: event }) );
 
 	function processData(source) {
 		let previousValue = null;
@@ -98,8 +118,11 @@ const Statistics = (props) => {
 	};
 
 	const onChangeChartType = event => {
-		setChartType(+event.target.value);
+		// setChartType(+event.target.value);
+		dispatch(dayMetaAction({ chartType: +event.target.value }));
 	};
+
+	const onSetShowCase = event => dispatch(dayMetaAction({ showCase: event }));
 
 	return (
 		<div className="card card-body bg-light">
@@ -127,7 +150,7 @@ const Statistics = (props) => {
 			</dl>
 
 			<div className="controls mb-3 mb-md-2">
-				<RadioGroup onChange={setShowCase} checkedValue={showCase} />
+				<RadioGroup onChange={onSetShowCase} checkedValue={showCase} />
 				<div className="chart-type-controls">
 					<select className="form-control" defaultValue={chartType} onChange={onChangeChartType}>
 						<option value="1">Progress</option>
