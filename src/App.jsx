@@ -18,16 +18,16 @@ import Context from '@redux/store';
 
 const App = () => {
 	const [store, dispatch] = useReducer(reducer, initialState);
-	
+
 	return (
 		<Context.Provider value={{ store, dispatch }}>
-		<Router basename="/">
-			<Switch>
-				{routes.map((route, i) => {
-					return <Route key={i} exact={route.exact} path={route.path ? route.path : null} component={route.component} />
-				})}
-			</Switch>
-		</Router>
+			<Router basename="/">
+				<Switch>
+					{routes.map((route, i) => {
+						return <Route key={i} exact={route.exact} path={route.path ? route.path : null} component={route.component} />
+					})}
+				</Switch>
+			</Router>
 		</Context.Provider>
 	);
 };

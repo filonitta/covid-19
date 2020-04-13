@@ -35,9 +35,7 @@
     "chart.js": "^2.9.3",
     "chartjs-plugin-zoom": "^0.7.5",
     "classnames": "^2.2.6",
-    "flag-icon-css": "^3.3.0",
     "font-awesome": "^4.7.0",
-    "leaflet": "^1.4.0",
     "moment": "^2.24.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
@@ -46,10 +44,7 @@
     "react-dom": "^16.5.0",
     "react-js-pagination": "^3.0.3",
     "react-moment": "^0.9.2",
-    "react-redux": "^6.0.0",
-    "react-router-dom": "^4.3.1",
-    "react-topbar-progress-indicator": "^2.0.0",
-    "redux": "^4.0.1"
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
