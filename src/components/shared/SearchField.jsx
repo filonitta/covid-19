@@ -22,6 +22,7 @@ const SearchField = (props) => {
 	}, []);
 
 	useEffect(() => {
+		// if (!fullList.length) {
 		if (list.length > fullList.length) {
 			// console.info('-- set full list --');
 			setFullList(list);
@@ -29,6 +30,7 @@ const SearchField = (props) => {
 	}, [fullList, list]);
 
 	useEffect(() => {
+		// if (initialValue && fullList.length === list.length) {
 		if (fullList.length && initialValue && fullList.length === list.length) {
 			// console.info('-- filter on init --');
 			onSearchHandler(initialValue);
@@ -36,6 +38,7 @@ const SearchField = (props) => {
 	}, [initialValue, fullList.length, list.length, onSearchHandler]);
 
 	useEffect(() => {
+		// if (list.length && fullList.length === list.length) {
 		if ( list.length && fullList.length === list.length && !arraysEqual(fullList, list) ) {
 			// console.info('-- update full list --');
 
