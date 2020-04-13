@@ -10,6 +10,7 @@ import Period from '@shared/Period';
 import Statistics from './Statistics';
 import Context from '@redux/store';
 import { dayListAction, dayMetaAction, daySelectedAction } from '@redux/actions';
+import { aggregateByCountryName } from '@utils/countries';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -39,7 +40,9 @@ const HistoricalPerDay = () => {
 	useEffect(() => {
 		async function fetchCountries() {
 			setIsLoading(true);
-			const data = await api.getCountries(period);
+			let data = await api.getCountries(period);
+
+			data = aggregateByCountryName(data);
 
 			data.sort((a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0).forEach(item => {
 				item.country = item.country.capitalize();
