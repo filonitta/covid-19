@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-
+import 'chartjs-plugin-zoom';
 import { defaults } from 'react-chartjs-2';
 defaults.global.legend.display = false;
 defaults.global.tooltips.titleMarginBottom = 15;
@@ -79,6 +79,15 @@ const Statistics = props => {
 					return [`Lethality: ${(data.deaths[tooltipItem.index] * 100 / data.cases[tooltipItem.index]).toFixed(2)}%`];
 				},
 			}
+		},
+		pan: {
+			enabled: true,
+			mode: 'x'
+		},
+		zoom: {
+			enabled: true,
+			drag: true,
+			mode: 'xy'
 		}
 	};
 

@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Line, Bar } from 'react-chartjs-2';
+import 'chartjs-plugin-zoom';
 
 import './Statistics.scss';
 import RadioGroup from '@shared/RadioGroup';
@@ -57,6 +58,15 @@ const Statistics = (props) => {
 					padding: 10
 				}
 			}]
+		},
+		pan: {
+			enabled: true,
+			mode: 'x'
+		},
+		zoom: {
+			enabled: true,
+			drag: true,
+			mode: 'xy'
 		}
 	};
 
