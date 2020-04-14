@@ -1,8 +1,5 @@
-import { createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import React from 'react';
 
-import rootReducer from '@redux/reducers/index';
+const Context = React.createContext();
 
-const store = createStore(rootReducer, composeWithDevTools());
-
-export default store;
+export default Context;

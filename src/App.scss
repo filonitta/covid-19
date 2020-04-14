@@ -1,3 +1,8 @@
+html, body, #app, .container {
+	// min-height: 100vh;
+	height: 100%;
+}
+
 dl {
 	dt {
 		float: left;

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-// import PropTypes from 'prop-types';
+import React, { useState, useContext, useEffect } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
 import api from '@/services/api.class';
 import CountriesList from '@shared/CountriesList';
 import SearchField from '@shared/SearchField';
 import Statistics from './Statistics';
-// import NoData from '@shared/NoData';
+import Context from '@redux/store';
+import { todayListAction, todaySelectedAction, todayMetaAction } from '@redux/actions';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -14,33 +14,41 @@ String.prototype.capitalize = function () {
 }
 
 const Today = () => {
-	const [countries, setCountries] = useState([]);
-	const [originalCountriesList, setOriginalCountriesList] = useState([]);
+	const { store, dispatch } = useContext(Context);
 	const [isLoading, setIsLoading] = useState(false);
-	const [selectedCountry, setSelectedCountry] = useState(null);
-	const [searchValue] = useState('');
+	const {
+		today: {
+			list: countries,
+			selectedItem: selectedCountry,
+			meta: {
+				searchValue
+			}
+		}
+	} = store;
 
 	useEffect(() => {
 		async function fetchInfo() {
 			setIsLoading(true);
-			let countries = await api.getTodayInfo();
+			let data = await api.getTodayInfo();
 
-			// countries = countries.sort((a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0);
-			countries = countries.sort((a, b) => b.cases - a.cases);
+			// data = data.sort((a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0);
+			data = data.sort((a, b) => b.cases - a.cases);
 
-			setCountries(countries);
-			setOriginalCountriesList(countries);
+			dispatch( todayListAction(data) );
 			setIsLoading(false);
 		}
 
 		fetchInfo();
-	}, []);
+	}, [dispatch]);
 
 	const updateList = (list, searchValue) => {
-		setCountries(list);
-	}
+		dispatch(todayListAction(list));
+		dispatch(todayMetaAction({ searchValue }));
+	};
 
-	if (isLoading) return <Spinner className="loader" animation="border" variant="primary" />;
+	const setSelectedCountry = (data) => dispatch(todaySelectedAction(data));
+
+	if (isLoading && !countries.length) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (
 		<>
@@ -51,10 +59,10 @@ const Today = () => {
 							Countries
 						</div>
 						<div className="card-body">
-							<SearchField value={searchValue} list={originalCountriesList} onSearch={updateList} />
+							<SearchField value={searchValue} list={countries} onChange={updateList} />
 							<CountriesList
 								list={countries}
-								onListUpdate={setCountries}
+								onListUpdate={updateList}
 								onCountrySelect={setSelectedCountry}
 							/>
 						</div>

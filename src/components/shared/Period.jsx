@@ -6,6 +6,7 @@ import { faHistory } from '@fortawesome/free-solid-svg-icons';
 const Period = (props) => {
 	const {
 		list,
+		value,
 		onChange
 	} = props;
 
@@ -19,10 +20,10 @@ const Period = (props) => {
 				<div className="input-group-prepend">
 					<span className="input-group-text"><FontAwesomeIcon icon={faHistory} /></span>
 				</div>
-				<select className="form-control" onChange={handleChange} placeholder="Period" defaultValue={'1'}>
+				<select className="form-control" onChange={handleChange} placeholder="Period" defaultValue={value}>
 					<option value="30">Last 30 days</option>
 					<option value="60">Last 60 days</option>
-					<option value="360">All</option>
+					<option value="0">All</option>
 				</select>
 			</div>
 		</div>
@@ -31,7 +32,14 @@ const Period = (props) => {
 
 Period.propTypes = {
 	list: PropTypes.array,
+	value: PropTypes.number,
 	onChange: PropTypes.func
+};
+
+Period.defaultProps = {
+	list: [],
+	value: 1,
+	onChange: () => {}
 };
 
 export default Period;

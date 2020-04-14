@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
-// import PropTypes from 'prop-types';
+import React, { useEffect, useContext } from 'react';
 import moment from 'moment';
 import Spinner from 'react-bootstrap/Spinner';
 
 import api from '@/services/api.class';
-// import NoData from '@shared/NoData';
+
+import Context from '@redux/store';
+import { totalDataAction } from '@redux/actions';
 
 const Total = () => {
-	const [data, setData] = useState(null);
-	const [isLoading, setIsLoading] = useState(false);
+	const { store, dispatch } = useContext(Context);
 
 	useEffect(() => {
 		async function fetchData() {
-			setIsLoading(true);
 			const data = await api.getTotalInfo();
-			setData(data);
-			setIsLoading(false);
+			dispatch( totalDataAction(data) );
 		}
 
 		fetchData();
-	}, []);
+	}, [dispatch]);
 
-	if (isLoading || !data) return <Spinner className="loader" animation="border" variant="primary" />;
+	const { total: { data } } = store;
+
+	if (!data) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (
 		<div className="card bg-light">
@@ -43,7 +43,6 @@ const Total = () => {
 	);
 };
 
-Total.propTypes = {
-};
+Total.propTypes = {};
 
 export default Total;

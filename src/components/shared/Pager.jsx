@@ -18,7 +18,7 @@ const Pager = (props) => {
 	const initialCenter = Math.ceil(totalPages / 2);
 	const pagesCount = Math.ceil(totalRecords / pageSize);
 	const [currentPage, setCurrentPage] = useState(startPage);
-	const [currentIndex, setCurrentIndex] = useState(currentPage);
+	const [currentIndex, setCurrentIndex] = useState(1);
 	let [currentCenter, setCurrentCenter] = useState(initialCenter);
 	
 	const onClick = page => () => {

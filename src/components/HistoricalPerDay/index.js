@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 // import PropTypes from 'prop-types';
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -8,7 +8,9 @@ import SearchField from '@shared/SearchField';
 import Sorting from './Sorting';
 import Period from '@shared/Period';
 import Statistics from './Statistics';
-// import NoData from '@shared/NoData';
+import Context from '@redux/store';
+import { dayListAction, dayMetaAction, daySelectedAction } from '@redux/actions';
+import { aggregateByCountryName } from '@utils/countries';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -16,52 +18,73 @@ String.prototype.capitalize = function () {
 }
 
 const HistoricalPerDay = () => {
-	const [countries, setCountries] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
-	const [selectedCountry, setSelectedCountry] = useState(null);
-	const [period, setPeriod] = useState(30);
-	const [searchValue] = useState('');
-	const [sortField, setSortField] = useState('country');
+	const { store, dispatch } = useContext(Context);
+	const {
+		day: {
+			list: countries,
+			selectedItem: selectedCountry,
+			meta
+		}
+	} = store;
 
+	const {
+		period,
+		sortField,
+		searchValue
+	} = meta;
+
+	const [isLoading, setIsLoading] = useState(false);
+	const [isLoadingNext, setIsLoadingNext] = useState(false);
+	const [resetSearchList, setResetSearchList] = useState(false);
+	
 	useEffect(() => {
 		async function fetchCountries() {
 			setIsLoading(true);
-			const data = await api.getCountries(period);
+			let data = await api.getCountries(period);
 
-			data.sort((a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0).forEach(item => {
-				item.country = item.country.capitalize();
-				if (item.province) {
-					item.province = item.province.capitalize();
-				}
-			});
+			data = aggregateByCountryName(data);
 
-			setCountries(data);
+			dispatch( dayListAction(data) );
 
 			setIsLoading(false);
+			setIsLoadingNext(false);
 
 			setCurrentCountryHandler(data);
+			setResetSearchList(true);
 		}
 		
 		fetchCountries();
-	}, [period, setCurrentCountryHandler]);
+	}, [period, setCurrentCountryHandler, dispatch]);
 	
 	const setCurrentCountryHandler = useCallback((countries) => {
-		countries.length && selectedCountry && setSelectedCountry(countries.find(item => item.country === selectedCountry.country));
-	}, [selectedCountry]);
+		countries.length && selectedCountry && onSetSelectedCountry(countries.find(item => item.country === selectedCountry.country));
+	}, [selectedCountry, onSetSelectedCountry]);
 
-	const handleSearch = (data) => {
-		// console.count('---')
-		setCountries(data);
+	const handleSearch = (data, searchValue) => {
+		// console.count('handleSearch');
+		// console.log('data', data)
+		dispatch(dayMetaAction({ searchValue }));
+		onSetCountries(data);
 	};
 
-	const handleSort = (list, field) => {
-		setSortField(field);
-		setCountries(list);
+	const handleSort = (list, sortField) => {
+		dispatch(dayMetaAction({ sortField }));
+		onSetCountries(list);
 	};
+
+	const handleSetPeriod = data => {
+		setIsLoadingNext(true);
+		dispatch(dayMetaAction({ period: data }));
+	};
+	
+	const onSetCountries = data => dispatch( dayListAction(data) );
+	const onSetSelectedCountry = useCallback(data => dispatch( daySelectedAction(data) ), [dispatch]);
+
+	if (isLoading && !countries.length) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (
 		<>
-			{isLoading && <Spinner className="loader" animation="border" variant="primary" />}
+			{isLoadingNext && <Spinner className="loader" animation="border" variant="primary" />}
 			<div className="row">
 				<div className="col-sm-4">
 					<div className="card">
@@ -69,13 +92,13 @@ const HistoricalPerDay = () => {
 							Countries
 						</div>
 						<div className="card-body">
-							<Period onChange={setPeriod} />
-							<Sorting sortField={sortField} list={countries} onSort={handleSort} />
-							<SearchField initialValue={searchValue} list={countries} onSearch={handleSearch} />
+							<Period onChange={handleSetPeriod} value={period} />
+							<Sorting sortField={sortField} list={countries} onChange={handleSort} />
+							<SearchField value={searchValue} list={countries} onChange={handleSearch} reset={resetSearchList} />
 							<CountriesList
 								list={countries}
-								onListUpdate={setCountries}
-								onCountrySelect={setSelectedCountry}
+								onListUpdate={onSetCountries}
+								onCountrySelect={onSetSelectedCountry}
 							/>
 						</div>
 					</div>
