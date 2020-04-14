@@ -95,8 +95,8 @@ module.exports = {
 		new CleanWebpackPlugin(),
 		new CopyWebpackPlugin([
 			{
-				from: './src/assets/images',
-				to: 'assets/images'
+				from: './src/assets',
+				to: 'assets'
 			},
 			{
 				from: './src/favicon.ico',
@@ -106,8 +106,12 @@ module.exports = {
 				from: './.htaccess',
 			},
 			{
-				from: './src/services/data',
-				to: 'services/data'
+				from: './src/manifest.json',
+				to: 'manifest.json'
+			},
+			{
+				from: './src/service-worker.js',
+				to: 'service-worker.js'
 			}
 		], {
 			ignore: []

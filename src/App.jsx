@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 import React, { useReducer } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import * as serviceWorker from './serviceWorker';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -33,3 +34,4 @@ const App = () => {
 };
 
 ReactDOM.render(<App />, document.getElementById('app'));
+serviceWorker.register();
