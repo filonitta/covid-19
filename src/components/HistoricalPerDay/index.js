@@ -86,7 +86,7 @@ const HistoricalPerDay = () => {
 		<>
 			{isLoadingNext && <Spinner className="loader" animation="border" variant="primary" />}
 			<div className="row">
-				<div className="col-sm-4">
+				<div className="col-md-4">
 					<div className="card">
 						<div className="card-header text-white bg-secondary">
 							Countries
@@ -103,7 +103,7 @@ const HistoricalPerDay = () => {
 						</div>
 					</div>
 				</div>
-				<div className="col-sm-8">
+				<div className="col-md-8">
 					<div className="mt-4 mt-md-0">
 						{!selectedCountry &&
 							<div className="card card-body bg-light"><em>Select a country to see its data</em></div>
