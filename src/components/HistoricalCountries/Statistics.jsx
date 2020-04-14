@@ -164,7 +164,7 @@ const Statistics = props => {
 				/>
 			</div>
 
-			<RadioGroup onChange={onSetShowCase} checkedValue={showCase} className="mt-4" />
+			<RadioGroup onChange={onSetShowCase} checkedValue={showCase} className="mt-4 mb-2" />
 
 			{showCase === 1 &&
 				<Bar options={chartOptions} data={data(list, 'cases')} />
@@ -181,7 +181,7 @@ const Statistics = props => {
 			<Pager
 				onPageChange={onSetPaginationPage}
 				onPageSizeChange={onSetPaginationCount}
-				totalPages={9}
+				totalPages={7}
 				totalRecords={list.length}
 				pageSize={paginationCount}
 				startPage={paginationPage}

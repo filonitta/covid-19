@@ -6,6 +6,7 @@
   "display": "standalone",
   "Scope": "/",
   "start_url": "/",
+  "orientation": "landscape",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
