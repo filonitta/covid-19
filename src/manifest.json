@@ -3,7 +3,7 @@
   "short_name": "COVID-19",
   "theme_color": "#067cff",
   "background_color": "#ffffff",
-  "display": "fullscreen",
+  "display": "standalone",
   "Scope": "/",
   "start_url": "/",
   "icons": [

@@ -110,8 +110,8 @@ module.exports = {
 				to: 'manifest.json'
 			},
 			{
-				from: './src/service-worker.js',
-				to: 'service-worker.js'
+				from: './src/sw.js',
+				to: 'sw.js'
 			}
 		], {
 			ignore: []
