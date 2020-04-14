@@ -17,5 +17,10 @@
 		@media (max-width: $breakpoint-tablet) {
 			flex-wrap: wrap;
 		}
+
+		.page-item {
+			text-align: center;
+			min-width: 35px;
+		}
 	}
 }

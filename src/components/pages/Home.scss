@@ -28,4 +28,12 @@
 			cursor: pointer;
 		}
 	}
+
+	.page-header {
+		h1 {
+			@media (max-width: $breakpoint-tablet) {
+				font-size: 2rem;
+			}
+		}
+	}
 }
