@@ -40,10 +40,6 @@ const Statistics = props => {
 		paginationPage
 	} = meta;
 
-	// const [showCase, setShowCase] = useState(1);
-	// const [paginationPage, setPaginationPage] = useState(1);
-	// const [paginationCount, setPaginationCount] = useState(20);
-
 	useEffect(() => {
 		!selectedDate && dispatch( allMetaAction({ selectedDate: new Date(moment().add(-1, 'days')) }) );
 	}, [dispatch, selectedDate]);

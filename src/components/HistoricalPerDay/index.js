@@ -93,8 +93,8 @@ const HistoricalPerDay = () => {
 						</div>
 						<div className="card-body">
 							<Period onChange={handleSetPeriod} value={period} />
-							<Sorting sortField={sortField} list={countries} onSort={handleSort} />
-							<SearchField value={searchValue} list={countries} onSearch={handleSearch} reset={resetSearchList} />
+							<Sorting sortField={sortField} list={countries} onChange={handleSort} />
+							<SearchField value={searchValue} list={countries} onChange={handleSearch} reset={resetSearchList} />
 							<CountriesList
 								list={countries}
 								onListUpdate={onSetCountries}

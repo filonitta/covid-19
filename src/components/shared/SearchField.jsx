@@ -8,7 +8,7 @@ import { arraysEqual } from '@utils/array';
 const SearchField = (props) => {
 	const {
 		list,
-		onSearch,
+		onChange,
 		value: initialValue,
 	} = props;
 
@@ -51,8 +51,8 @@ const SearchField = (props) => {
 	}, [fullList, list, currentValue, onSearchHandler]);
 
 	const onSearchHandler = useCallback((value) => {
-		onSearch(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
-	}, [fullList, onSearch]);
+		onChange(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
+	}, [fullList, onChange]);
 	
 	const onFilter = event => {
 		const value = event.target.value.toLowerCase();
@@ -81,7 +81,7 @@ const SearchField = (props) => {
 
 SearchField.propTypes = {
 	list: PropTypes.array,
-	onSearch: PropTypes.func,
+	onChange: PropTypes.func,
 	value: PropTypes.string,
 };
 
