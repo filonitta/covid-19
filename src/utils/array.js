@@ -1,5 +1,5 @@
-export const arraysEqual = (arr1, arr2) => {
-	if (arr1.length !== arr2.length) return false;
+export const arraysEqual = (source1, source2) => {
+	if (source1.length !== source2.length) return false;
 
-	return JSON.stringify(arr1) === JSON.stringify(arr2);
+	return JSON.stringify(source1) === JSON.stringify(source2);
 };

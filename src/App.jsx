@@ -1,38 +1,35 @@
 import ReactDOM from 'react-dom';
-import React from 'react';
+import React, { useReducer } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'react-redux';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.scss';
 
-import store from '@redux/store/index';
 import { routes } from '@/routes.js';
 
-global.store = store;
+import {
+	initialState,
+	reducer
+} from '@redux/reducers';
 
-class App extends React.Component {
-	componentDidMount() {
-	}
+import Context from '@redux/store';
 
-	componentWillUnmount() {}
+const App = () => {
+	const [store, dispatch] = useReducer(reducer, initialState);
 
-	render() {
-		return (
+	return (
+		<Context.Provider value={{ store, dispatch }}>
 			<Router basename="/">
 				<Switch>
-				{routes.map((route, i) => {
-					return <Route key={i} exact={route.exact} path={route.path ? route.path : null} component={route.component} />
-				})}
+					{routes.map((route, i) => {
+						return <Route key={i} exact={route.exact} path={route.path ? route.path : null} component={route.component} />
+					})}
 				</Switch>
 			</Router>
-		);
-	}
-}
+		</Context.Provider>
+	);
+};
 
-ReactDOM.render(<Provider store={store}>
-		<App />
-	</Provider>,
-document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));

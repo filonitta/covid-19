@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 import api from '@/services/api.class';
 import Statistics from './Statistics';
+import Context from '@redux/store';
+import { allListAction } from '@redux/actions';
+import { aggregateByCountryName } from '@utils/countries';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -12,33 +15,33 @@ String.prototype.capitalize = function () {
 }
 
 const HistoricalCountries = () => {
-	const [countries, setCountries] = useState([]);
+	const { store, dispatch } = useContext(Context);
+	const {
+		all: {
+			list: countries,
+		}
+	} = store;
+
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		async function fetchCountries() {
 			setIsLoading(true);
-			const countries = await api.getCountries(360);
+			let data = await api.getCountries(360);
 			
-			countries.sort((a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0).forEach(item => {
-				item.country = item.country.capitalize();
-				if (item.province) {
-					item.province = item.province.capitalize();
-				}
-			});
+			data = aggregateByCountryName(data);
 			
-			setCountries(countries);
+			dispatch( allListAction(data) );
 			setIsLoading(false);
 		}
 
 		fetchCountries();
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<>
 			{!countries.length ? <Spinner className="loader" animation="border" variant="primary" /> : (
 				<div className="card card-body bg-light statistics">
-					
 					<Statistics list={countries} />
 				</div>
 			)}

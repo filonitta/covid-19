@@ -8,7 +8,7 @@ import { arraysEqual } from '@utils/array';
 const Sorting = (props) => {
 	const {
 		list,
-		onSort,
+		onChange,
 		sortField
 	} = props;
 
@@ -27,8 +27,8 @@ const Sorting = (props) => {
 	}, [onSortHandler, currentSortField, onGetSortedHandler, list, sortField, currentList]);
 
 	const onSortHandler = useCallback(() => {
-		onSort(onGetSortedHandler(), currentSortField);
-	}, [onSort, onGetSortedHandler, currentSortField]);
+		onChange(onGetSortedHandler(), currentSortField);
+	}, [onChange, onGetSortedHandler, currentSortField]);
 
 	const onGetSortedHandler = useCallback(() => {
 		let sorted = [];
@@ -69,7 +69,7 @@ const Sorting = (props) => {
 
 Sorting.propTypes = {
 	list: PropTypes.array,
-	onSort: PropTypes.func,
+	onChange: PropTypes.func,
 	sortField: PropTypes.string
 };
 

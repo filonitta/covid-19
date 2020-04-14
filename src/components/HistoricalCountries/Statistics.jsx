@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Bar } from 'react-chartjs-2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-
+import 'chartjs-plugin-zoom';
 import { defaults } from 'react-chartjs-2';
 defaults.global.legend.display = false;
 defaults.global.tooltips.titleMarginBottom = 15;
@@ -16,16 +16,33 @@ import RadioGroup from '@shared/RadioGroup';
 import Pager from '@shared/Pager';
 import { rnd } from '@utils/math';
 import { format } from '@utils/date';
+import Context from '@redux/store';
+import { allMetaAction } from '@redux/actions';
 
 const Statistics = props => {
+	const { store, dispatch } = useContext(Context);
+
+	const {
+		all: {
+			// list,
+			meta,
+		}
+	} = store;
+	
 	const {
 		list,
 	} = props;
 
-	const [showCase, setShowCase] = useState(1);
-	const [paginationPage, setPaginationPage] = useState(1);
-	const [paginationCount, setPaginationCount] = useState(20);
-	const [selectedDate, setSelectedDate] = useState(new Date(moment().add(-1, 'days')));
+	const {
+		selectedDate,
+		paginationCount,
+		showCase,
+		paginationPage
+	} = meta;
+
+	useEffect(() => {
+		!selectedDate && dispatch( allMetaAction({ selectedDate: new Date(moment().add(-1, 'days')) }) );
+	}, [dispatch, selectedDate]);
 
 	const chartOptions = {
 		scales: {
@@ -58,10 +75,27 @@ const Statistics = props => {
 					return [`Lethality: ${(data.deaths[tooltipItem.index] * 100 / data.cases[tooltipItem.index]).toFixed(2)}%`];
 				},
 			}
+		},
+		pan: {
+			enabled: true,
+			mode: 'x'
+		},
+		zoom: {
+			enabled: true,
+			drag: true,
+			mode: 'xy'
 		}
 	};
 
-	const data = (list, field) => {
+	useEffect(() => {
+		if (!meta.colors.length) {
+			const range = (count, callback) => new Array(count).fill(0).map($ => callback ? callback($) : $);
+			const colors = range(list.length, () => `${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}`);
+			dispatch(allMetaAction({ colors }));
+		}
+	}, [dispatch, list, meta.colors.length]);
+
+	const data = useCallback((list, field) => {
 		list = list.sort((a, b) => b.timeline[field][format(selectedDate, 'M/D/YY')] - a.timeline[field][format(selectedDate, 'M/D/YY')]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
 		
 		const settings = {
@@ -80,8 +114,7 @@ const Statistics = props => {
 			pointHitRadius: 10,
 		};
 
-		const range = (count, callback) => new Array(count).fill(0).map($ => callback ? callback($) : $);
-		const colors = range(list.length, () => `${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}`);
+		const colors = meta.colors.slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
 
 		return {
 			cases: list.map(item => item.timeline.cases[format(selectedDate, 'M/D/YY')]),
@@ -99,7 +132,7 @@ const Statistics = props => {
 				// pointHoverBorderColor: range(list.length, () => `rgba(${rnd(0, 255)}, ${rnd(0, 255)}, ${rnd(0, 255)}, 1)`),
 			}],
 		};
-	};
+	}, [meta.colors, paginationPage, paginationCount, selectedDate]);
 
 	const getMinDate = () => {
 		const [info] = list;
@@ -107,7 +140,10 @@ const Statistics = props => {
 		return new Date(format(firstDate));
 	};
 
-	const onDateChange = event => setSelectedDate(event);
+	const onDateChange = event => dispatch( allMetaAction({ selectedDate: event }) );
+	const onSetPaginationCount = event => dispatch( allMetaAction({ paginationCount: event }) );
+	const onSetShowCase = event => dispatch( allMetaAction({ showCase: event }) );
+	const onSetPaginationPage = event => dispatch( allMetaAction({ paginationPage: event }) );
 
 	return (
 		<>
@@ -128,7 +164,7 @@ const Statistics = props => {
 				/>
 			</div>
 
-			<RadioGroup onChange={setShowCase} checkedValue={showCase} className="mt-4" />
+			<RadioGroup onChange={onSetShowCase} checkedValue={showCase} className="mt-4" />
 
 			{showCase === 1 &&
 				<Bar options={chartOptions} data={data(list, 'cases')} />
@@ -143,12 +179,12 @@ const Statistics = props => {
 			}
 
 			<Pager
-				onPageChange={setPaginationPage}
-				onPageSizeChange={setPaginationCount}
+				onPageChange={onSetPaginationPage}
+				onPageSizeChange={onSetPaginationCount}
 				totalPages={9}
 				totalRecords={list.length}
 				pageSize={paginationCount}
-				startPage={1}
+				startPage={paginationPage}
 			/>
 		</>
 	);

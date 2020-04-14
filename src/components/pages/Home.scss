@@ -10,7 +10,7 @@
 	}
 }
 
-html, body, #app, .container {
+.container {
 	// min-height: 100vh;
 	height: 100%;
 }
@@ -18,14 +18,14 @@ html, body, #app, .container {
 .container {
 	display: flex;
 	flex-direction: column;
-	// justify-content: flex-end;
-	// justify-content: stretch;
 
 	.tab-content {
 		flex-grow: 1;
 	}
 
 	footer {
-		// padding: 15px;
+		.button {
+			cursor: pointer;
+		}
 	}
 }
