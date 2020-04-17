@@ -1,6 +1,6 @@
 # COVID-19 statistics
 
-[Demo](http://covid-19.filonitta.in.ua/)
+[Demo](https://covid-19.filonitta.in.ua/)
 
 Used public API: [https://corona.lmao.ninja](https://corona.lmao.ninja)
 
