@@ -18,7 +18,7 @@ class API extends REST {
 	}
 
 	getCountries(count = 30) {
-		return this.getQuery(`v2/historical?lastdays=${count}`);
+		return this.getQuery(`historical?lastdays=${count}`);
 	}
 	
 	getTotalInfo() {
