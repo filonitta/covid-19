@@ -28,16 +28,13 @@ const Statistics = (props) => {
 	const {
 		selectedDate,
 		showCase,
-		chartType
+		chartType,
+		period
 	} = meta;
 
 	useEffect(() => {
 		!selectedDate && dispatch(dayMetaAction({ selectedDate: new Date }));
 	}, [dispatch, selectedDate]);
-
-	// const [selectedDate, setSelectedDate] = useState(new Date);
-	// const [showCase, setShowCase] = useState(1);
-	// const [chartType, setChartType] = useState(1);
 
 	info.perDay = {
 		cases: processData(info.timeline.cases),
@@ -70,7 +67,6 @@ const Statistics = (props) => {
 		}
 	};
 
-	// const onDateChange = event => setSelectedDate(event);
 	const onDateChange = event => dispatch( dayMetaAction({ selectedDate: event }) );
 
 	function processData(source) {
@@ -89,11 +85,13 @@ const Statistics = (props) => {
 	}
 
 	const data = (options) => {
+		const firstItem = period === 0 ? 0 : 1;
+
 		return {
-			labels: options.labels || [],
+			labels: options.labels.slice(firstItem) || [],
 			datasets: [
 				{
-					label: options.label || '',
+					label: options.label.slice(firstItem) || '',
 					fill: false,
 					lineTension: 0.1,
 					backgroundColor: `rgba(${options.rgb},0.4)`,
@@ -112,25 +110,19 @@ const Statistics = (props) => {
 					pointHoverBorderWidth: 2,
 					pointRadius: 3,
 					pointHitRadius: 10,
-					data: options.data || [],
+					data: options.data.slice(firstItem) || [],
 					
 				}
 			]
 		};
 	};
 
-	// console.log(info)
-
 	const getMinDate = () => {
-		// new Date('01-22-2020')
-		const [firstDate] = Object.keys(info.timeline.cases);
-		return new Date(format(firstDate));
+		const [firstDate, secondDate] = Object.keys(info.timeline.cases);
+		return new Date(format( period === 0 ? firstDate : secondDate ));
 	};
 
-	const onChangeChartType = event => {
-		// setChartType(+event.target.value);
-		dispatch(dayMetaAction({ chartType: +event.target.value }));
-	};
+	const onChangeChartType = event => dispatch(dayMetaAction({ chartType: +event.target.value }));
 
 	const onSetShowCase = event => dispatch(dayMetaAction({ showCase: event }));
 
