@@ -43,7 +43,7 @@ const HistoricalPerDay = () => {
 			let data = await api.getCountries(period);
 
 			data = aggregateByCountryName(data);
-
+			
 			dispatch( dayListAction(data) );
 
 			setIsLoading(false);
