@@ -100,7 +100,7 @@ const Statistics = (props) => {
 			labels: options.labels.slice(firstItem) || [],
 			datasets: [
 				{
-					label: options.label || '',
+					label: options.label.slice(firstItem) || '',
 					fill: false,
 					lineTension: 0.1,
 					backgroundColor: `rgba(${options.rgb},0.4)`,
