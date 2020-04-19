@@ -64,7 +64,16 @@ const Statistics = (props) => {
 			enabled: true,
 			drag: true,
 			mode: 'xy'
-		}
+		},
+		tooltips: {
+			enabled: true,
+			callbacks: {
+				label(tooltipItem, data) {
+					let label = data.datasets[tooltipItem.datasetIndex].label || 'Label';
+					return label += ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString(navigator.language);
+				},
+			}
+		},
 	};
 
 	const onDateChange = event => dispatch( dayMetaAction({ selectedDate: event }) );
@@ -91,7 +100,7 @@ const Statistics = (props) => {
 			labels: options.labels.slice(firstItem) || [],
 			datasets: [
 				{
-					label: options.label.slice(firstItem) || '',
+					label: options.label || '',
 					fill: false,
 					lineTension: 0.1,
 					backgroundColor: `rgba(${options.rgb},0.4)`,
