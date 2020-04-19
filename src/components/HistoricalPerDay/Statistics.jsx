@@ -64,7 +64,16 @@ const Statistics = (props) => {
 			enabled: true,
 			drag: true,
 			mode: 'xy'
-		}
+		},
+		tooltips: {
+			enabled: true,
+			callbacks: {
+				label(tooltipItem, data) {
+					let label = data.datasets[tooltipItem.datasetIndex].label || 'Label';
+					return label += ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString(navigator.language);
+				},
+			}
+		},
 	};
 
 	const onDateChange = event => dispatch( dayMetaAction({ selectedDate: event }) );
