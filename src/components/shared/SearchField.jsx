@@ -14,6 +14,7 @@ const SearchField = (props) => {
 
 	const [currentValue, setCurrentValue] = useState(initialValue);
 	const [fullList, setFullList] = useState([]);
+	const [shouldFilter, setShouldFilter] = useState(false);
 
 	useEffect(() => {
 		return () => {
@@ -22,7 +23,6 @@ const SearchField = (props) => {
 	}, []);
 
 	useEffect(() => {
-		// if (!fullList.length) {
 		if (list.length > fullList.length) {
 			// console.info('-- set full list --');
 			setFullList(list);
@@ -30,7 +30,6 @@ const SearchField = (props) => {
 	}, [fullList, list]);
 
 	useEffect(() => {
-		// if (initialValue && fullList.length === list.length) {
 		if (fullList.length && initialValue && fullList.length === list.length) {
 			// console.info('-- filter on init --');
 			onSearchHandler(initialValue);
@@ -38,17 +37,20 @@ const SearchField = (props) => {
 	}, [initialValue, fullList.length, list.length, onSearchHandler]);
 
 	useEffect(() => {
-		// if (list.length && fullList.length === list.length) {
 		if ( list.length && fullList.length === list.length && !arraysEqual(fullList, list) ) {
 			// console.info('-- update full list --');
 
 			setFullList(list);
-
-			if (currentValue) {
-				onSearchHandler(currentValue);
-			}
+			setShouldFilter(true);
 		}
 	}, [fullList, list, currentValue, onSearchHandler]);
+
+	useEffect(() => {
+		if (shouldFilter && currentValue) {
+			onSearchHandler(currentValue);
+			setShouldFilter(false);
+		}
+	}, [shouldFilter, currentValue, onSearchHandler]);
 
 	const onSearchHandler = useCallback((value) => {
 		onChange(fullList.filter(item => item.country.toLowerCase().startsWith(value)), value);
