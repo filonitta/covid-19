@@ -7,6 +7,7 @@ import SearchField from '@shared/SearchField';
 import Statistics from './Statistics';
 import Context from '@redux/store';
 import { todayListAction, todaySelectedAction, todayMetaAction } from '@redux/actions';
+import ErorMessage from '@shared/ErorMessage';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -16,6 +17,8 @@ String.prototype.capitalize = function () {
 const Today = () => {
 	const { store, dispatch } = useContext(Context);
 	const [isLoading, setIsLoading] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
+
 	const {
 		today: {
 			list: countries,
@@ -29,12 +32,13 @@ const Today = () => {
 	useEffect(() => {
 		async function fetchInfo() {
 			setIsLoading(true);
-			let data = await api.getTodayInfo();
+			let data = await api.getTodayInfo().catch(setErrorMessage);
 
-			// data = data.sort((a, b) => b.country > a.country ? -1 : b.country < a.country ? 1 : 0);
-			data = data.sort((a, b) => b.cases - a.cases);
+			if (data) {
+				data = data.sort((a, b) => b.cases - a.cases);
+				dispatch( todayListAction(data) );
+			}
 
-			dispatch( todayListAction(data) );
 			setIsLoading(false);
 		}
 
@@ -47,6 +51,8 @@ const Today = () => {
 	};
 
 	const setSelectedCountry = (data) => dispatch(todaySelectedAction(data));
+
+	if (errorMessage) return <ErorMessage />;
 
 	if (isLoading && !countries.length) return <Spinner className="loader" animation="border" variant="primary" />;
 
