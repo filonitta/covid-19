@@ -61,7 +61,7 @@ const Statistics = (props) => {
 			mode: 'x'
 		},
 		zoom: {
-			enabled: true,
+			enabled: false,
 			drag: true,
 			mode: 'xy'
 		},
