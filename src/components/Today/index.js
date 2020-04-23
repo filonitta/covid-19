@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
-import api from '@/services/api';
 import CountriesList from '@shared/CountriesList';
 import SearchField from '@shared/SearchField';
 import Statistics from './Statistics';
 import Context from '@redux/store';
 import { todayListAction, todaySelectedAction, todayMetaAction } from '@redux/actions';
+import useApi from '@/services/api';
 import ErorMessage from '@shared/ErorMessage';
 
 String.prototype.capitalize = function () {
@@ -16,8 +16,6 @@ String.prototype.capitalize = function () {
 
 const Today = () => {
 	const { store, dispatch } = useContext(Context);
-	const [isLoading, setIsLoading] = useState(false);
-	const [errorMessage, setErrorMessage] = useState('');
 
 	const {
 		today: {
@@ -29,21 +27,16 @@ const Today = () => {
 		}
 	} = store;
 
+	const {
+		data: info,
+		isLoading,
+		isError,
+		errorMessage,
+	} = useApi('countries', []);
+
 	useEffect(() => {
-		async function fetchInfo() {
-			setIsLoading(true);
-			let data = await api.getTodayInfo().catch(setErrorMessage);
-
-			if (data) {
-				data = data.sort((a, b) => b.cases - a.cases);
-				dispatch( todayListAction(data) );
-			}
-
-			setIsLoading(false);
-		}
-
-		fetchInfo();
-	}, [dispatch]);
+		info.length && dispatch( todayListAction(info) );
+	}, [dispatch, info]);
 
 	const updateList = (list, searchValue) => {
 		dispatch(todayListAction(list));
@@ -52,7 +45,7 @@ const Today = () => {
 
 	const setSelectedCountry = (data) => dispatch(todaySelectedAction(data));
 
-	if (errorMessage) return <ErorMessage />;
+	if (isError) return <ErorMessage message={errorMessage} />;
 
 	if (isLoading && !countries.length) return <Spinner className="loader" animation="border" variant="primary" />;
 
