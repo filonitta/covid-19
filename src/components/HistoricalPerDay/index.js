@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useContext } from 'react';
 // import PropTypes from 'prop-types';
 import Spinner from 'react-bootstrap/Spinner';
 
-import api from '@/services/api';
 import CountriesList from '@shared/CountriesList';
 import SearchField from '@shared/SearchField';
 import Sorting from './Sorting';
@@ -12,6 +11,7 @@ import Context from '@redux/store';
 import { dayListAction, dayMetaAction, daySelectedAction } from '@redux/actions';
 import { aggregateByCountryName } from '@utils/countries';
 import ErorMessage from '@shared/ErorMessage';
+import useApi from '@/services/api';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -20,7 +20,7 @@ String.prototype.capitalize = function () {
 
 const HistoricalPerDay = () => {
 	const { store, dispatch } = useContext(Context);
-	const [errorMessage, setErrorMessage] = useState('');
+	// const [errorMessage, setErrorMessage] = useState('');
 
 	const {
 		day: {
@@ -35,12 +35,34 @@ const HistoricalPerDay = () => {
 		sortField,
 		searchValue
 	} = meta;
+	// console.log(period)
 
-	const [isLoading, setIsLoading] = useState(false);
+	/* useEffect(() => {
+
+	}, [period]); */
+	const {
+		data: info,
+		isError,
+		isLoading,
+		errorMessage,
+	} = useApi(`historical?lastdays=${period}`, []);
+	// console.log(info)
+	// const [isLoading, setIsLoading] = useState(false);
 	const [isLoadingNext, setIsLoadingNext] = useState(false);
 	const [resetSearchList, setResetSearchList] = useState(false);
 	
 	useEffect(() => {
+		if (!info.length) return;
+
+		const data = aggregateByCountryName(info);
+		dispatch(dayListAction(data));
+		setCurrentCountryHandler(data);
+		setResetSearchList(true);
+
+		setIsLoadingNext(false);
+	}, [dispatch, info, setCurrentCountryHandler]);
+
+	/* useEffect(() => {
 		async function fetchCountries() {
 			setIsLoading(true);
 			let data = await api.getCountries(period).catch(setErrorMessage);
@@ -58,7 +80,7 @@ const HistoricalPerDay = () => {
 		}
 		
 		fetchCountries();
-	}, [period, setCurrentCountryHandler, dispatch]);
+	}, [period, setCurrentCountryHandler, dispatch]); */
 	
 	const setCurrentCountryHandler = useCallback((countries) => {
 		countries.length && selectedCountry && onSetSelectedCountry(countries.find(item => item.country === selectedCountry.country));
@@ -84,7 +106,7 @@ const HistoricalPerDay = () => {
 	const onSetCountries = data => dispatch( dayListAction(data) );
 	const onSetSelectedCountry = useCallback(data => dispatch( daySelectedAction(data) ), [dispatch]);
 
-	if (errorMessage) return <ErorMessage />;
+	if (isError) return <ErorMessage message={errorMessage} />;
 
 	if (isLoading && !countries.length) return <Spinner className="loader" animation="border" variant="primary" />;
 
