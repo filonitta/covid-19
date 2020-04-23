@@ -2,9 +2,9 @@ import ReactDOM from 'react-dom';
 import React, { useReducer } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import ContextDevTool from 'react-context-devtool';
 
 import * as serviceWorker from './serviceWorker';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.scss';
@@ -27,6 +27,8 @@ const App = () => {
 		<Container>
 			<Online>
 				<Context.Provider value={{ store, dispatch }}>
+					<ContextDevTool context={Context} displayName="Context COVID-19" />
+
 					<Router basename="/">
 						<Switch>
 							{routes.map((route, i) => {

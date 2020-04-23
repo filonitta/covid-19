@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useContext } from 'react';
 // import PropTypes from 'prop-types';
 import Spinner from 'react-bootstrap/Spinner';
 
-import api from '@/services/api.class';
+import api from '@/services/api';
 import CountriesList from '@shared/CountriesList';
 import SearchField from '@shared/SearchField';
 import Sorting from './Sorting';

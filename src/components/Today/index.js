@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
-import api from '@/services/api.class';
+import api from '@/services/api';
 import CountriesList from '@shared/CountriesList';
 import SearchField from '@shared/SearchField';
 import Statistics from './Statistics';

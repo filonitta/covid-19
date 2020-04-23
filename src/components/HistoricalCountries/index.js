@@ -3,7 +3,7 @@ import Spinner from 'react-bootstrap/Spinner';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-import api from '@/services/api.class';
+import api from '@/services/api';
 import Statistics from './Statistics';
 import Context from '@redux/store';
 import { allListAction } from '@redux/actions';

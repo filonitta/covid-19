@@ -2,28 +2,36 @@ import React, { useEffect, useContext, useState } from 'react';
 import moment from 'moment';
 import Spinner from 'react-bootstrap/Spinner';
 
-import api from '@/services/api.class';
 import ErorMessage from '@shared/ErorMessage';
+import useApi from '@/services/api';
+
 import Context from '@redux/store';
 import { totalDataAction } from '@redux/actions';
 
 const Total = () => {
 	const { store, dispatch } = useContext(Context);
 	const [errorMessage, setErrorMessage] = useState('');
+	
+	const { getTotalInfo } = useApi();
 
-	useEffect(() => {
+	// const fetchedData = getTotalInfo();
+	// console.log('fetchedData', fetchedData)
+	/* useEffect(() => {
 		async function fetchData() {
 			const data = await api.getTotalInfo().catch(setErrorMessage);
 			data && dispatch( totalDataAction(data) );
+			dispatch( totalDataAction(data) );
 		}
 
 		fetchData();
-	}, [dispatch]);
+	}, [dispatch]); */
 
 	const { total: { data } } = store;
 
 	if (errorMessage) return <ErorMessage />;
 	if (!data) return <Spinner className="loader" animation="border" variant="primary" />;
+	return null;
+	/* if (!data) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (
 		<div className="card bg-light">
@@ -42,7 +50,7 @@ const Total = () => {
 				<span className="badge">Date updated: {moment(data.updated).format('MMM DD, YYYY hh:MM a')}</span>
 			</div>
 		</div>
-	);
+	); */
 };
 
 Total.propTypes = {};
