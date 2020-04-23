@@ -118,12 +118,8 @@ export default class REST {
 
 	_handleErrors(response) {
 		this.requests.pop();
-
 		if (!response.ok) {
-			return response.json().then(error => {
-				this.resolveError(response);
-				return Promise.reject(error);
-			});
+			return Promise.reject(`Error ${response.status}`);
 		}
 
 		return response;

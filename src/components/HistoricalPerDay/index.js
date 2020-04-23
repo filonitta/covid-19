@@ -11,6 +11,7 @@ import Statistics from './Statistics';
 import Context from '@redux/store';
 import { dayListAction, dayMetaAction, daySelectedAction } from '@redux/actions';
 import { aggregateByCountryName } from '@utils/countries';
+import ErorMessage from '@shared/ErorMessage';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -19,6 +20,8 @@ String.prototype.capitalize = function () {
 
 const HistoricalPerDay = () => {
 	const { store, dispatch } = useContext(Context);
+	const [errorMessage, setErrorMessage] = useState('');
+
 	const {
 		day: {
 			list: countries,
@@ -40,17 +43,18 @@ const HistoricalPerDay = () => {
 	useEffect(() => {
 		async function fetchCountries() {
 			setIsLoading(true);
-			let data = await api.getCountries(period);
-
-			data = aggregateByCountryName(data);
+			let data = await api.getCountries(period).catch(setErrorMessage);
 			
-			dispatch( dayListAction(data) );
+			if (data) {
+				data = aggregateByCountryName(data);
+				dispatch( dayListAction(data) );
+				setCurrentCountryHandler(data);
+				setResetSearchList(true);
+			}
 
 			setIsLoading(false);
 			setIsLoadingNext(false);
 
-			setCurrentCountryHandler(data);
-			setResetSearchList(true);
 		}
 		
 		fetchCountries();
@@ -79,6 +83,8 @@ const HistoricalPerDay = () => {
 	
 	const onSetCountries = data => dispatch( dayListAction(data) );
 	const onSetSelectedCountry = useCallback(data => dispatch( daySelectedAction(data) ), [dispatch]);
+
+	if (errorMessage) return <ErorMessage />;
 
 	if (isLoading && !countries.length) return <Spinner className="loader" animation="border" variant="primary" />;
 

@@ -1,19 +1,20 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import moment from 'moment';
 import Spinner from 'react-bootstrap/Spinner';
 
 import api from '@/services/api.class';
-
+import ErorMessage from '@shared/ErorMessage';
 import Context from '@redux/store';
 import { totalDataAction } from '@redux/actions';
 
 const Total = () => {
 	const { store, dispatch } = useContext(Context);
+	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
 		async function fetchData() {
-			const data = await api.getTotalInfo();
-			dispatch( totalDataAction(data) );
+			const data = await api.getTotalInfo().catch(setErrorMessage);
+			data && dispatch( totalDataAction(data) );
 		}
 
 		fetchData();
@@ -21,6 +22,7 @@ const Total = () => {
 
 	const { total: { data } } = store;
 
+	if (errorMessage) return <ErorMessage />;
 	if (!data) return <Spinner className="loader" animation="border" variant="primary" />;
 
 	return (

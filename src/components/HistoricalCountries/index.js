@@ -8,6 +8,7 @@ import Statistics from './Statistics';
 import Context from '@redux/store';
 import { allListAction } from '@redux/actions';
 import { aggregateByCountryName } from '@utils/countries';
+import ErorMessage from '@shared/ErorMessage';
 
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
@@ -16,6 +17,8 @@ String.prototype.capitalize = function () {
 
 const HistoricalCountries = () => {
 	const { store, dispatch } = useContext(Context);
+	const [errorMessage, setErrorMessage] = useState('');
+
 	const {
 		all: {
 			list: countries,
@@ -27,16 +30,20 @@ const HistoricalCountries = () => {
 	useEffect(() => {
 		async function fetchCountries() {
 			setIsLoading(true);
-			let data = await api.getCountries(360);
+			let data = await api.getCountries(0).catch(setErrorMessage);
 			
-			data = aggregateByCountryName(data);
+			if (data) {
+				data = aggregateByCountryName(data);
+				dispatch( allListAction(data) );
+			}
 			
-			dispatch( allListAction(data) );
 			setIsLoading(false);
 		}
 
 		fetchCountries();
 	}, [dispatch]);
+
+	if (errorMessage) return <ErorMessage />;
 
 	return (
 		<>
