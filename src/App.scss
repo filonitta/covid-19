@@ -1,3 +1,5 @@
+@import './css/variables';
+
 html, body, #app, .container {
 	// min-height: 100vh;
 	height: 100%;
@@ -37,5 +39,29 @@ a {
 	.form-control {
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
+	}
+}
+
+.container {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+
+	.main-content {
+		flex-grow: 1;
+	}
+
+	footer {
+		.button {
+			cursor: pointer;
+		}
+	}
+
+	.page-header {
+		h1 {
+			@media (max-width: $breakpoint-tablet) {
+				font-size: 2rem;
+			}
+		}
 	}
 }
