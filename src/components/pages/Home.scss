@@ -9,31 +9,3 @@
 		flex-direction: column;
 	}
 }
-
-.container {
-	// min-height: 100vh;
-	height: 100%;
-}
-
-.container {
-	display: flex;
-	flex-direction: column;
-
-	.tab-content {
-		flex-grow: 1;
-	}
-
-	footer {
-		.button {
-			cursor: pointer;
-		}
-	}
-
-	.page-header {
-		h1 {
-			@media (max-width: $breakpoint-tablet) {
-				font-size: 2rem;
-			}
-		}
-	}
-}
