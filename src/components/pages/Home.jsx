@@ -31,8 +31,6 @@ const Home = () => {
 				<HistoricalPerDay />
 			</Tab>
 		</Tabs>
-
-
 	</>
 }
 
