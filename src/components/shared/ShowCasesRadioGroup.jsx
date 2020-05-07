@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import './RadioGroup.scss';
+import './ShowCasesRadioGroup.scss';
 
-const RadioGroup = (props) => {
+const ShowCasesRadioGroup = (props) => {
 	const {
 		checkedValue,
 		onChange,
@@ -35,10 +35,10 @@ const RadioGroup = (props) => {
 	);
 };
 
-RadioGroup.propTypes = {
+ShowCasesRadioGroup.propTypes = {
 	checkedValue: PropTypes.number.isRequired,
 	onChange: PropTypes.func.isRequired,
 	className: PropTypes.string,
 };
 
-export default RadioGroup;
+export default ShowCasesRadioGroup;

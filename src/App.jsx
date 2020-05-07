@@ -2,7 +2,6 @@ import ReactDOM from 'react-dom';
 import React, { useReducer } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Offline, Online } from 'react-detect-offline';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -12,6 +11,7 @@ import './App.scss';
 
 import { routes } from '@/routes.js';
 import Container from '@/components/pages/Container';
+import { Offline, Online } from '@shared/detect-offline';
 
 import {
 	initialState,
@@ -36,13 +36,13 @@ const App = () => {
 					</Router>
 				</Context.Provider>
 			</Online>
-			<Offline>
+			{<Offline>
 				<div className="card bg-light">
 					<div className="card-body">
 						You are currently offline!
 					</div>
 				</div>
-			</Offline>
+			</Offline>}
 		</Container>
 	</>;
 };

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Pie } from 'react-chartjs-2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
@@ -8,11 +8,13 @@ import moment from 'moment';
 import 'chartjs-plugin-zoom';
 import { defaults } from 'react-chartjs-2';
 defaults.global.legend.display = false;
+defaults.global.legend.position = 'left';
 defaults.global.tooltips.titleMarginBottom = 15;
 defaults.global.tooltips.footerMarginTop = 10;
 
 import './Statistics.scss';
-import RadioGroup from '@shared/RadioGroup';
+import ShowCasesRadioGroup from '@shared/ShowCasesRadioGroup';
+import ChartTypeRadioGroup from './ChartTypeRadioGroup';
 import Pager from '@shared/Pager';
 import { rnd } from '@utils/math';
 import { format } from '@utils/date';
@@ -37,8 +39,11 @@ const Statistics = props => {
 		selectedDate,
 		paginationCount,
 		showCase,
-		paginationPage
+		paginationPage,
+		chartType
 	} = meta;
+
+	defaults.global.legend.display = chartType === 'pie';
 
 	useEffect(() => {
 		!selectedDate && dispatch( allMetaAction({ selectedDate: new Date(moment().add(-1, 'days')) }) );
@@ -49,13 +54,21 @@ const Statistics = props => {
 			yAxes: [{
 				ticks: {
 					beginAtZero: true,
-					padding: 5
+					padding: chartType === 'bar' ? 5 : 0,
+					display: chartType === 'bar'
+				},
+				gridLines: {
+					display: chartType === 'bar',
 				},
 			}],
 			xAxes: [{
 				ticks: {
-					padding: 10
-				}
+					padding: chartType === 'bar' ? 10 : 0,
+					display: chartType === 'bar'
+				},
+				gridLines: {
+					display: chartType === 'bar',
+				},
 			}]
 		},
 		tooltips: {
@@ -67,7 +80,11 @@ const Statistics = props => {
 				},
 				label(tooltipItem, data) {
 					let label = data.datasets[tooltipItem.datasetIndex].label || '';
-					return label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString(navigator.language);
+					label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toLocaleString(navigator.language);
+					if (chartType === 'pie') {
+						label += ` (${(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] * 100 / getTotalCases()).toFixed(2)}%)`;
+					}
+					return label;
 				},
 				afterBody() {},
 				footer(tooltipItems, data) {
@@ -143,7 +160,16 @@ const Statistics = props => {
 	const onDateChange = event => dispatch( allMetaAction({ selectedDate: event }) );
 	const onSetPaginationCount = event => dispatch( allMetaAction({ paginationCount: event }) );
 	const onSetShowCase = event => dispatch( allMetaAction({ showCase: event }) );
+	const onSetChartType = event => dispatch( allMetaAction({ chartType: event }) );
 	const onSetPaginationPage = event => dispatch( allMetaAction({ paginationPage: event }) );
+	const Element = chartType === 'bar' ? Bar : Pie;
+
+	const getTotalCases = () => {
+		const matches = { 1: 'cases', 2: 'deaths', 3: 'recovered' };
+		const field = matches[showCase];
+		const listProcessed = list.sort((a, b) => b.timeline[field][format(selectedDate, 'M/D/YY')] - a.timeline[field][format(selectedDate, 'M/D/YY')]).slice(paginationPage !== 1 ? paginationPage * paginationCount - paginationCount : 0, paginationPage * paginationCount);
+		return listProcessed.reduce((sum, item) => sum += item.timeline[field][format(selectedDate, 'M/D/YY')], 0);
+	};
 
 	return (
 		<>
@@ -164,19 +190,29 @@ const Statistics = props => {
 				/>
 			</div>
 
-			<RadioGroup onChange={onSetShowCase} checkedValue={showCase} className="mt-4 mb-2" />
+			<div className="row mt-4 mb-4">
+				<div className="col-sm-6">
+					<ChartTypeRadioGroup onChange={onSetChartType} checkedValue={chartType} />
+				</div>
+				<div className="col-sm-6">
+					<ShowCasesRadioGroup onChange={onSetShowCase} checkedValue={showCase} className="mt-4 mt-sm-0" />
+				</div>
+			</div>
+
+			{chartType === 'pie' && <span className="badge total-pie">Total on page: {getTotalCases().toLocaleString(navigator.language)} (100%)</span>}
 
 			{showCase === 1 &&
-				<Bar options={chartOptions} data={data(list, 'cases')} />
+				<Element options={chartOptions} data={data(list, 'cases')} />
 			}
 
 			{showCase === 2 &&
-				<Bar options={chartOptions} data={data(list, 'deaths')} />
+				<Element options={chartOptions} data={data(list, 'deaths')} />
 			}
 
 			{showCase === 3 &&
-				<Bar options={chartOptions} data={data(list, 'recovered')} />
+				<Element options={chartOptions} data={data(list, 'recovered')} />
 			}
+
 
 			<Pager
 				onPageChange={onSetPaginationPage}
