@@ -16,8 +16,7 @@ const Home = () => {
 		setActiveTab(tab);
 	}
 
-	return (
-		<>
+	return <>
 		<Tabs defaultActiveKey={activeTab} onSelect={onSelectTab} variant="pills">
 			<Tab eventKey="total" title="Total" disabled={activeTab === 'total'} unmountOnExit>
 				<Total />
@@ -33,9 +32,8 @@ const Home = () => {
 			</Tab>
 		</Tabs>
 
-										
-		</>
-	)
+
+	</>
 }
 
 export default Home;

@@ -18,7 +18,8 @@ export const initialState = {
 			selectedDate: null,
 			paginationCount: 20,
 			showCase: 1,
-			paginationPage: 1
+			paginationPage: 1,
+			chartType: 'bar'
 		}
 	},
 	day: {

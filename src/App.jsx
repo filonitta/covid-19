@@ -25,7 +25,7 @@ const App = () => {
 
 	return <>
 		<Container>
-			<Online>
+			{/* <Online> */}
 				<Context.Provider value={{ store, dispatch }}>
 					<Router basename="/">
 						<Switch>
@@ -35,14 +35,14 @@ const App = () => {
 						</Switch>
 					</Router>
 				</Context.Provider>
-			</Online>
-			<Offline>
+			{/* </Online> */}
+			{/* <Offline>
 				<div className="card bg-light">
 					<div className="card-body">
 						You are currently offline!
 					</div>
 				</div>
-			</Offline>
+			</Offline> */}
 		</Container>
 	</>;
 };

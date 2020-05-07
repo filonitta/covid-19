@@ -8,7 +8,7 @@ import { Line, Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-zoom';
 
 import './Statistics.scss';
-import RadioGroup from '@shared/RadioGroup';
+import ShowCasesRadioGroup from '@shared/ShowCasesRadioGroup';
 import { format } from '@utils/date';
 import Context from '@redux/store';
 import { dayMetaAction } from '@redux/actions';
@@ -161,7 +161,7 @@ const Statistics = (props) => {
 			</dl>
 
 			<div className="controls mb-3 mb-md-2">
-				<RadioGroup onChange={onSetShowCase} checkedValue={showCase} />
+				<ShowCasesRadioGroup onChange={onSetShowCase} checkedValue={showCase} />
 				<div className="chart-type-controls">
 					<select className="form-control" defaultValue={chartType} onChange={onChangeChartType}>
 						<option value="1">Progress</option>

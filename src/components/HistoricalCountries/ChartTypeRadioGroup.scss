@@ -1,0 +1,21 @@
+@import './../../css/variables';
+
+.show-group-controls {
+	display: flex;
+	justify-content: flex-start;
+	// margin-bottom: 15px;
+	align-items: center;
+	
+	> *:not(:first-child) {
+		margin-left: 15px;
+	}
+
+	@media (max-width: $breakpoint-tablet) {
+		flex-direction: column;
+		align-items: flex-start;
+		
+		> * {
+			margin-left: 0 !important;
+		}
+	}
+}
