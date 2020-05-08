@@ -9,6 +9,7 @@ import 'chartjs-plugin-zoom';
 import { defaults } from 'react-chartjs-2';
 defaults.global.legend.display = false;
 defaults.global.legend.position = 'left';
+defaults.global.legend.labels.padding = 10;
 defaults.global.tooltips.titleMarginBottom = 15;
 defaults.global.tooltips.footerMarginTop = 10;
 
