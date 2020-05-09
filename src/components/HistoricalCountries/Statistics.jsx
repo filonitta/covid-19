@@ -39,17 +39,18 @@ const Statistics = props => {
 		chartType
 	} = meta;
 
-	defaults.global.legend.display = chartType === 'pie';
-	defaults.global.legend.position = 'left';
-	defaults.global.legend.labels.padding = 10;
-	defaults.global.tooltips.titleMarginBottom = 15;
-	defaults.global.tooltips.footerMarginTop = 10;
-
 	useEffect(() => {
 		!selectedDate && dispatch( allMetaAction({ selectedDate: new Date(moment().add(-1, 'days')) }) );
 	}, [dispatch, selectedDate]);
 
 	const chartOptions = {
+		legend: {
+			display: chartType === 'pie',
+			position: 'left',
+			labels: {
+				padding: 10
+			}
+		},
 		scales: {
 			yAxes: [{
 				ticks: {

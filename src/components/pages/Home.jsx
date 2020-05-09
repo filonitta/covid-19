@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import { defaults } from 'react-chartjs-2';
+defaults.global.legend.display = false;
+defaults.global.tooltips.titleMarginBottom = 15;
+defaults.global.tooltips.footerMarginTop = 10;
 
 import './Home.scss';
 import Total from '@base/src/components/Total';

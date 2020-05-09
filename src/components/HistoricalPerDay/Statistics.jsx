@@ -7,7 +7,6 @@ import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Line, Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-zoom';
 import 'chartjs-plugin-trendline';
-import { defaults } from 'react-chartjs-2';
 
 import './Statistics.scss';
 import ShowCasesRadioGroup from '@shared/ShowCasesRadioGroup';
@@ -15,9 +14,7 @@ import { format } from '@utils/date';
 import Context from '@redux/store';
 import { dayMetaAction } from '@redux/actions';
 
-
 const Statistics = (props) => {
-	defaults.global.legend.display = false;
 	
 	const {
 		info
