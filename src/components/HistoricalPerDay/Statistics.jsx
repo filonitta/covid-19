@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Line, Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-zoom';
+import 'chartjs-plugin-trendline';
 
 import './Statistics.scss';
 import ShowCasesRadioGroup from '@shared/ShowCasesRadioGroup';
@@ -29,7 +30,8 @@ const Statistics = (props) => {
 		selectedDate,
 		showCase,
 		chartType,
-		period
+		period,
+		showTrendLine
 	} = meta;
 
 	useEffect(() => {
@@ -74,6 +76,9 @@ const Statistics = (props) => {
 				},
 			}
 		},
+		// animation: {
+		// 	duration: 1000
+		// },
 	};
 
 	const onDateChange = event => dispatch( dayMetaAction({ selectedDate: event }) );
@@ -107,7 +112,6 @@ const Statistics = (props) => {
 					borderColor: `rgba(${options.rgb},1)`,
 					borderCapStyle: 'butt',
 					borderDash: [],
-					// borderWidth: 0,
 					borderDashOffset: 0.0,
 					borderJoinStyle: 'miter',
 					pointBorderColor: `rgba(${options.rgb},1)`,
@@ -121,7 +125,12 @@ const Statistics = (props) => {
 					pointHitRadius: 10,
 					data: options.data.slice(firstItem) || [],
 					
-				}
+					trendlineLinear: showTrendLine ? {
+						style: `rgba(${options.rgb},1)`,
+						lineStyle: 'dotted',
+						width: 1,
+					} : null
+				},
 			]
 		};
 	};
@@ -132,8 +141,8 @@ const Statistics = (props) => {
 	};
 
 	const onChangeChartType = event => dispatch(dayMetaAction({ chartType: +event.target.value }));
-
 	const onSetShowCase = event => dispatch(dayMetaAction({ showCase: event }));
+	const onChangeTrendLine = event => dispatch(dayMetaAction({ showTrendLine: event.target.checked }));
 
 	return (
 		<div className="card card-body bg-light">
@@ -161,7 +170,13 @@ const Statistics = (props) => {
 			</dl>
 
 			<div className="controls mb-3 mb-md-2">
+				<div className="custom-control custom-checkbox">
+					<input type="checkbox" className="custom-control-input" id="show-trend-line" onChange={onChangeTrendLine} value={showTrendLine} checked={showTrendLine} />
+					<label className="custom-control-label" htmlFor="show-trend-line">Trend Line</label>
+				</div>
+
 				<ShowCasesRadioGroup onChange={onSetShowCase} checkedValue={showCase} />
+
 				<div className="chart-type-controls">
 					<select className="form-control" defaultValue={chartType} onChange={onChangeChartType}>
 						<option value="1">Progress</option>
@@ -170,7 +185,6 @@ const Statistics = (props) => {
 				</div>
 				
 			</div>
-
 
 			{chartType === 1 && <>
 				{showCase === 1 &&

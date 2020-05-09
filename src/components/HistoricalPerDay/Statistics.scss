@@ -2,11 +2,22 @@
 
 .controls {
 	display: flex;
-	// flex-direction: column;
 	justify-content: flex-end;
 	align-items: center;
+	font-size: 0.9rem;
+	line-height: 1.7;
 
-	@media (max-width: $breakpoint-tablet) {
+	.form-control {
+		font-size: 0.9rem;
+		line-height: 1.7;
+	}
+
+	& :first-child {
+		margin-left: 0;
+		margin-right: auto;
+	}
+
+	@media (max-width: $breakpoint-desktop) {
 		flex-direction: column;
 		align-items: flex-start;
 	}
@@ -16,7 +27,7 @@
 		align-items: center;
 		margin-left: 15px;
 
-		@media (max-width: $breakpoint-tablet) {
+		@media (max-width: $breakpoint-desktop) {
 			margin-left: 0;
 		}
 	}

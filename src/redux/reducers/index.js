@@ -31,7 +31,8 @@ export const initialState = {
 			searchValue: '',
 			selectedDate: null,
 			showCase: 1,
-			chartType: 1
+			chartType: 1,
+			showTrendLine: false
 		}
 	}
 }
