@@ -7,11 +7,6 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'chartjs-plugin-zoom';
 import { defaults } from 'react-chartjs-2';
-defaults.global.legend.display = false;
-defaults.global.legend.position = 'left';
-defaults.global.legend.labels.padding = 10;
-defaults.global.tooltips.titleMarginBottom = 15;
-defaults.global.tooltips.footerMarginTop = 10;
 
 import './Statistics.scss';
 import ShowCasesRadioGroup from '@shared/ShowCasesRadioGroup';
@@ -44,13 +39,18 @@ const Statistics = props => {
 		chartType
 	} = meta;
 
-	defaults.global.legend.display = chartType === 'pie';
-
 	useEffect(() => {
 		!selectedDate && dispatch( allMetaAction({ selectedDate: new Date(moment().add(-1, 'days')) }) );
 	}, [dispatch, selectedDate]);
 
 	const chartOptions = {
+		legend: {
+			display: chartType === 'pie',
+			position: 'left',
+			labels: {
+				padding: 10
+			}
+		},
 		scales: {
 			yAxes: [{
 				ticks: {
