@@ -13,6 +13,7 @@ import ShowCasesRadioGroup from '@shared/ShowCasesRadioGroup';
 import { format } from '@utils/date';
 import Context from '@redux/store';
 import { dayMetaAction } from '@redux/actions';
+import Checkbox from '@shared/Checkbox';
 
 const Statistics = (props) => {
 	
@@ -171,10 +172,7 @@ const Statistics = (props) => {
 			</dl>
 
 			<div className="controls mb-3 mb-md-2">
-				<div className="custom-control custom-checkbox">
-					<input type="checkbox" className="custom-control-input" id="show-trend-line" onChange={onChangeTrendLine} value={showTrendLine} checked={showTrendLine} />
-					<label className="custom-control-label" htmlFor="show-trend-line">Trend Line</label>
-				</div>
+				<Checkbox onChange={onChangeTrendLine} value={showTrendLine} label="Trend Line" />
 
 				<ShowCasesRadioGroup onChange={onSetShowCase} checkedValue={showCase} />
 
