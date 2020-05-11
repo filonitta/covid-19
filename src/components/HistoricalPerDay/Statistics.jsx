@@ -1,9 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Line, Bar } from 'react-chartjs-2';
 import 'chartjs-plugin-zoom';
 import 'chartjs-plugin-trendline';
@@ -14,6 +10,7 @@ import { format } from '@utils/date';
 import Context from '@redux/store';
 import { dayMetaAction } from '@redux/actions';
 import Checkbox from '@shared/Checkbox';
+import Datepicker from '@shared/Datepicker';
 
 const Statistics = (props) => {
 	
@@ -148,22 +145,13 @@ const Statistics = (props) => {
 
 	return (
 		<div className="card card-body bg-light">
-			<div className="input-group">
-				<div className="input-group-prepend">
-					<span className="input-group-text">
-						<FontAwesomeIcon icon={faCalendarAlt} />
-					</span>
-				</div>
-				<DatePicker
-					selected={selectedDate}
-					onChange={onDateChange}
-					isClearable={false}
-					maxDate={new Date}
-					minDate={getMinDate()}
-					dateFormat="MM-dd-yyyy"
-					className="form-control"
-				/>
-			</div>
+			<Datepicker
+				value={selectedDate}
+				onChange={onDateChange}
+				maxDate={new Date}
+				minDate={getMinDate()}
+			/>
+
 			<h3 className="mt-4 mb-4">{info.country} {info.province && `(${info.province})`}</h3>
 			<dl>
 				<dt>Cases per day</dt><dd><span className={`badge ${info.perDay.cases[format(selectedDate, 'M/D/YY')] !== undefined && 'badge-secondary'}`}>{info.perDay.cases[format(selectedDate, 'M/D/YY')] === undefined ? '—' : info.perDay.cases[format(selectedDate, 'M/D/YY')].toLocaleString(navigator.language)}</span></dd>
