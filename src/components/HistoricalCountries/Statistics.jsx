@@ -1,12 +1,8 @@
 import React, { useState, useContext, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Bar, Pie } from 'react-chartjs-2';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'chartjs-plugin-zoom';
-import { defaults } from 'react-chartjs-2';
 
 import './Statistics.scss';
 import ShowCasesRadioGroup from '@shared/ShowCasesRadioGroup';
@@ -16,6 +12,7 @@ import { rnd } from '@utils/math';
 import { format } from '@utils/date';
 import Context from '@redux/store';
 import { allMetaAction } from '@redux/actions';
+import Datepicker from '@shared/Datepicker';
 
 const Statistics = props => {
 	const { store, dispatch } = useContext(Context);
@@ -174,22 +171,12 @@ const Statistics = props => {
 
 	return (
 		<>
-			<div className="input-group">
-				<div className="input-group-prepend">
-					<span className="input-group-text">
-						<FontAwesomeIcon icon={faCalendarAlt} />
-					</span>
-				</div>
-				<DatePicker
-					selected={selectedDate}
-					onChange={onDateChange}
-					isClearable={false}
-					maxDate={new Date}
-					minDate={getMinDate()}
-					dateFormat="MM-dd-yyyy"
-					className="form-control"
-				/>
-			</div>
+			<Datepicker
+				value={selectedDate}
+				onChange={onDateChange}
+				maxDate={new Date}
+				minDate={getMinDate()}
+			/>
 
 			<div className="row mt-4 mb-4">
 				<div className="col-sm-6">

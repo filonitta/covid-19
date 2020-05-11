@@ -23,6 +23,7 @@ const Period = (props) => {
 				<select className="form-control" onChange={handleChange} placeholder="Period" defaultValue={value}>
 					<option value="30">Last 30 days</option>
 					<option value="60">Last 60 days</option>
+					<option value="90">Last 90 days</option>
 					<option value="0">All</option>
 				</select>
 			</div>
