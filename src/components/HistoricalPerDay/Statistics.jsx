@@ -89,7 +89,7 @@ const Statistics = (props) => {
 		Object.entries(source).forEach(item => {
 			let [date, value] = item;
 
-			target[date] = previousValue ? value - previousValue : value;
+			target[date] = previousValue ? value - previousValue < 0 ? 0 : value - previousValue : value;
 
 			previousValue = value;
 		});
