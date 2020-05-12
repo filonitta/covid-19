@@ -12,7 +12,7 @@ import ErorMessage from '@shared/ErorMessage';
 String.prototype.capitalize = function () {
 	const value = this.valueOf();
 	return `${value.substring(0, 1).toUpperCase()}${value.substring(1)}`;
-}
+};
 
 const Today = () => {
 	const { store, dispatch } = useContext(Context);
@@ -35,7 +35,7 @@ const Today = () => {
 	} = useApi('countries', []);
 
 	useEffect(() => {
-		info.length && dispatch( todayListAction(info) );
+		info.length && dispatch(todayListAction( info.sort((a, b) => b.cases - a.cases)) );
 	}, [dispatch, info]);
 
 	const updateList = (list, searchValue) => {
