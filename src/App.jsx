@@ -19,6 +19,7 @@ import {
 } from '@redux/reducers';
 
 import Context from '@redux/store';
+import { ENV } from '@env';
 
 const App = () => {
 	const [store, dispatch] = useReducer(reducer, initialState);
@@ -27,7 +28,7 @@ const App = () => {
 		<Container>
 			<Online>
 				<Context.Provider value={{ store, dispatch }}>
-					<ContextDevTool context={Context} displayName="Context COVID-19" />
+					{!ENV.production && <ContextDevTool context={Context} displayName="Context COVID-19" />}
 
 					<Router basename="/">
 						<Switch>
