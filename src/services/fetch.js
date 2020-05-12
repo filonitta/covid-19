@@ -39,8 +39,8 @@ const dataFetchReducer = (state, action) => {
 	}
 };
 
-const useFetch = (initialUrl, initialData) => {
-	const [url] = useState(initialUrl);
+const useFetch = (url, initialData) => {
+	// const [url] = useState(initialUrl);
 
 	const [state, dispatch] = useReducer(dataFetchReducer, {
 		isLoading: false,
@@ -54,7 +54,6 @@ const useFetch = (initialUrl, initialData) => {
 
 		const fetchData = async () => {
 			dispatch({ type: 'FETCH_INIT' });
-
 			try {
 				const result = await fetch(url).then(_ => _.json());
 

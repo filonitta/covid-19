@@ -20,7 +20,6 @@ String.prototype.capitalize = function () {
 
 const HistoricalPerDay = () => {
 	const { store, dispatch } = useContext(Context);
-	// const [errorMessage, setErrorMessage] = useState('');
 
 	const {
 		day: {
@@ -35,19 +34,14 @@ const HistoricalPerDay = () => {
 		sortField,
 		searchValue
 	} = meta;
-	// console.log(period)
 
-	/* useEffect(() => {
-
-	}, [period]); */
 	const {
 		data: info,
 		isError,
 		isLoading,
 		errorMessage,
 	} = useApi(`historical?lastdays=${period}`, []);
-	// console.log(info)
-	// const [isLoading, setIsLoading] = useState(false);
+
 	const [isLoadingNext, setIsLoadingNext] = useState(false);
 	const [resetSearchList, setResetSearchList] = useState(false);
 	
@@ -61,34 +55,12 @@ const HistoricalPerDay = () => {
 
 		setIsLoadingNext(false);
 	}, [dispatch, info, setCurrentCountryHandler]);
-
-	/* useEffect(() => {
-		async function fetchCountries() {
-			setIsLoading(true);
-			let data = await api.getCountries(period).catch(setErrorMessage);
-			
-			if (data) {
-				data = aggregateByCountryName(data);
-				dispatch( dayListAction(data) );
-				setCurrentCountryHandler(data);
-				setResetSearchList(true);
-			}
-
-			setIsLoading(false);
-			setIsLoadingNext(false);
-
-		}
-		
-		fetchCountries();
-	}, [period, setCurrentCountryHandler, dispatch]); */
 	
 	const setCurrentCountryHandler = useCallback((countries) => {
 		countries.length && selectedCountry && onSetSelectedCountry(countries.find(item => item.country === selectedCountry.country));
 	}, [selectedCountry, onSetSelectedCountry]);
 
 	const handleSearch = (data, searchValue) => {
-		// console.count('handleSearch');
-		// console.log('data', data)
 		dispatch(dayMetaAction({ searchValue }));
 		onSetCountries(data);
 	};
