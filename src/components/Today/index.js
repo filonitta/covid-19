@@ -16,7 +16,7 @@ String.prototype.capitalize = function () {
 
 const Today = () => {
 	const { store, dispatch } = useContext(Context);
-
+	
 	const {
 		today: {
 			list: countries,
@@ -26,6 +26,14 @@ const Today = () => {
 			}
 		}
 	} = store;
+
+	const [countriesList, setCountriesList] = useState(countries);
+
+	useEffect(() => {
+		if (countries.length && !countriesList.length) {
+			setCountriesList(countries);
+		}
+	}, [countries]);
 
 	const {
 		data: info,
@@ -41,6 +49,7 @@ const Today = () => {
 	const updateList = (list, searchValue) => {
 		dispatch(todayListAction(list));
 		dispatch(todayMetaAction({ searchValue }));
+		setCountriesList(list);
 	};
 
 	const setSelectedCountry = (data) => dispatch(todaySelectedAction(data));
@@ -60,7 +69,7 @@ const Today = () => {
 						<div className="card-body">
 							<SearchField value={searchValue} list={countries} onChange={updateList} />
 							<CountriesList
-								list={countries}
+								list={countriesList}
 								onListUpdate={updateList}
 								onCountrySelect={setSelectedCountry}
 							/>
