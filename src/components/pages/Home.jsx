@@ -25,7 +25,7 @@ const Home = () => {
 			<Tab eventKey="total" title="Total" disabled={activeTab === 'total'} unmountOnExit>
 				<Total />
 			</Tab>
-			<Tab eventKey="today" title="Today" disabled={activeTab === 'today'} unmountOnExit>
+			<Tab eventKey="today" title="Today: all countries" disabled={activeTab === 'today'} unmountOnExit>
 				<Today />
 			</Tab>
 			<Tab eventKey="all" title="Historical: all countries" disabled={activeTab === 'all'} unmountOnExit>
