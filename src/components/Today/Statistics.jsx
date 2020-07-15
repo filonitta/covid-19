@@ -16,18 +16,17 @@ const Statistics = (props) => {
 	return (
 		<div className="card bg-light">
 			<div className="card-header">
-				<h4 className="mb-0">{info.country}</h4>
+				<h4 className="mb-0">{info.country}, <small>{info.continent}</small></h4>
 			</div>
 			<div className="card-body">
-				<img className="country-flag" src={info.countryInfo.flag} alt=""/>
+				<img className="country-flag" src={info.countryInfo.flag} alt="" />
 				<dl>
-					<dt>Total Cases</dt><dd><span className="badge badge-secondary">{info.cases.toLocaleString(navigator.language)}</span></dd>
-					<dt>Today Cases</dt><dd><span className="badge badge-secondary">{info.todayCases.toLocaleString(navigator.language)}</span></dd>
-					<dt>Total Deaths</dt><dd><span className="badge badge-secondary">{info.deaths.toLocaleString(navigator.language)}</span></dd>
-					<dt>Today Deaths</dt><dd><span className="badge badge-secondary">{info.todayDeaths.toLocaleString(navigator.language)}</span></dd>
-					<dt>Recovered</dt><dd><span className="badge badge-secondary">{info.recovered.toLocaleString(navigator.language)}</span></dd>
+					<dt>Today / Total Cases</dt><dd><span className="badge badge-secondary">{info.todayCases.toLocaleString(navigator.language)} / {info.cases.toLocaleString(navigator.language)}</span></dd>
+					<dt>Today / Total Deaths</dt><dd><span className="badge badge-secondary">{info.todayDeaths.toLocaleString(navigator.language)} / {info.deaths.toLocaleString(navigator.language)}</span></dd>
+					<dt>Today / Total Recovered</dt><dd><span className="badge badge-secondary">{info.todayRecovered.toLocaleString(navigator.language)} / {info.recovered.toLocaleString(navigator.language)}</span></dd>
 					<dt>Active</dt><dd><span className="badge badge-secondary">{info.active.toLocaleString(navigator.language)}</span></dd>
 					<dt>Critical</dt><dd><span className="badge badge-secondary">{info.critical.toLocaleString(navigator.language)}</span></dd>
+					<dt>Population</dt><dd><span className="badge badge-secondary">{info.population.toLocaleString(navigator.language)}</span></dd>
 				</dl>
 			</div>
 			<div className="card-footer">
