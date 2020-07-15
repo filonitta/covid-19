@@ -31,12 +31,24 @@ const Total = () => {
 				<h4 className="mb-0">Total statistics</h4>
 			</div>
 			<div className="card-body">
-				<dl>
-					<dt>Cases</dt><dd><span className="badge badge-secondary">{data.cases.toLocaleString(navigator.language)}</span></dd>
-					<dt>Deaths</dt><dd><span className="badge badge-secondary">{data.deaths.toLocaleString(navigator.language)}</span></dd>
-					<dt>Recovered</dt><dd><span className="badge badge-secondary">{data.recovered.toLocaleString(navigator.language)}</span></dd>
-					<dt>Active</dt><dd><span className="badge badge-secondary">{data.active.toLocaleString(navigator.language)}</span></dd>
-				</dl>
+				<div className="row">
+					<div className="col-xs-12 col-sm-6">
+						<dl className="mb-0">
+							<dt>Cases</dt><dd><span className="badge badge-secondary">{data.cases.toLocaleString(navigator.language)}</span></dd>
+							<dt>Deaths</dt><dd><span className="badge badge-secondary">{data.deaths.toLocaleString(navigator.language)}</span></dd>
+							<dt>Recovered</dt><dd><span className="badge badge-secondary">{data.recovered.toLocaleString(navigator.language)}</span></dd>
+							<dt>Active</dt><dd><span className="badge badge-secondary">{data.active.toLocaleString(navigator.language)}</span></dd>
+							<dt>Critical</dt><dd><span className="badge badge-secondary">{data.critical.toLocaleString(navigator.language)}</span></dd>
+						</dl>
+					</div>
+					<div className="col-xs-12 col-sm-6">
+						<dl className="mb-0">
+							<dt>Population</dt><dd><span className="badge badge-secondary">{data.population.toLocaleString(navigator.language)}</span></dd>
+							<dt>Affected Countries</dt><dd><span className="badge badge-secondary">{data.affectedCountries.toLocaleString(navigator.language)}</span></dd>
+							<dt>Tests</dt><dd><span className="badge badge-secondary">{data.tests.toLocaleString(navigator.language)}</span></dd>
+						</dl>
+					</div>
+				</div>
 			</div>
 			<div className="card-footer">
 				<span className="badge">Date updated: {moment(data.updated).format('MMM DD, YYYY hh:MM a')}</span>
