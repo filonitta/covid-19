@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"target": "es2017",
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["./src/*"],
+			"@base/*": ["./*"],
+			"@/*": ["./src/*"],
+			"@redux/*": ["./src/redux/*"],
+			"@shared/*": ["./src/components/shared/*"],
+			"leaflet_css": ["/node_modules/leaflet/dist/leaflet.css"],
+			"flag_icon_css": ["/node_modules/flag-icon-css/css/flag-icon.css"],
+			"@env": ["./src/env/env.development.js"]
+		},
+	},
+	"exclude": [
+		"node_modules",
+		"build"
+	]
+}
