@@ -75,7 +75,7 @@ const SearchField = (props) => {
 				placeholder="Filter by country name"
 				onInput={onFilter}
 				defaultValue={initialValue}
-				ref={input => input && input.addEventListener('search', onFilter)}
+				// ref={input => input && input.addEventListener('search', onFilter)}
 			/>
 		</div>
 	);
