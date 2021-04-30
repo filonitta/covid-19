@@ -39,12 +39,12 @@ const HistoricalPerDay = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoadingNext, setIsLoadingNext] = useState(false);
 	const [resetSearchList, setResetSearchList] = useState(false);
-	
+
 	useEffect(() => {
 		async function fetchCountries() {
 			setIsLoading(true);
 			let data = await api.getCountries(period).catch(setErrorMessage);
-			
+
 			if (data) {
 				data = aggregateByCountryName(data);
 				dispatch( dayListAction(data) );
@@ -56,10 +56,10 @@ const HistoricalPerDay = () => {
 			setIsLoadingNext(false);
 
 		}
-		
+
 		fetchCountries();
 	}, [period, setCurrentCountryHandler, dispatch]);
-	
+
 	const setCurrentCountryHandler = useCallback((countries) => {
 		countries.length && selectedCountry && onSetSelectedCountry(countries.find(item => item.country === selectedCountry.country));
 	}, [selectedCountry, onSetSelectedCountry]);
@@ -80,7 +80,7 @@ const HistoricalPerDay = () => {
 		setIsLoadingNext(true);
 		dispatch(dayMetaAction({ period: data }));
 	};
-	
+
 	const onSetCountries = data => dispatch( dayListAction(data) );
 	const onSetSelectedCountry = useCallback(data => dispatch( daySelectedAction(data) ), [dispatch]);
 

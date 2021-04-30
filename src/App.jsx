@@ -23,7 +23,7 @@ import Context from '@redux/store';
 const App = () => {
 	const [store, dispatch] = useReducer(reducer, initialState);
 
-	return <>
+	return <React.StrictMode>
 		<Container>
 			<Online>
 				<Context.Provider value={{ store, dispatch }}>
@@ -44,7 +44,7 @@ const App = () => {
 				</div>
 			</Offline>}
 		</Container>
-	</>;
+	</React.StrictMode>;
 };
 
 ReactDOM.render(<App />, document.getElementById('app'));

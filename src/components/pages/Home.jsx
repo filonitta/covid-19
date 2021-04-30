@@ -21,7 +21,7 @@ const Home = () => {
 	}
 
 	return <>
-		<Tabs defaultActiveKey={activeTab} onSelect={onSelectTab} variant="pills">
+		<Tabs defaultActiveKey={activeTab} onSelect={onSelectTab} variant="pills" transition={false}>
 			<Tab eventKey="total" title="Total" disabled={activeTab === 'total'} unmountOnExit>
 				<Total />
 			</Tab>
