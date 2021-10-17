@@ -1,5 +1,5 @@
 export const ENV = {
 	production: true,
 
-	api: 'https://corona.lmao.ninja/v2',
+	api: "https://disease.sh/v3/covid-19",
 };
